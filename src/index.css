@@ -1,6 +1,26 @@
-@tailwind utilities;
-@tailwind base;
+@import url("https://fonts.googleapis.com/css2?family=Noto+Sans+Bengali:wght@100..900&family=Noto+Sans:ital,wght@0,100..900;1,100..900&display=swap");
 
+/* =========================
+   Tailwind Base Setup
+========================= */
+@tailwind base;
+@tailwind utilities;
+
+/* =========================
+   Root Variables (Theme)
+========================= */
+:root {
+  --primary-color: #16a34a; /* Green (Organic feel) */
+  --secondary-color: #166534; /* Dark Green */
+  --text-color: #1f2937; /* Gray-800 */
+  --bg-color: #ffffff;
+  --button-color: #16a34a;
+  --button-hover: #15803d;
+}
+
+/* =========================
+   Global Reset
+========================= */
 * {
   margin: 0;
   padding: 0;
@@ -8,35 +28,76 @@
 }
 
 /* =========================
+   Body & HTML
+========================= */
+html,
+body {
+  width: 100%;
+  height: 100%;
+  font-family: "Noto Sans Bengali", sans-serif;
+  font-family: "Noto Sans", sans-serif;
+  background-color: var(--bg-color);
+  color: var(--text-color);
+}
+
+/* =========================
    Website Container
 ========================= */
-
 .container {
   max-width: 1280px; /* Full website width */
   margin: 0 auto;
-  padding: 0 16px;
+  padding: 0 20px;
+}
+
+/* =========================
+   Section Spacing
+========================= */
+.section {
+  padding: 60px 0;
+}
+
+/* =========================
+   Headings
+========================= */
+h1 {
+  font-size: 36px;
+  font-weight: 700;
+}
+
+h2 {
+  font-size: 28px;
+  font-weight: 600;
+}
+
+h3 {
+  font-size: 22px;
+  font-weight: 600;
+}
+
+/* =========================
+   Paragraph
+========================= */
+p {
+  font-size: 16px;
+  line-height: 1.6;
 }
 
 /* =========================
    Buttons (Custom)
 ========================= */
-/* .btn-primary {
-  background-color: var(--button-color);
+.btn-primary {
+  background-color: #e88742;
   color: #ffffff;
-  padding: 10px 20px;
+  padding: 6px 10px;
   border-radius: 8px;
   font-weight: 500;
   transition: all 0.3s ease;
 }
 
-.btn-primary:hover {
-  background-color: var(--button-hover);
-} */
-
 /* =========================
    Navbar Custom
 ========================= */
-/* .navbar-custom {
+.navbar-custom {
   background-color: #ffffff;
   border-bottom: 1px solid #e5e7eb;
 }
@@ -48,12 +109,12 @@
 
 .nav-link:hover {
   color: var(--primary-color);
-} */
+}
 
 /* =========================
    Card Design (Products)
 ========================= */
-/* .product-card {
+.product-card {
   background-color: #ffffff;
   border-radius: 12px;
   padding: 16px;
@@ -63,13 +124,13 @@
 
 .product-card:hover {
   transform: translateY(-5px);
-} */
+}
 
 /* =========================
    Footer
 ========================= */
-/* .footer {
+.footer {
   background-color: #064e3b;
   color: #ffffff;
   padding: 40px 0;
-} */
+}
