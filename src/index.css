@@ -1,0 +1,75 @@
+@tailwind utilities;
+@tailwind base;
+
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+/* =========================
+   Website Container
+========================= */
+
+.container {
+  max-width: 1280px; /* Full website width */
+  margin: 0 auto;
+  padding: 0 16px;
+}
+
+/* =========================
+   Buttons (Custom)
+========================= */
+/* .btn-primary {
+  background-color: var(--button-color);
+  color: #ffffff;
+  padding: 10px 20px;
+  border-radius: 8px;
+  font-weight: 500;
+  transition: all 0.3s ease;
+}
+
+.btn-primary:hover {
+  background-color: var(--button-hover);
+} */
+
+/* =========================
+   Navbar Custom
+========================= */
+/* .navbar-custom {
+  background-color: #ffffff;
+  border-bottom: 1px solid #e5e7eb;
+}
+
+.nav-link {
+  color: #374151;
+  font-weight: 500;
+}
+
+.nav-link:hover {
+  color: var(--primary-color);
+} */
+
+/* =========================
+   Card Design (Products)
+========================= */
+/* .product-card {
+  background-color: #ffffff;
+  border-radius: 12px;
+  padding: 16px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
+  transition: all 0.3s ease;
+}
+
+.product-card:hover {
+  transform: translateY(-5px);
+} */
+
+/* =========================
+   Footer
+========================= */
+/* .footer {
+  background-color: #064e3b;
+  color: #ffffff;
+  padding: 40px 0;
+} */
