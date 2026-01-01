@@ -1,19 +1,29 @@
-#showSearchText {
-  visibility: hidden;
-  margin-bottom: 5px;
-  display: inline;
+#icon {
+  position: relative;
+  display: inline-flex;
+  align-items: center;
 }
 
-#searchIcon:hover #showSearchText {
-  visibility: visible;
-  display: block;
+#showText {
+  position: absolute;
+  top: 28px;
+  left: 50%;
+  transform: translateX(-50%) translateY(5px);
+  opacity: 0;
+  pointer-events: none;
+  transition: all 0.3s ease;
+}
+
+#icon:hover #showText {
+  opacity: 1;
+  transform: translateX(-50%) translateY(0);
 }
 
 .link-underline {
   border-bottom-width: 0;
   background-image: linear-gradient(transparent, transparent),
     linear-gradient(#fff, #fff);
-  background-size: 0 3px;
+  background-size: 0 2px;
 
   background-position: 0 100%;
   background-repeat: no-repeat;
@@ -26,7 +36,7 @@
 }
 
 .link-underline:hover {
-  background-size: 100% 3px;
+  background-size: 100% 2px;
   background-position: 0 100%;
   margin-top: 2px;
 }

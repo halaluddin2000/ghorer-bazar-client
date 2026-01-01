@@ -28,28 +28,40 @@ const Navbar = () => {
         </p>
       </div>
       {/* -------navbar----- */}
-      <div className="container px-10 flex justify-between items-center py-6">
-        <div id="searchIcon">
+      <div className="container flex justify-between items-center mx-8 py-6">
+        <div id="icon">
           <FontAwesomeIcon
             className="text-[#F58822] text-xl"
             icon={faMagnifyingGlass}
           />
-          <span id="showSearchText" className="btn-primary">
+          <span id="showText" className="btn-primary">
             Search
           </span>
         </div>
         <div>
-          <img className="w-28" src={logo} alt="" srcset="" />
+          <Link to="/">
+            <img className="w-28" src={logo} alt="" srcset="" />
+          </Link>
         </div>
-        <div className="">
-          <FontAwesomeIcon
-            className="text-[#F58822] text-xl px-3"
-            icon={faUser}
-          />
-          <FontAwesomeIcon
-            className="text-[#F58822] text-xl"
-            icon={faBagShopping}
-          />
+        <div>
+          <div id="icon">
+            <FontAwesomeIcon
+              className="text-[#F58822] text-xl px-6"
+              icon={faUser}
+            />
+            <span id="showText" className="btn-primary">
+              Account
+            </span>
+          </div>
+          <div id="icon">
+            <FontAwesomeIcon
+              className="text-[#F58822] text-xl"
+              icon={faBagShopping}
+            />
+            <span id="showText" className="btn-primary">
+              Cart
+            </span>
+          </div>
         </div>
       </div>
       {/* navbar end */}
@@ -58,7 +70,7 @@ const Navbar = () => {
         <div className="navbar-center hidden px-4 items-center justify-center lg:grid lg:grid-cols-9 gap-4">
           {navbarCategories.map((item) => (
             <p
-              className="gap-4 text-lg font-medium text-center"
+              className="gap-4 text-base font-medium text-center"
               key={item.slug}
             >
               <Link
