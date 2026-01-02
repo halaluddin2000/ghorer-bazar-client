@@ -1,13 +1,15 @@
 import { Link } from "react-router-dom";
 import { products } from "../data/product";
+// import { useContext } from "react";
+// import { CartContext } from "../Components/context/CartContext";
 
 const AllProducts = () => {
+  // const { addToCart } = useContext(CartContext);
   return (
-    <div className="container bg-white py-10">
+    <div className="container bg-white mb-10 ">
       <h2 className="text-4xl font-semibold mb-6 py-16 text-center">
         ALL PRODUCT
       </h2>
-
       <div className="grid grid-cols-2 bg-white md:grid-cols-4 lg:grid-cols-5 gap-6">
         {products.map((product) => (
           <div key={product.id} className="border rounded-lg p-4">
@@ -33,7 +35,12 @@ const AllProducts = () => {
             )} */}
             <br />
             <div className="flex items-center justify-center ">
-              <button className="btn-primary w-full">Quick Add</button>
+              <button
+                // onClick={() => addToCart(product)}
+                className="btn-primary w-full"
+              >
+                Quick Add
+              </button>
             </div>
           </div>
         ))}

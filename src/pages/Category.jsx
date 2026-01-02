@@ -1,7 +1,7 @@
 import React from "react";
 
 function Category() {
-  return <div>Category</div>;
+  return <div>COLLECTION</div>;
 }
 
 export default Category;
