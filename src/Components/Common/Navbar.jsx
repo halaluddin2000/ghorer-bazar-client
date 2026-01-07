@@ -6,7 +6,7 @@ import {
 } from "@fortawesome/free-solid-svg-icons";
 import { Link } from "react-router-dom";
 import { navbarCategories } from "../../data/navbarData";
-import logo from "../../assets/logo.webp";
+import logo from "../../assets/logo.png";
 import { faUser } from "@fortawesome/free-regular-svg-icons";
 import "./navbar.css";
 
@@ -14,7 +14,7 @@ const Navbar = () => {
   return (
     <div>
       {/*----------- upper navbar----------- */}
-      <div className="bg-[#e88742] py-2 mb-5">
+      <div className="bg-[#98CB55] py-2 mb-5">
         <p className="text-center text-white text-base tracking-wide ">
           আমাদের যে কোন পণ্য অর্ডার করতে কল বা WhatsApp করুন:{" "}
           <span>
@@ -31,7 +31,7 @@ const Navbar = () => {
       <div className="container flex justify-between items-center mx-8 py-6">
         <div id="icon">
           <FontAwesomeIcon
-            className="text-[#F58822] text-xl"
+            className="text-[#2CC4F4] text-xl"
             icon={faMagnifyingGlass}
           />
           <span id="showText" className="btn-primary">
@@ -46,7 +46,7 @@ const Navbar = () => {
         <div>
           <div id="icon">
             <FontAwesomeIcon
-              className="text-[#F58822] text-xl px-6"
+              className="text-[#2CC4F4] text-xl px-6"
               icon={faUser}
             />
             <span id="showText" className="btn-primary">
@@ -55,7 +55,7 @@ const Navbar = () => {
           </div>
           <div id="icon">
             <FontAwesomeIcon
-              className="text-[#F58822] text-xl"
+              className="text-[#2CC4F4] text-xl"
               icon={faBagShopping}
             />
             <span id="showText" className="btn-primary">

@@ -1,4 +1,4 @@
-import logo from "../../assets/logo.webp";
+import logo from "../../assets/logo.png";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 
 import { faFacebook } from "@fortawesome/free-brands-svg-icons";
