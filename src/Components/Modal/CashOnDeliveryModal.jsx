@@ -1,4 +1,4 @@
-import { useContext, useState } from "react";
+import { useContext, useEffect, useState } from "react";
 import { CartContext } from "../context/CartContext";
 import { toast } from "react-toastify";
 import { useNavigate } from "react-router-dom";
@@ -7,6 +7,8 @@ const CashOnDeliveryModal = ({ open, onClose }) => {
   const { cart, clearCart } = useContext(CartContext);
   const navigate = useNavigate();
 
+  const [animate, setAnimate] = useState(false);
+  const [coupon, setCoupon] = useState("");
   const [form, setForm] = useState({
     name: "",
     phone: "",
@@ -15,11 +17,27 @@ const CashOnDeliveryModal = ({ open, onClose }) => {
     note: "",
   });
 
-  if (!open) return null; // 🔴 modal বন্ধ থাকলে render হবে না
+  useEffect(() => {
+    if (open) {
+      const t = setTimeout(() => setAnimate(true), 10);
+      return () => clearTimeout(t);
+    }
+  }, [open]);
 
-  const subtotal = cart.reduce((sum, i) => sum + i.price * i.qty, 0);
+  // ESC close
+  useEffect(() => {
+    const esc = (e) => e.key === "Escape" && onClose();
+    window.addEventListener("keydown", esc);
+    return () => window.removeEventListener("keydown", esc);
+  }, [onClose]);
+
+  if (!open) return null;
+
+  const subtotal = cart.reduce((s, i) => s + i.price * i.qty, 0);
+
   const shippingCharge =
     form.shipping === "dhaka" || form.shipping === "ctg" ? 70 : 130;
+
   const total = subtotal + shippingCharge;
 
   const phoneRegex = /^(?:\+88|01)?[3-9]\d{8}$/;
@@ -29,35 +47,37 @@ const CashOnDeliveryModal = ({ open, onClose }) => {
       toast.error("সব তথ্য পূরণ করুন");
       return;
     }
-
     if (!phoneRegex.test(form.phone)) {
       toast.error("সঠিক ফোন নাম্বার দিন");
       return;
     }
 
     toast.success("অর্ডার কনফার্ম হয়েছে ✅");
-
     setTimeout(() => {
       clearCart();
       onClose();
       navigate("/order-success");
-    }, 1500);
+    }, 1200);
   };
 
   return (
     <>
-      {/* 🔳 Overlay */}
+      {/* Overlay */}
       <div
         onClick={onClose}
         className="fixed inset-0 bg-black bg-opacity-50 z-[999]"
       />
 
-      {/* 🟦 Modal Center */}
-      <div className="fixed inset-0 z-[1000] flex items-center justify-center p-3">
-        <div className="bg-white w-full max-w-3xl rounded shadow-lg max-h-[90vh] overflow-y-auto">
+      {/* Modal */}
+      <div className="fixed inset-0 z-[1000] flex items-center justify-center p-4">
+        <div
+          className={`bg-white w-[45%] max-w-3xl rounded shadow-lg
+          max-h-[90vh] overflow-y-auto transform transition-all duration-300
+          ${animate ? "scale-100 opacity-100" : "scale-95 opacity-0"}`}
+        >
           {/* Header */}
           <div className="p-4 border-b flex justify-between items-center">
-            <h2 className="text-lg font-semibold">
+            <h2 className="font-semibold">
               ক্যাশ অন ডেলিভারিতে অর্ডার করতে আপনার তথ্য দিন
             </h2>
             <button onClick={onClose} className="text-xl font-bold">
@@ -67,31 +87,33 @@ const CashOnDeliveryModal = ({ open, onClose }) => {
 
           {/* Body */}
           <div className="p-4 space-y-4 text-sm">
+            {/* User info */}
             <input
               placeholder="আপনার নাম"
-              className="w-full border p-2 rounded"
+              className="w-full border bg-white p-2 rounded"
               onChange={(e) => setForm({ ...form, name: e.target.value })}
             />
 
             <input
               placeholder="ফোন নাম্বার"
-              className="w-full border p-2 rounded"
+              className="w-full bg-white border p-2 rounded"
               onChange={(e) => setForm({ ...form, phone: e.target.value })}
             />
 
             <textarea
               placeholder="এড্রেস"
-              className="w-full border p-2 rounded"
+              className="w-full bg-white border p-2 rounded"
               onChange={(e) => setForm({ ...form, address: e.target.value })}
             />
 
-            {/* Shipping */}
+            {/* Shipping Method */}
             <div>
               <p className="font-medium mb-1">শিপিং মেথড</p>
+
               {[
                 ["dhaka", "ঢাকা সিটির ভিতরে", 70],
                 ["ctg", "চট্টগ্রাম সিটির ভিতরে", 70],
-                ["outside", "ঢাকা ও চট্টগ্রামের বাহিরে", 130],
+                ["outside", "ঢাকা এবং চট্টগ্রাম সিটির বাহিরে", 130],
               ].map(([key, label, price]) => (
                 <label
                   key={key}
@@ -105,29 +127,41 @@ const CashOnDeliveryModal = ({ open, onClose }) => {
                     />
                     <span className="pl-3">{label}</span>
                   </div>
-                  <span>Tk {price}</span>
+                  <span>Tk {price}.00</span>
                 </label>
               ))}
             </div>
 
+            {/* Coupon */}
+            <div>
+              <p className="font-medium mb-1">কুপন কোড</p>
+              <div className="flex gap-2">
+                <input
+                  placeholder="Enter coupon code"
+                  className="flex-1 border p-2 rounded"
+                  value={coupon}
+                  onChange={(e) => setCoupon(e.target.value)}
+                />
+                <button
+                  onClick={() => toast.info("Coupon feature coming soon")}
+                  className="px-4 bg-gray-200 rounded"
+                >
+                  এপ্লাই
+                </button>
+              </div>
+            </div>
+
             {/* Cart Items */}
             <div className="border-t pt-2 space-y-2">
-              {cart.map((item) => (
-                <div
-                  key={item.id}
-                  className="flex justify-between items-center"
-                >
+              {cart.map((i) => (
+                <div key={i.id} className="flex justify-between items-center">
                   <div className="flex items-center gap-3">
-                    <img
-                      src={item.image}
-                      className="w-14 h-12 rounded"
-                      alt=""
-                    />
+                    <img src={i.image} className="w-16 h-14" alt="" />
                     <span>
-                      {item.name} × {item.qty}
+                      {i.qty} × {i.name}
                     </span>
                   </div>
-                  <span>Tk {(item.price * item.qty).toLocaleString()}</span>
+                  <span>Tk {(i.price * i.qty).toLocaleString()}</span>
                 </div>
               ))}
             </div>
@@ -136,24 +170,26 @@ const CashOnDeliveryModal = ({ open, onClose }) => {
             <div className="border-t pt-2 space-y-1">
               <div className="flex justify-between">
                 <span>সাব টোটাল</span>
-                <span>Tk {subtotal}</span>
+                <span>Tk {subtotal.toLocaleString()}</span>
               </div>
               <div className="flex justify-between">
                 <span>ডেলিভারি চার্জ</span>
-                <span>Tk {shippingCharge}</span>
+                <span>Tk {shippingCharge}.00</span>
               </div>
               <div className="flex justify-between font-semibold">
                 <span>সর্বমোট</span>
-                <span>Tk {total}</span>
+                <span>Tk {total.toLocaleString()}</span>
               </div>
             </div>
 
+            {/* Order Note */}
             <textarea
               placeholder="Order note"
-              className="w-full border p-2 rounded"
+              className="w-full bg-white border p-2 rounded"
               onChange={(e) => setForm({ ...form, note: e.target.value })}
             />
 
+            {/* Actions */}
             <button
               onClick={handleConfirm}
               className="w-full bg-green-600 text-white py-2 rounded"
@@ -161,8 +197,15 @@ const CashOnDeliveryModal = ({ open, onClose }) => {
               আপনার অর্ডার কনফার্ম করতে ক্লিক করুন
             </button>
 
+            <button
+              onClick={() => toast.info("Online payment coming soon")}
+              className="w-full bg-gray-200 py-2 rounded"
+            >
+              Pay Online
+            </button>
+
             <p className="text-xs text-gray-500 text-center">
-              উপরের বাটনে ক্লিক করলে অর্ডার সাথে সাথে কনফার্ম হবে
+              উপরের বাটনে ক্লিক করলে আপনার অর্ডারটি সাথে সাথে কনফার্ম হয়ে যাবে !
             </p>
           </div>
         </div>

@@ -7,12 +7,19 @@ import CashOnDeliveryModal from "../Components/Modal/CashOnDeliveryModal";
 
 function MainLayout() {
   const [openCOD, setOpenCOD] = useState(false);
+
   return (
     <div>
-      <Navbar />
-      <CartDrawer />
+      {/* 🔑 setOpenCOD pass করো */}
+      <Navbar onCODClick={() => setOpenCOD(true)} />
+
+      <CartDrawer onCODClick={() => setOpenCOD(true)} />
+
       <Outlet />
+
+      {/* ✅ ROOT LEVEL MODAL */}
       <CashOnDeliveryModal open={openCOD} onClose={() => setOpenCOD(false)} />
+
       <Footer />
     </div>
   );

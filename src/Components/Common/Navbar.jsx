@@ -12,7 +12,7 @@ import "./navbar.css";
 import { useContext } from "react";
 import { CartContext } from "../context/CartContext";
 
-const Navbar = () => {
+const Navbar = ({ onCODClick }) => {
   const { cart, setIsDrawerOpen } = useContext(CartContext);
   return (
     <div>
@@ -62,6 +62,7 @@ const Navbar = () => {
             id="icon"
           >
             <FontAwesomeIcon
+              onClick={onCODClick}
               className="text-[#2CC4F4] text-xl"
               icon={faBagShopping}
             />

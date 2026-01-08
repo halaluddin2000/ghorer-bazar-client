@@ -2,7 +2,7 @@ import { useContext, useState } from "react";
 import { CartContext } from "../context/CartContext";
 import CashOnDeliveryModal from "../Modal/CashOnDeliveryModal";
 
-const CartDrawer = () => {
+const CartDrawer = ({ onCODClick }) => {
   const [openCOD, setOpenCOD] = useState(false);
 
   const {
@@ -187,7 +187,7 @@ const CartDrawer = () => {
           </button>
           <button className=""></button>
           <button
-            onClick={() => setOpenCOD(true)}
+            onClick={onCODClick}
             className="w-full bg-gray-200 text-black py-2 rounded text-sm"
           >
             ক্যাশ অন ডেলিভারিতে অর্ডার করুন
