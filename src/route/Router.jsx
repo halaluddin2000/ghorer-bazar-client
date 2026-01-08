@@ -6,6 +6,8 @@ import NotFound from "../pages/NotFound";
 
 import { createBrowserRouter } from "react-router-dom";
 import ProductDetails from "../pages/ProductDetails";
+import CashOnDeliveryPage from "../Components/Modal/CashOnDeliveryModal";
+import OrderSuccess from "../pages/OrderSuccess";
 
 export const router = createBrowserRouter([
   {
@@ -29,6 +31,11 @@ export const router = createBrowserRouter([
         path: "/product/:id",
         element: <ProductDetails />,
       },
+      {
+        path: "/cash-on-delivery",
+        element: <CashOnDeliveryPage />,
+      },
+      { path: "/order-success", element: <OrderSuccess /> },
     ],
   },
 ]);
