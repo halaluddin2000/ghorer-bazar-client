@@ -1,13 +1,14 @@
+import { createBrowserRouter } from "react-router-dom";
+import Login from "../Components/login/Login";
+import CashOnDeliveryPage from "../Components/Modal/CashOnDeliveryModal";
+import SingUp from "../Components/singUp/SingUp";
 import MainLayout from "../layouts/MainLayout";
 import AllProducts from "../pages/AllProducts";
 import Category from "../pages/Category";
 import Home from "../pages/Home";
 import NotFound from "../pages/NotFound";
-
-import { createBrowserRouter } from "react-router-dom";
-import ProductDetails from "../pages/ProductDetails";
-import CashOnDeliveryPage from "../Components/Modal/CashOnDeliveryModal";
 import OrderSuccess from "../pages/OrderSuccess";
+import ProductDetails from "../pages/ProductDetails";
 
 export const router = createBrowserRouter([
   {
@@ -36,6 +37,8 @@ export const router = createBrowserRouter([
         element: <CashOnDeliveryPage />,
       },
       { path: "/order-success", element: <OrderSuccess /> },
+      { path: "/login", element: <Login /> },
+      { path: "/singUp", element: <SingUp /> },
     ],
   },
 ]);

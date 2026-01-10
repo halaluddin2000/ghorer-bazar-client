@@ -1,8 +1,8 @@
-import cover from "../../assets/Image/New_ghorerbazar_cover.jpg";
+import cover from "../../assets/hero-1.jpg";
 
 function Hero() {
   return (
-    <div className="mt-10">
+    <div className="mt-4">
       <img src={cover} alt="cover" />
     </div>
   );

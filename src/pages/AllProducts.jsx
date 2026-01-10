@@ -1,5 +1,5 @@
-import axios from "axios";
-import { useContext, useEffect, useState } from "react";
+// import axios from "axios";
+import { useContext, useState } from "react";
 import { Link } from "react-router-dom";
 import { CartContext } from "../Components/context/CartContext";
 import { products } from "../data/product";
@@ -7,25 +7,25 @@ import { products } from "../data/product";
 const AllProducts = () => {
   const { addToCart } = useContext(CartContext);
   const [showPopup, setShowPopup] = useState(false);
-  const [product, setProduct] = useState([]);
-  const [error, setError] = useState(false);
-  const [loading, setLoading] = useState(false);
+  // const [product, setProduct] = useState([]);
+  // const [error, setError] = useState(false);
+  // const [loading, setLoading] = useState(false);
 
-  useEffect(() => {
-    (async () => {
-      try {
-        setLoading(true);
-        setError(false);
-        const response = await axios.get("/api/products");
-        console.log(response.data);
-        setProduct(response.data);
-        setLoading(false);
-      } catch (error) {
-        setError(true);
-        setLoading(false);
-      }
-    })();
-  });
+  // useEffect(() => {
+  //   (async () => {
+  //     try {
+  //       setLoading(true);
+  //       setError(false);
+  //       const response = await axios.get("/api/products");
+  //       console.log(response.data);
+  //       setProduct(response.data);
+  //       setLoading(false);
+  //     } catch (error) {
+  //       setError(true);
+  //       setLoading(false);
+  //     }
+  //   })();
+  // });
 
   const handleAddToCart = (product) => {
     addToCart(product);

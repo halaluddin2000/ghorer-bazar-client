@@ -1,15 +1,9 @@
 export const navbarCategories = [
-    { name: "Offer Zone", slug: "offer-zone" },
-    { name: "Best Seller", slug: "best-seller" },
-    { name: "Oil", slug: "oil" },
-    { name: "Ghee (ঘি)", slug: "ghee" },
-    { name: "Dates (খেজুর)", slug: "dates" },
-    { name: "খেজুর গুড়", slug: "khejurer-gur" },
-    { name: "Honey", slug: "honey" },
-    { name: "Masala", slug: "masala" },
-    { name: "Nuts & Seeds", slug: "nuts-seeds" },
-    { name: "Tea/Coffee", slug: "tea-coffee" },
-    { name: "Honeycomb", slug: "honeycomb" },
-    { name: "Organic Zone", slug: "organic" },
-    { name: "Pickle", slug: "pickle" },
+    { name: "Home", slug: "home" },
+    { name: "SHOP", slug: "SHOP" },
+    { name: "SALE", slug: "SALE" },
+    { name: "BLOG", slug: "BLOG" },
+    { name: "PAGES", slug: "PAGES" },
+    { name: "CONTACT", slug: "contact" },
+
 ];
