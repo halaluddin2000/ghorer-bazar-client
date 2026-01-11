@@ -29,11 +29,11 @@ function Login() {
             />
           </form>
         </div>
-        <p>
-          Are you New? Please Sing Up{" "}
-          <a>
-            <Link to="/singUp">Sing Up</Link>
-          </a>{" "}
+        <p className="mt-3">
+          Are you New? Please{" "}
+          <Link className="text-blue-500 text-xl font-medium " to="/singUp">
+            Sing Up
+          </Link>
         </p>
       </div>
     </div>

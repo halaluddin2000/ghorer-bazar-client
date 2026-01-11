@@ -4,7 +4,8 @@ import CashOnDeliveryPage from "../Components/Modal/CashOnDeliveryModal";
 import SingUp from "../Components/singUp/SingUp";
 import MainLayout from "../layouts/MainLayout";
 import AllProducts from "../pages/AllProducts";
-import Category from "../pages/Category";
+import CartPage from "../pages/CartPage";
+import Category from "../pages/CategorySection";
 import Home from "../pages/Home";
 import NotFound from "../pages/NotFound";
 import OrderSuccess from "../pages/OrderSuccess";
@@ -25,12 +26,16 @@ export const router = createBrowserRouter([
         element: <AllProducts />,
       },
       {
-        path: "/category/:name",
+        path: "/category/:slug",
         element: <Category />,
       },
       {
-        path: "/product/:id",
+        path: "/product/details/:slug",
         element: <ProductDetails />,
+      },
+      {
+        path: "/cart",
+        element: <CartPage />,
       },
       {
         path: "/cash-on-delivery",

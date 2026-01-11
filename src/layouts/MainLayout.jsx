@@ -1,9 +1,9 @@
-import { Outlet } from "react-router-dom";
-import Navbar from "../Components/Common/Navbar";
-import Footer from "../Components/Common/Footer";
-import CartDrawer from "../Components/cart/CartDrawer";
 import { useState } from "react";
+import { Outlet } from "react-router-dom";
+import Footer from "../Components/Common/Footer";
+import Navbar from "../Components/Common/Navbar";
 import CashOnDeliveryModal from "../Components/Modal/CashOnDeliveryModal";
+import CartDrawer from "../Components/cart/CartDrawer";
 
 function MainLayout() {
   const [openCOD, setOpenCOD] = useState(false);
@@ -11,7 +11,7 @@ function MainLayout() {
   return (
     <div>
       {/* 🔑 setOpenCOD pass করো */}
-      <Navbar onCODClick={() => setOpenCOD(true)} />
+      <Navbar />
 
       <CartDrawer onCODClick={() => setOpenCOD(true)} />
 

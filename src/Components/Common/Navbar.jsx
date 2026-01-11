@@ -4,40 +4,105 @@ import {
   faMagnifyingGlass,
 } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { useContext } from "react";
+import { useContext, useEffect, useState } from "react";
 import { Link } from "react-router-dom";
+import api from "../../api/axios";
 import logo from "../../assets/logo.png";
-import { navbarCategories } from "../../data/navbarData";
 import { CartContext } from "../context/CartContext";
 import "./navbar.css";
 
-const Navbar = ({ onCODClick }) => {
+const Navbar = () => {
   const { cart, setIsDrawerOpen } = useContext(CartContext);
+  const [categories, setCategories] = useState([]);
+  const [loading, setLoading] = useState(true);
+
+  // search ----
+  const [showSearch, setShowSearch] = useState(false);
+  const [query, setQuery] = useState("");
+  const [results, setResults] = useState([]);
+
+  useEffect(() => {
+    if (query.length < 2) {
+      setResults([]);
+      return;
+    }
+    const delay = setTimeout(() => {
+      api.get(`/products/search?name=${query}`).then((res) => {
+        setResults(res.data.data || []);
+      });
+    }, 400); // debounce
+
+    return () => clearTimeout(delay);
+  }, [query]);
+
+  useEffect(() => {
+    api.get("/filter/categories").then((res) => {
+      setCategories(res.data.data);
+      setLoading(false);
+    });
+  }, []);
+
   return (
     <div>
-      {/*----------- upper navbar----------- */}
-      {/* <div className="bg-[#98CB55] py-2 mb-5">
-        <p className="text-center text-white text-base tracking-wide ">
-          আমাদের যে কোন পণ্য অর্ডার করতে কল বা WhatsApp করুন:{" "}
-          <span>
-            <FontAwesomeIcon icon={faPhone} />
-          </span>
-          +8801321208940 |{" "}
-          <span>
-            <FontAwesomeIcon icon={faPhone} />
-          </span>
-          হট লাইন: 09642-922922
-        </p>
-      </div> */}
-      {/* -------navbar----- */}
       <div className="container mt-5  mx-8">
         <div className="flex justify-between items-center pt-6 pb-2 ">
-          <div id="icon">
-            <FontAwesomeIcon className=" text-xl" icon={faMagnifyingGlass} />
+          <div id="icon" className="relative">
+            <FontAwesomeIcon
+              className="text-xl cursor-pointer"
+              icon={faMagnifyingGlass}
+              onClick={() => setShowSearch(!showSearch)}
+            />
             <span id="showText" className="btn-primary">
               Search
             </span>
+
+            {/* 🔍 Search Input */}
+            {showSearch && (
+              <div className="absolute top-10 left-0 bg-white shadow-lg w-80 z-50 p-3">
+                <input
+                  type="text"
+                  value={query}
+                  onChange={(e) => setQuery(e.target.value)}
+                  placeholder="Search products..."
+                  className="w-full bg-white border px-3 py-2 outline-none"
+                />
+
+                {/* 🔽 Live Results */}
+                {results.length > 0 && (
+                  <div className="mt-2 max-h-60 overflow-y-auto">
+                    {results.map((item) => (
+                      <Link
+                        key={item.id}
+                        to={`/product/details/${item.slug}`}
+                        onClick={() => {
+                          setShowSearch(false);
+                          setQuery("");
+                        }}
+                        className="flex gap-3 items-center p-2 hover:bg-gray-100"
+                      >
+                        <img
+                          src={item.thumbnail_image}
+                          alt={item.name}
+                          className="w-10 h-10 object-cover"
+                        />
+                        <div>
+                          <p className="text-sm font-semibold">{item.name}</p>
+                          <p className="text-xs text-gray-500">
+                            {item.main_price}
+                          </p>
+                        </div>
+                      </Link>
+                    ))}
+                  </div>
+                )}
+
+                {query.length > 1 && results.length === 0 && (
+                  <p className="text-sm text-gray-500 mt-2">No product found</p>
+                )}
+              </div>
+            )}
           </div>
+
           <div>
             <Link to="/">
               <img className="w-28" src={logo} alt="" srcset="" />
@@ -57,11 +122,7 @@ const Navbar = ({ onCODClick }) => {
               className="relative"
               id="icon"
             >
-              <FontAwesomeIcon
-                onClick={onCODClick}
-                className=" text-xl"
-                icon={faBagShopping}
-              />
+              <FontAwesomeIcon className=" text-xl" icon={faBagShopping} />
               <span className="absolute -top-2 -right-3 bg-red-500 text-white text-xs px-2 rounded-full">
                 {cart.length}
               </span>
@@ -73,24 +134,31 @@ const Navbar = ({ onCODClick }) => {
         </div>
       </div>
       {/* navbar end */}
-      <div className="my-4 border-t py-4 ">
-        {/* CENTER (Desktop Menu) */}
-        <div className="navbar-center flex gap-8 items-center mx-auto justify-center">
-          {navbarCategories.map((item) => (
-            <p
-              className="gap-4 text-base font-medium text-center"
-              key={item.slug}
-            >
-              <Link
-                className="link link-underline link-underline-black text-black"
-                to={`/${item.slug}`}
-              >
-                {item.name}
-              </Link>
-            </p>
-          ))}
+      <nav className="navbar">
+        <div className="flex gap-10 py-3 mx-auto justify-center items-center">
+          <Link to="/">Home</Link>
+          <Link to="/products">Products</Link>
+
+          <div className="relative group">
+            <span className="cursor-pointer">Category ▾</span>
+
+            <div className="absolute hidden group-hover:block bg-white shadow-lg z-50">
+              {categories.map((cat) => (
+                <Link
+                  key={cat.id}
+                  to={`/category/${cat.slug}`}
+                  className="block w-full text-base px-4 py-2 hover:bg-gray-100"
+                >
+                  {cat.name}
+                </Link>
+              ))}
+            </div>
+          </div>
+          <Link to="/about">About Us</Link>
+          <Link to="/blog">Blog</Link>
+          <Link to="/contact">Contact Us</Link>
         </div>
-      </div>
+      </nav>
     </div>
   );
 };

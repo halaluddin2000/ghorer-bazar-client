@@ -34,9 +34,11 @@ function SingUp() {
             />
           </form>
         </div>
-        <p>
-          Are you Registration? Please Login Now{" "}
-          <Link to="/login">Login Now</Link>{" "}
+        <p className="mt-3">
+          Are you Registration? Please{" "}
+          <Link className="text-blue-500 text-xl font-medium " to="/login">
+            Login Now
+          </Link>{" "}
         </p>
       </div>
     </div>

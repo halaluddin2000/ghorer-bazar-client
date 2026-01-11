@@ -1,33 +1,33 @@
-// import axios from "axios";
-import { useContext, useState } from "react";
+import { useContext, useEffect, useState } from "react";
 import { Link } from "react-router-dom";
+import api from "../api/axios";
 import { CartContext } from "../Components/context/CartContext";
-import { products } from "../data/product";
 
 const AllProducts = () => {
   const { addToCart } = useContext(CartContext);
   const [showPopup, setShowPopup] = useState(false);
-  // const [product, setProduct] = useState([]);
-  // const [error, setError] = useState(false);
-  // const [loading, setLoading] = useState(false);
+  const [products, setProducts] = useState([]);
+  const [loading, setLoading] = useState(false);
 
-  // useEffect(() => {
-  //   (async () => {
-  //     try {
-  //       setLoading(true);
-  //       setError(false);
-  //       const response = await axios.get("/api/products");
-  //       console.log(response.data);
-  //       setProduct(response.data);
-  //       setLoading(false);
-  //     } catch (error) {
-  //       setError(true);
-  //       setLoading(false);
-  //     }
-  //   })();
-  // });
+  useEffect(() => {
+    api
+      .get("/all-products")
+      .then((res) => {
+        setProducts(res.data.data); // 🔥 important
+        setLoading(false);
+      })
+      .catch(() => setLoading(false));
+  }, []);
 
   const handleAddToCart = (product) => {
+    addToCart({
+      id: product.id,
+      name: product.name,
+      price: Number(product.main_price.replace(/[^\d]/g, "")),
+      image: product.thumbnail_image,
+      qty: 1,
+    });
+
     addToCart(product);
     setShowPopup(true);
 
@@ -36,6 +36,8 @@ const AllProducts = () => {
       setShowPopup(false);
     }, 2000);
   };
+  if (loading)
+    return <p className="text-center text-5xlc text-black py-10">Loading...</p>;
 
   return (
     <div className="container bg-white mb-10">
@@ -53,15 +55,17 @@ const AllProducts = () => {
       <div className="grid grid-cols-2 md:grid-cols-4 lg:grid-cols-5 gap-6">
         {products.map((product) => (
           <div key={product.id} className="border rounded-lg p-4">
-            <Link to={`/product/${product.id}`}>
+            <Link to={`/products/details/${product.slug}`}>
               <img
-                src={product.image}
+                src={product.thumbnail_image}
                 alt={product.name}
                 className="w-full h-40 object-cover mb-3 hover:scale-105 transition"
               />
-              <h3 className="font-semibold text-base">{product.name}</h3>
-              <p className="text-sm text-gray-600 text-center">
-                TK {product.price}
+              <h3 className="font-semibold text-base py-2 text-center">
+                {product.name}
+              </h3>
+              <p className="text-lg text-gray-600 text-center">
+                {product.main_price}
               </p>
             </Link>
 

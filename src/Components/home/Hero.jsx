@@ -1,10 +1,10 @@
-import cover from "../../assets/hero-1.jpg";
+import HeroSlider from "../Hero/HeroSlider";
 
 function Hero() {
   return (
-    <div className="mt-4">
-      <img src={cover} alt="cover" />
-    </div>
+    <>
+      <HeroSlider />
+    </>
   );
 }
 

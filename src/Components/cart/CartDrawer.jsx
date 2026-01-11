@@ -1,4 +1,5 @@
 import { useContext, useState } from "react";
+import { Link } from "react-router-dom";
 import { CartContext } from "../context/CartContext";
 import CashOnDeliveryModal from "../Modal/CashOnDeliveryModal";
 
@@ -142,7 +143,7 @@ const CartDrawer = ({ onCODClick }) => {
                       setCouponApplied(true);
                     }
                   }}
-                  className="px-2 py-1 bg-green-600 text-white rounded text-sm"
+                  className="px-2 py-1 bg-[#8ec644] text-white rounded text-sm"
                 >
                   Save
                 </button>
@@ -182,7 +183,7 @@ const CartDrawer = ({ onCODClick }) => {
           </div>
 
           {/* Pay buttons */}
-          <button className="w-full bg-blue-600 text-white py-2 rounded text-sm">
+          <button className="w-full bg-[#8ec644] text-white py-2 rounded text-sm">
             Pay Online
           </button>
           <button className=""></button>
@@ -198,9 +199,11 @@ const CartDrawer = ({ onCODClick }) => {
           />
 
           {/* View Cart */}
-          <button className="w-full border border-gray-400 text-sm py-2 rounded">
-            View Cart
-          </button>
+          <Link to="/cart">
+            <button className="w-full py-2 border border-gray-400 text-sm my-2 rounded">
+              View Cart
+            </button>
+          </Link>
         </div>
       </div>
     </>

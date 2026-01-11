@@ -1,5 +1,5 @@
-import logo from "../../assets/logo.png";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import logo from "../../assets/logo.png";
 
 import { faFacebook } from "@fortawesome/free-brands-svg-icons";
 
@@ -45,14 +45,14 @@ function Footer() {
         </div>
       </div>
       {/* -------footer var */}
-      <div className="bg-[#FC8934] w-full flex justify-between px-4 items-center">
+      <div className="bg-[#8ec644] w-full flex justify-between px-4 items-center">
         <h4 className="">
           <FontAwesomeIcon
-            className="text-[#000]  text-xl py-6"
+            className="text-[#fff]  text-xl py-6"
             icon={faFacebook}
           />
         </h4>
-        <h4 className="text-white">© ঘরের বাজার 2025</h4>
+        <h4 className="text-white">© ZHEN AURA 2026</h4>
       </div>
     </>
   );
