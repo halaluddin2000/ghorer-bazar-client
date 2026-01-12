@@ -68,7 +68,7 @@ const Navbar = () => {
                   className="w-full bg-white border px-3 py-2 outline-none"
                 />
 
-                {/* 🔽 Live Results */}
+                {/*  Live Results */}
                 {results.length > 0 && (
                   <div className="mt-2 max-h-60 overflow-y-auto">
                     {results.map((item) => (
@@ -136,14 +136,14 @@ const Navbar = () => {
       </div>
       {/* navbar end */}
       <nav className="navbar">
-        <div className="flex gap-10 py-3 mx-auto justify-center items-center">
+        <div className="flex gap-14 py-3 mx-auto justify-center items-center">
           <Link to="/">Home</Link>
           <Link to="/products">Products</Link>
 
           <div className="relative group">
             <span className="cursor-pointer">Category ▾</span>
 
-            <div className="absolute hidden group-hover:block bg-white shadow-lg z-50">
+            <div className="absolute hidden  group-hover:block bg-white shadow-lg z-10 w-max">
               {categories.map((cat) => (
                 <Link
                   key={cat.id}
