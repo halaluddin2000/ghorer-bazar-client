@@ -17,6 +17,7 @@ const CartPage = ({ onCODClick }) => {
   const discount = couponApplied && coupon === "SAVE10" ? subtotal * 0.1 : 0;
 
   const total = subtotal - discount;
+  console.log(total);
 
   return (
     <div className="bg-gray-50 min-h-screen py-6">
@@ -33,7 +34,7 @@ const CartPage = ({ onCODClick }) => {
       {/* Cart Table */}
       <div className="container mx-auto px-4 py-10">
         {cart.length === 0 ? (
-          <p className="text-center text-gray-500">আপনার কার্ট খালি</p>
+          <p className="text-center mb-30 text-gray-500">আপনার কার্ট খালি</p>
         ) : (
           <div className="bg-white rounded shadow p-6">
             <table className="w-full text-left border-collapse">
@@ -79,10 +80,33 @@ const CartPage = ({ onCODClick }) => {
                       <div className="flex items-center gap-2 border w-fit px-2 py-1 rounded">
                         <button
                           onClick={() => decreaseQty(item.id)}
-                          className="px-2 text-lg"
+                          disabled={item.qty === 1}
+                          className={`px-2 py-1 border rounded ${
+                            item.qty === 1
+                              ? "opacity-50 cursor-not-allowed"
+                              : ""
+                          }`}
                         >
                           −
                         </button>
+                        {/* ------you have to other implement {- or remove}-----------start  */}
+                        {/* {item.qty === 1 ? (
+                            <button
+                              onClick={() => removeFromCart(item.id)}
+                              className="text-red-500 text-sm"
+                            >
+                              Remove
+                            </button>
+                          ) : (
+                            <button
+                              onClick={() => decreaseQty(item.id)}
+                              className="px-2 border"
+                            >
+                              -
+                            </button>
+                          )} */}
+                        {/* ------you have to other implement {- or remove}-----------end  */}
+
                         <span>{item.qty}</span>
                         <button
                           onClick={() => increaseQty(item.id)}

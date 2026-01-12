@@ -21,7 +21,7 @@ const CategoryProducts = () => {
       .catch(() => setLoading(false));
   }, [slug]);
 
-  if (loading) return <p className="text-center py-10">Loading...</p>;
+  if (!products) return <p className="text-center py-10">Loading...</p>;
 
   return (
     <div className=" bg-white ">

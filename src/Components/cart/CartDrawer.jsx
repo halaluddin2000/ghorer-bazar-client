@@ -85,7 +85,10 @@ const CartDrawer = ({ onCODClick }) => {
                 <div className="flex items-center gap-2 mt-2">
                   <button
                     onClick={() => decreaseQty(item.id)}
-                    className="w-6 h-6 flex items-center justify-center border rounded"
+                    disabled={item.qty === 1}
+                    className={`px-2 py-1 border rounded ${
+                      item.qty === 1 ? "opacity-50 cursor-not-allowed" : ""
+                    }`}
                   >
                     −
                   </button>
@@ -199,7 +202,13 @@ const CartDrawer = ({ onCODClick }) => {
           />
 
           {/* View Cart */}
-          <Link to="/cart">
+          <Link
+            to="/cart"
+            onClick={() => {
+              setIsDrawerOpen(false); // ✅ drawer close
+              // navigate("/cart"); // ✅ cart page
+            }}
+          >
             <button className="w-full py-2 border border-gray-400 text-sm my-2 rounded">
               View Cart
             </button>

@@ -57,7 +57,7 @@ const Navbar = () => {
               Search
             </span>
 
-            {/* 🔍 Search Input */}
+            {/*  Search Input */}
             {showSearch && (
               <div className="absolute top-10 left-0 bg-white shadow-lg w-80 z-50 p-3">
                 <input

@@ -3,6 +3,7 @@ import { faCartShopping, faMessage } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { useContext, useEffect, useState } from "react";
 import { CartContext } from "../Components/context/CartContext.jsx";
+import CashOnDeliveryModal from "../Components/Modal/CashOnDeliveryModal.jsx";
 
 import { useParams } from "react-router-dom";
 import api from "../api/axios";
@@ -18,7 +19,7 @@ function ProductDetails() {
       .get(`/products/details/${slug}`)
       .then((res) => {
         setProduct(res.data); // ✅ FIXED
-        console.log("API product:", res.data.data);
+        console.log("API product:", res.data);
       })
       .catch(console.error);
   }, [slug]);
@@ -27,7 +28,7 @@ function ProductDetails() {
     addToCart({
       id: product.id,
       name: product.name,
-      price: Number(product.unit_price.replace(/[^\d]/g, "")),
+      price: Number(product.unit_price),
       image: `https://backend.zhennatural.com/public/${product.thumbnail?.file_name}`,
       qty: 1,
     });
@@ -56,12 +57,12 @@ function ProductDetails() {
               addToCart({
                 id: product.id,
                 name: product.name,
-                price: Number(product.unit_price.replace(/[^\d]/g, "")),
-                image: `https://backend.zhennatural.com/public/${product.thumbnail?.file_name}`,
+                price: Number(product.unit_price),
+                image: product.thumbnail_image,
                 qty: 1,
               })
             }
-            className="btn bg-[#8EC644] text-white px-4 py-2 rounded"
+            className="w-full bg-[#8EC644] text-white font-medium mt-2 py-1 rounded"
           >
             Add to Cart
           </button>
@@ -73,6 +74,10 @@ function ProductDetails() {
             <FontAwesomeIcon icon={faCartShopping} /> ক্যাশ অন ডেলিভারিতে অর্ডার
             করুন
           </button>
+          <CashOnDeliveryModal
+            open={openCOD}
+            onClose={() => setOpenCOD(false)}
+          />
 
           <button className="btn bg-[#8EC644] w-full text-white my-2">
             <FontAwesomeIcon icon={faMessage} /> Chat with us
