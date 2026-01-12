@@ -22,7 +22,7 @@ const CartPage = ({ onCODClick }) => {
   return (
     <div className="bg-gray-50 min-h-screen py-6">
       {/* Header */}
-      <div className="bg-[#2CC4F4] text-center text-white py-6">
+      <div className="bg-[#2CC4F4 ] text-center text-white py-6">
         <h2 className="text-4xl font-semibold">Shopping Cart</h2>
         <div className="flex justify-center gap-2 mt-2 text-sm">
           <Link to="/">Home</Link>

@@ -4,7 +4,7 @@ import {
   faMagnifyingGlass,
 } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { useContext, useEffect, useState } from "react";
+import { useContext, useEffect, useRef, useState } from "react";
 import { Link } from "react-router-dom";
 import api from "../../api/axios";
 import logo from "../../assets/logo.png";
@@ -20,6 +20,7 @@ const Navbar = () => {
   const [showSearch, setShowSearch] = useState(false);
   const [query, setQuery] = useState("");
   const [results, setResults] = useState([]);
+  const searchRef = useRef(null);
 
   useEffect(() => {
     if (query.length < 2) {
@@ -37,6 +38,20 @@ const Navbar = () => {
   }, [query]);
 
   useEffect(() => {
+    const handleClickOutside = (e) => {
+      if (!searchRef.current) return;
+
+      // ⛔ ignore clicks inside search box
+      if (searchRef.current.contains(e.target)) return;
+
+      setShowSearch(false);
+    };
+
+    document.addEventListener("click", handleClickOutside);
+    return () => document.removeEventListener("click", handleClickOutside);
+  }, []);
+
+  useEffect(() => {
     api.get("/filter/categories").then((res) => {
       setCategories(res.data.data);
       setLoading(false);
@@ -47,12 +62,16 @@ const Navbar = () => {
     <div>
       <div className="container mt-5  mx-8">
         <div className="flex justify-between items-center pt-6 pb-2 ">
-          <div id="icon" className="relative">
+          <div id="icon" className="relative" ref={searchRef}>
             <FontAwesomeIcon
               className="text-xl cursor-pointer"
               icon={faMagnifyingGlass}
-              onClick={() => setShowSearch(!showSearch)}
+              onClick={(e) => {
+                e.stopPropagation(); // 🔴 very important
+                setShowSearch((prev) => !prev);
+              }}
             />
+
             <span id="showText" className="btn-primary">
               Search
             </span>
@@ -63,7 +82,14 @@ const Navbar = () => {
                 <input
                   type="text"
                   value={query}
+                  onClick={(e) => e.stopPropagation()} // 🔥 FIX
                   onChange={(e) => setQuery(e.target.value)}
+                  onKeyDown={(e) => {
+                    if (e.key === "Enter") {
+                      setShowSearch(false);
+                      setQuery("");
+                    }
+                  }}
                   placeholder="Search products..."
                   className="w-full bg-white border px-3 py-2 outline-none"
                 />
@@ -136,9 +162,12 @@ const Navbar = () => {
       </div>
       {/* navbar end */}
       <nav className="navbar">
-        <div className="flex gap-14 py-3 mx-auto justify-center items-center">
+        <div className="flex border-t border-b gap-14 py-3 mx-auto justify-center items-center">
           <Link to="/">Home</Link>
-          <Link to="/products">Products</Link>
+
+          <Link onClick={() => setShowSearch(false)} to="/products">
+            Products
+          </Link>
 
           <div className="relative group">
             <span className="cursor-pointer">Category ▾</span>

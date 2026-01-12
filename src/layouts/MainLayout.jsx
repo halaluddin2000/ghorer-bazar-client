@@ -10,7 +10,6 @@ function MainLayout() {
 
   return (
     <>
-      {/* 🔑 setOpenCOD pass করো */}
       <div className="mb-5">
         <Navbar />
       </div>
@@ -19,9 +18,9 @@ function MainLayout() {
 
       <Outlet />
 
-      {/* ✅ ROOT LEVEL MODAL */}
+      {/*  ROOT LEVEL MODAL */}
       <CashOnDeliveryModal open={openCOD} onClose={() => setOpenCOD(false)} />
-      <Footer />
+      <Footer className="pt-5" />
     </>
   );
 }
