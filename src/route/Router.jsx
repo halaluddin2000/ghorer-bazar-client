@@ -5,7 +5,7 @@ import SingUp from "../Components/singUp/SingUp";
 import MainLayout from "../layouts/MainLayout";
 import AllProducts from "../pages/AllProducts";
 import CartPage from "../pages/CartPage";
-import Category from "../pages/CategorySection";
+import CategoryProducts from "../pages/CategoryProducts";
 import Home from "../pages/Home";
 import NotFound from "../pages/NotFound";
 import OrderSuccess from "../pages/OrderSuccess";
@@ -27,10 +27,10 @@ export const router = createBrowserRouter([
       },
       {
         path: "/category/:slug",
-        element: <Category />,
+        element: <CategoryProducts />,
       },
       {
-        path: "/product/details/:slug",
+        path: "/products/details/:slug",
         element: <ProductDetails />,
       },
       {

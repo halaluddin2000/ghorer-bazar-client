@@ -143,7 +143,7 @@ const CartDrawer = ({ onCODClick }) => {
                       setCouponApplied(true);
                     }
                   }}
-                  className="px-2 py-1 bg-[#8ec644] text-white rounded text-sm"
+                  className="px-2 py-1 bg-[#2CC4F4] text-white rounded text-sm"
                 >
                   Save
                 </button>
@@ -183,7 +183,7 @@ const CartDrawer = ({ onCODClick }) => {
           </div>
 
           {/* Pay buttons */}
-          <button className="w-full bg-[#8ec644] text-white py-2 rounded text-sm">
+          <button className="w-full bg-[#2CC4F4] text-white py-2 rounded text-sm">
             Pay Online
           </button>
           <button className=""></button>

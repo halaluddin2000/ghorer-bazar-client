@@ -45,7 +45,7 @@ function Footer() {
         </div>
       </div>
       {/* -------footer var */}
-      <div className="bg-[#8ec644] w-full flex justify-between px-4 items-center">
+      <div className="bg-[#2CC4F4] w-full flex justify-between px-4 items-center">
         <h4 className="">
           <FontAwesomeIcon
             className="text-[#fff]  text-xl py-6"

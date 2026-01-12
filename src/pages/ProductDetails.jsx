@@ -1,58 +1,88 @@
 import { faWhatsapp } from "@fortawesome/free-brands-svg-icons";
 import { faCartShopping, faMessage } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { useEffect, useState } from "react";
+import { useContext, useEffect, useState } from "react";
+import { CartContext } from "../Components/context/CartContext.jsx";
+
 import { useParams } from "react-router-dom";
 import api from "../api/axios";
 
 function ProductDetails() {
   const { slug } = useParams();
-  const [products, setProducts] = useState([]);
+  const [product, setProduct] = useState(null);
+  const { addToCart } = useContext(CartContext);
+  const [openCOD, setOpenCOD] = useState(false);
 
   useEffect(() => {
     api
       .get(`/products/details/${slug}`)
       .then((res) => {
-        setProducts(res.data.data);
+        setProduct(res.data); // ✅ FIXED
         console.log("API product:", res.data.data);
       })
       .catch(console.error);
   }, [slug]);
 
-  if (!products.length) return <p>Loading...</p>;
+  const handleCOD = () => {
+    addToCart({
+      id: product.id,
+      name: product.name,
+      price: Number(product.unit_price.replace(/[^\d]/g, "")),
+      image: `https://backend.zhennatural.com/public/${product.thumbnail?.file_name}`,
+      qty: 1,
+    });
+
+    setOpenCOD(true);
+  };
+
+  if (!product) return <p>Loading...</p>;
 
   return (
-    <div className="container mx-auto bg-white mb-5">
-      {products.map((p) => (
-        <div key={p.id} className="flex gap-6 mb-10">
-          <div>
-            <img src={p.thumbnail_image} alt={p.name} />
-          </div>
-
-          <div>
-            <h1 className="text-4xl mt-10 font-bold">{p.name}</h1>
-            <p className="text-xl my-4">{p.main_price}</p>
-            <p className="mb-6">Category: {p.category}</p>
-
-            <button className="btn bg-black text-[#F89503] px-4 py-2 rounded">
-              Add to Cart
-            </button>
-
-            <button className="btn btn-primary w-full my-2">
-              <FontAwesomeIcon icon={faCartShopping} /> ক্যাশ অন ডেলিভারিতে
-              অর্ডার করুন
-            </button>
-
-            <button className="btn bg-black w-full text-white my-2">
-              <FontAwesomeIcon icon={faMessage} /> Chat with us
-            </button>
-
-            <button className="btn bg-black w-full text-white">
-              <FontAwesomeIcon icon={faWhatsapp} /> WhatsApp Us
-            </button>
-          </div>
+    <div className="container mx-auto mt-6 bg-white mb-5">
+      <div className="flex justify-between gap-6 mb-10">
+        <div className="w-80 items-center justify-center">
+          <img
+            src={`https://backend.zhennatural.com/public/${product.thumbnail?.file_name}`}
+            alt={product.name}
+          />
         </div>
-      ))}
+
+        <div>
+          <h1 className="text-4xl mt-10 font-bold">{product.name}</h1>
+          <p className="text-xl my-4">৳ {product.unit_price}</p>
+
+          <button
+            onClick={() =>
+              addToCart({
+                id: product.id,
+                name: product.name,
+                price: Number(product.unit_price.replace(/[^\d]/g, "")),
+                image: `https://backend.zhennatural.com/public/${product.thumbnail?.file_name}`,
+                qty: 1,
+              })
+            }
+            className="btn bg-[#8EC644] text-white px-4 py-2 rounded"
+          >
+            Add to Cart
+          </button>
+
+          <button
+            onClick={handleCOD} // ✅ REQUIRED
+            className="btn btn-primary w-full my-2"
+          >
+            <FontAwesomeIcon icon={faCartShopping} /> ক্যাশ অন ডেলিভারিতে অর্ডার
+            করুন
+          </button>
+
+          <button className="btn bg-[#8EC644] w-full text-white my-2">
+            <FontAwesomeIcon icon={faMessage} /> Chat with us
+          </button>
+
+          <button className="btn bg-[#8EC644] w-full text-white">
+            <FontAwesomeIcon icon={faWhatsapp} /> WhatsApp Us
+          </button>
+        </div>
+      </div>
     </div>
   );
 }

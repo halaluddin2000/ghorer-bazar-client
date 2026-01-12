@@ -29,6 +29,7 @@ const Navbar = () => {
     const delay = setTimeout(() => {
       api.get(`/products/search?name=${query}`).then((res) => {
         setResults(res.data.data || []);
+        console.log("search", res.data.data);
       });
     }, 400); // debounce
 

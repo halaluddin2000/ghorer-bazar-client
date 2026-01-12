@@ -9,9 +9,11 @@ function MainLayout() {
   const [openCOD, setOpenCOD] = useState(false);
 
   return (
-    <div>
+    <>
       {/* 🔑 setOpenCOD pass করো */}
-      <Navbar />
+      <div className="mb-5">
+        <Navbar />
+      </div>
 
       <CartDrawer onCODClick={() => setOpenCOD(true)} />
 
@@ -19,9 +21,8 @@ function MainLayout() {
 
       {/* ✅ ROOT LEVEL MODAL */}
       <CashOnDeliveryModal open={openCOD} onClose={() => setOpenCOD(false)} />
-
       <Footer />
-    </div>
+    </>
   );
 }
 
