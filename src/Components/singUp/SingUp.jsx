@@ -30,11 +30,11 @@ function SingUp() {
               type="submit"
               value="Sing Up"
               id="button"
-              className="mt-4 text-xl"
+              className="mt-2 text-xl"
             />
           </form>
         </div>
-        <p className="mt-3">
+        <p className="mt-2">
           Are you Registration? Please{" "}
           <Link className="text-blue-500 text-xl font-medium " to="/login">
             Login Now
