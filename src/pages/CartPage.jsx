@@ -22,8 +22,8 @@ const CartPage = ({ onCODClick }) => {
   return (
     <div className="bg-gray-50 min-h-screen py-6">
       {/* Header */}
-      <div className="bg-[#2CC4F4 ] text-center text-white py-6">
-        <h2 className="text-4xl font-semibold">Shopping Cart</h2>
+      <div className=" bg-[#92C849] text-center text-white py-6">
+        <h2 className="text-4xl text-white font-semibold">Shopping Cart</h2>
         <div className="flex justify-center gap-2 mt-2 text-sm">
           <Link to="/">Home</Link>
           <span>{">"}</span>
@@ -151,7 +151,7 @@ const CartPage = ({ onCODClick }) => {
                   />
                   <button
                     onClick={() => setCouponApplied(true)}
-                    className="bg-[#2CC4F4] text-white px-4 rounded"
+                    className="bg-[#92C849] text-white px-4 rounded"
                   >
                     Apply
                   </button>
@@ -185,7 +185,7 @@ const CartPage = ({ onCODClick }) => {
 
               <button
                 onClick={onCODClick}
-                className="mt-4 bg-[#2CC4F4] text-white px-6 py-3 rounded"
+                className="mt-4 bg-[#92C849] text-white px-6 py-3 rounded"
               >
                 ক্যাশ অন ডেলিভারিতে অর্ডার করুন
               </button>

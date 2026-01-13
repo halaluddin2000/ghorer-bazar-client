@@ -9,6 +9,7 @@
 .form {
   display: flex;
   flex-direction: column;
+  gap: 8px;
 }
 
 .form h2 {
@@ -23,7 +24,7 @@
   background: #f3f3f3;
 }
 
-#button {
+.button {
   padding: 10px;
   background-color: #2dc4f4;
   color: white;

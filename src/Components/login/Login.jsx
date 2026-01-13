@@ -1,38 +1,62 @@
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
+import api from "../../api/axios";
 import "./login.css";
+
 function Login() {
-  const handleLogin = (e) => {
+  const navigate = useNavigate();
+
+  const handleLogin = async (e) => {
     e.preventDefault();
-    const target = e.target;
-    const loginData = {
-      name: target.email.value,
-      password: target.password.value,
+
+    const form = e.target;
+
+    const data = {
+      phone: form.phone.value,
+      password: form.password.value,
     };
-    console.log(loginData);
+
+    try {
+      const res = await api.post(
+        "https://backend.zhennatural.com/api/v2/auth/login",
+        data
+      );
+
+      if (res.data.result === true) {
+        // ✅ token save
+        localStorage.setItem("token", res.data.access_token);
+
+        // ✅ user save
+        localStorage.setItem("user", JSON.stringify(res.data.user));
+
+        // ✅ dashboard redirect
+        navigate("/dashboard");
+      }
+    } catch (err) {
+      alert("Invalid phone or password");
+      console.log(err.response?.data);
+    }
   };
 
   return (
-    <div className="flex bg-white items-center justify-center mx-auto mb-10 ">
+    <div className="flex bg-white items-center justify-center mx-auto mb-10">
       <div className="form-container bg-slate-200">
         <div className="form">
           <h2 className="text-center my-6">Login Now</h2>
-          <form onSubmit={() => handleLogin()}>
-            <span className="grid space-y-4">
-              <input type="email" name="email" placeholder="Enter Your Email" />
-              <input type="password" name="password" placeholder="Password" />
-            </span>
-            <input
-              type="submit"
-              value="Login"
-              id="button"
-              className="mt-4 text-xl"
-            />
+
+          <form className="form" onSubmit={handleLogin}>
+            <input name="phone" placeholder="Phone" />
+            <input name="password" type="password" placeholder="Password" />
+
+            <button className="button mt-4" type="submit">
+              Login
+            </button>
           </form>
         </div>
-        <p className="mt-3">
-          Are you New? Please{" "}
-          <Link className="text-blue-500 text-xl font-medium " to="/singUp">
-            Sing Up
+
+        <p className="mt-3 text-center">
+          Are you New?{" "}
+          <Link className="text-blue-500 font-medium" to="/singUp">
+            Sign Up
           </Link>
         </p>
       </div>

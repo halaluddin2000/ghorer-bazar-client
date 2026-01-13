@@ -5,7 +5,7 @@ import {
 } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { useContext, useEffect, useRef, useState } from "react";
-import { Link } from "react-router-dom";
+import { Link, useLocation } from "react-router-dom";
 import api from "../../api/axios";
 import logo from "../../assets/logo.png";
 import { CartContext } from "../context/CartContext";
@@ -13,104 +13,103 @@ import "./navbar.css";
 
 const Navbar = () => {
   const { cart, setIsDrawerOpen } = useContext(CartContext);
-  const [categories, setCategories] = useState([]);
-  const [loading, setLoading] = useState(true);
 
-  // search ----
+  /* ================= USER ================= */
+  const user = JSON.parse(localStorage.getItem("user"));
+
+  const handleLogout = () => {
+    localStorage.removeItem("token");
+    localStorage.removeItem("user");
+    window.location.href = "/login";
+  };
+
+  /* ================= CATEGORY ================= */
+  const [categories, setCategories] = useState([]);
+
+  useEffect(() => {
+    api.get("/filter/categories").then((res) => {
+      setCategories(res.data.data || []);
+    });
+  }, []);
+
+  /* ================= SEARCH ================= */
   const [showSearch, setShowSearch] = useState(false);
   const [query, setQuery] = useState("");
   const [results, setResults] = useState([]);
   const searchRef = useRef(null);
+  const location = useLocation();
 
+  // close search on route change
+  useEffect(() => {
+    setShowSearch(false);
+    setQuery("");
+    setResults([]);
+  }, [location.pathname]);
+
+  // click outside close
+  useEffect(() => {
+    const handler = (e) => {
+      if (searchRef.current && !searchRef.current.contains(e.target)) {
+        setShowSearch(false);
+      }
+    };
+    document.addEventListener("mousedown", handler);
+    return () => document.removeEventListener("mousedown", handler);
+  }, []);
+
+  // search api
   useEffect(() => {
     if (query.length < 2) {
       setResults([]);
       return;
     }
+
     const delay = setTimeout(() => {
       api.get(`/products/search?name=${query}`).then((res) => {
         setResults(res.data.data || []);
-        console.log("search", res.data.data);
       });
-    }, 400); // debounce
+    }, 400);
 
     return () => clearTimeout(delay);
   }, [query]);
 
-  useEffect(() => {
-    const handleClickOutside = (e) => {
-      if (!searchRef.current) return;
-
-      // ⛔ ignore clicks inside search box
-      if (searchRef.current.contains(e.target)) return;
-
-      setShowSearch(false);
-    };
-
-    document.addEventListener("click", handleClickOutside);
-    return () => document.removeEventListener("click", handleClickOutside);
-  }, []);
-
-  useEffect(() => {
-    api.get("/filter/categories").then((res) => {
-      setCategories(res.data.data);
-      setLoading(false);
-    });
-  }, []);
-
   return (
-    <div>
-      <div className="container mt-5  mx-8">
-        <div className="flex justify-between items-center pt-6 pb-2 ">
-          <div id="icon" className="relative" ref={searchRef}>
+    <header className="bg-white sticky top-0 z-50">
+      {/* ================= TOP BAR ================= */}
+      <div className="container mx-auto px-4">
+        <div className="flex items-center justify-between py-4">
+          {/* SEARCH ICON */}
+          <div ref={searchRef} className="relative">
             <FontAwesomeIcon
-              className="text-xl cursor-pointer"
               icon={faMagnifyingGlass}
-              onClick={(e) => {
-                e.stopPropagation(); // 🔴 very important
-                setShowSearch((prev) => !prev);
-              }}
+              className="text-xl cursor-pointer"
+              onClick={() => setShowSearch((p) => !p)}
             />
 
-            <span id="showText" className="btn-primary">
-              Search
-            </span>
-
-            {/*  Search Input */}
             {showSearch && (
-              <div className="absolute top-10 left-0 bg-white shadow-lg w-80 z-50 p-3">
+              <div className="absolute left-0 top-10 bg-white shadow-lg w-80 z-50 p-3">
                 <input
+                  autoFocus
                   type="text"
                   value={query}
-                  onClick={(e) => e.stopPropagation()} // 🔥 FIX
                   onChange={(e) => setQuery(e.target.value)}
-                  onKeyDown={(e) => {
-                    if (e.key === "Enter") {
-                      setShowSearch(false);
-                      setQuery("");
-                    }
-                  }}
                   placeholder="Search products..."
-                  className="w-full bg-white border px-3 py-2 outline-none"
+                  className="w-full border px-3 py-2 outline-none"
                 />
 
-                {/*  Live Results */}
                 {results.length > 0 && (
                   <div className="mt-2 max-h-60 overflow-y-auto">
                     {results.map((item) => (
                       <Link
                         key={item.id}
-                        to={`/product/details/${item.slug}`}
-                        onClick={() => {
-                          setShowSearch(false);
-                          setQuery("");
-                        }}
+                        to={`/products/details/${item.slug}`}
                         className="flex gap-3 items-center p-2 hover:bg-gray-100"
+                        onClick={() => setShowSearch(false)}
                       >
                         <img
                           src={item.thumbnail_image}
-                          alt={item.name}
                           className="w-10 h-10 object-cover"
+                          alt=""
                         />
                         <div>
                           <p className="text-sm font-semibold">{item.name}</p>
@@ -130,66 +129,85 @@ const Navbar = () => {
             )}
           </div>
 
-          <div>
-            <Link to="/">
-              <img className="w-28" src={logo} alt="" srcset="" />
-            </Link>
-          </div>
-          <div>
-            <Link to="/login">
-              <div id="icon">
-                <FontAwesomeIcon className="text-xl px-6" icon={faUser} />
-                <span id="showText" className="btn-primary">
-                  Account
-                </span>
+          {/* LOGO */}
+          <Link to="/">
+            <img src={logo} alt="logo" className="w-28" />
+          </Link>
+
+          {/* USER + CART */}
+          <div className="flex items-center gap-6">
+            {user ? (
+              <div className="relative group cursor-pointer">
+                <div className="flex items-center gap-2">
+                  <img
+                    src={user.avatar_original}
+                    className="w-8 h-8 rounded-full"
+                    alt=""
+                  />
+                  <span className="text-sm">{user.name}</span>
+                </div>
+
+                <div className="absolute right-0 top-full mt-2 bg-white shadow-md rounded hidden group-hover:block">
+                  <Link
+                    to="/user-dashboard"
+                    className="block px-4 py-2 hover:bg-gray-100"
+                  >
+                    Dashboard
+                  </Link>
+                  <button
+                    onClick={handleLogout}
+                    className="block w-full text-left px-4 py-2 hover:bg-gray-100"
+                  >
+                    Logout
+                  </button>
+                </div>
               </div>
-            </Link>
+            ) : (
+              <Link to="/login">
+                <FontAwesomeIcon icon={faUser} className="text-xl" />
+              </Link>
+            )}
+
             <div
               onClick={() => setIsDrawerOpen(true)}
-              className="relative"
-              id="icon"
+              className="relative cursor-pointer"
             >
-              <FontAwesomeIcon className=" text-xl" icon={faBagShopping} />
+              <FontAwesomeIcon icon={faBagShopping} className="text-xl" />
               <span className="absolute -top-2 -right-3 bg-red-500 text-white text-xs px-2 rounded-full">
                 {cart.length}
-              </span>
-              <span id="showText" className="btn-primary">
-                Cart
               </span>
             </div>
           </div>
         </div>
       </div>
-      {/* navbar end */}
-      <nav className="navbar">
-        <div className="flex border-t border-b gap-14 py-3 mx-auto justify-center items-center">
-          <Link to="/">Home</Link>
 
-          <Link onClick={() => setShowSearch(false)} to="/products">
-            Products
-          </Link>
+      {/* ================= MENU ================= */}
+      <nav className="border-t border-b">
+        <div className="flex justify-center gap-10 py-3">
+          <Link to="/">Home</Link>
+          <Link to="/products">Products</Link>
 
           <div className="relative group">
-            <span className="cursor-pointer">Category ▾</span>
-
-            <div className="absolute hidden  group-hover:block bg-white shadow-lg z-10 w-max">
+            <span className="cursor-pointer select-none">Category ▾</span>
+            <div className="absolute left-0 top-full bg-white shadow-lg rounded hidden group-hover:block z-50">
               {categories.map((cat) => (
                 <Link
                   key={cat.id}
                   to={`/category/${cat.slug}`}
-                  className="block w-full text-base px-4 py-2 hover:bg-gray-100"
+                  className="block px-4 py-2 whitespace-nowrap hover:bg-gray-100"
                 >
                   {cat.name}
                 </Link>
               ))}
             </div>
           </div>
-          <Link to="/about">About Us</Link>
+
+          <Link to="/about">About</Link>
           <Link to="/blog">Blog</Link>
-          <Link to="/contact">Contact Us</Link>
+          <Link to="/contact">Contact</Link>
         </div>
       </nav>
-    </div>
+    </header>
   );
 };
 
