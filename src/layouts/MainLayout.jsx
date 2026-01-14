@@ -9,7 +9,7 @@ function MainLayout() {
   const [openCOD, setOpenCOD] = useState(false);
 
   return (
-    <>
+    <div className="bg-white">
       <div className="mb-5">
         <Navbar />
       </div>
@@ -20,8 +20,10 @@ function MainLayout() {
 
       {/*  ROOT LEVEL MODAL */}
       <CashOnDeliveryModal open={openCOD} onClose={() => setOpenCOD(false)} />
-      <Footer className="pt-5" />
-    </>
+      <div className="pt-10">
+        <Footer />
+      </div>
+    </div>
   );
 }
 
