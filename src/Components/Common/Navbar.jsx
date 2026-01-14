@@ -75,7 +75,7 @@ const Navbar = () => {
   }, [query]);
 
   return (
-    <header className="bg-white sticky top-0 z-50">
+    <header className="bg-white  sticky top-0 z-50">
       {/* ================= TOP BAR ================= */}
       <div className="container mx-auto px-4">
         <div className="flex items-center justify-between py-4">
@@ -184,30 +184,39 @@ const Navbar = () => {
 
       {/* ================= MENU ================= */}
       <nav className="border-t border-b">
-        <div className="container mx-auto px-4">
+        <div className="container bg-gradient-to-br from-[#2CC4F4] via-[#5ED1CE] to-[#8DC642] text-white mx-auto px-4">
           {/* Desktop Menu */}
-          <div className="hidden md:flex justify-center gap-10 py-3">
-            <Link to="/">Home</Link>
-            <Link to="/products">Products</Link>
+          <div className="hidden md:flex font-medium justify-center gap-14 py-3">
+            <Link className="hover:text-black transition" to="/">
+              Home
+            </Link>
 
             <div className="relative group">
-              <span className="cursor-pointer select-none">Category ▾</span>
-              <div className="absolute left-0 top-full bg-white shadow-lg rounded hidden group-hover:block z-50">
+              <span className="cursor-pointer select-none hover:text-black transition">
+                Category ▾
+              </span>
+              <div className="absolute left-0 pt-2 top-full bg-[#2CC4F4] text-white shadow-lg rounded hidden group-hover:block z-70 text-center py-3">
                 {categories.map((cat) => (
                   <Link
                     key={cat.id}
                     to={`/category/${cat.slug}`}
-                    className="block px-4 py-2 whitespace-nowrap hover:bg-gray-100"
+                    className="block px-4 py-2 text-sm font-medium whitespace-nowrap hover:bg-gray-400"
                   >
                     {cat.name}
                   </Link>
                 ))}
               </div>
             </div>
+            <Link className="hover:text-black transition" to="/products">
+              Products
+            </Link>
 
-            <Link to="/about">About</Link>
-            <Link to="/blog">Blog</Link>
-            <Link to="/contact">Contact</Link>
+            <Link className="hover:text-black transition" to="/about">
+              About
+            </Link>
+            <Link className="hover:text-black transition" to="/contact">
+              Contact Us
+            </Link>
           </div>
 
           {/* Mobile Hamburger */}
@@ -227,9 +236,6 @@ const Navbar = () => {
               <Link onClick={() => setMobileMenuOpen(false)} to="/">
                 Home
               </Link>
-              <Link onClick={() => setMobileMenuOpen(false)} to="/products">
-                Products
-              </Link>
 
               <div className="border rounded">
                 <p className="px-3 py-2 font-semibold">Category</p>
@@ -244,15 +250,15 @@ const Navbar = () => {
                   </Link>
                 ))}
               </div>
+              <Link onClick={() => setMobileMenuOpen(false)} to="/products">
+                Products
+              </Link>
 
               <Link onClick={() => setMobileMenuOpen(false)} to="/about">
                 About
               </Link>
-              <Link onClick={() => setMobileMenuOpen(false)} to="/blog">
-                Blog
-              </Link>
               <Link onClick={() => setMobileMenuOpen(false)} to="/contact">
-                Contact
+                Contact Us
               </Link>
             </div>
           )}

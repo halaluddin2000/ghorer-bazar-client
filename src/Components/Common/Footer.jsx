@@ -1,5 +1,6 @@
 import { faFacebook } from "@fortawesome/free-brands-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { Link } from "react-router-dom";
 import logo from "../../assets/logo.png";
 
 function Footer() {
@@ -29,9 +30,22 @@ function Footer() {
             <h3 className="text-[#FC8934] text-base sm:text-lg mb-2">
               COMPANY
             </h3>
-            <h5 className="text-sm sm:text-base">About Us</h5>
-            <p className="my-1 text-sm sm:text-base">রিটার্ন পলিসি</p>
-            <p className="text-sm sm:text-base">রিফান্ড পলিসি</p>
+            <Link to="/about">
+              <h5 className="text-sm hover:text-[#2CC4F4] sm:text-base">
+                About Us
+              </h5>
+            </Link>
+            <Link to="/blog">
+              <h5 className="text-sm hover:text-[#2CC4F4] sm:text-base">
+                Blog
+              </h5>
+            </Link>
+            <p className="my-1 text-sm hover:text-[#2CC4F4] sm:text-base">
+              রিটার্ন পলিসি
+            </p>
+            <p className="text-sm hover:text-[#2CC4F4] sm:text-base">
+              রিফান্ড পলিসি
+            </p>
           </div>
 
           {/* Quick Help */}
@@ -40,26 +54,35 @@ function Footer() {
               QUICK HELP
             </h3>
             <h6 className="my-1 text-sm sm:text-base">গ্রাহক সেবা</h6>
-            <h6 className="text-sm sm:text-base">Contact</h6>
           </div>
 
           {/* DBID */}
           <div className="md:col-span-2">
-            <h3 className="text-sm sm:text-lg font-medium">
-              DBID ID : 437361334
+            <h3 className=" sm:text-lg font-medium">
+              <h6 className="text-xl  text-[#2CC4F4]">Contact</h6>
+              <div className="text-gray-500">
+                <p className="mt-2">
+                  Address: 117/A, Old Airport Road, Bijoy Sharani, Tejgaon,
+                  Dhaka-1215.
+                </p>
+                <p>
+                  Call Us: +8801844545500 (whatsapp)
+                  <p>Email: support@zhenauar.net</p>
+                </p>
+              </div>
             </h3>
           </div>
         </div>
       </div>
 
       {/* ================= Bottom Bar ================= */}
-      <div className="bg-[#2CC4F4] w-full flex flex-col sm:flex-row justify-between items-center px-4">
+      <div className="bg-[#5bcbed] w-full  flex py-4 justify-between items-center px-4">
         <FontAwesomeIcon
           className="text-white text-xl py-4 sm:py-6"
           icon={faFacebook}
         />
 
-        <h4 className="text-white text-sm sm:text-base pb-4 sm:pb-0">
+        <h4 className="text-white text-sm sm:text-base sm:pb-0">
           © ZHEN AURA 2026
         </h4>
       </div>

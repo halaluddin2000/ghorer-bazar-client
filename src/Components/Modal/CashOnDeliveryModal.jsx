@@ -113,7 +113,6 @@ const CashOnDeliveryModal = ({ open, onClose }) => {
               {[
                 ["dhaka", "ঢাকা সিটির ভিতরে", 70],
                 ["ctg", "চট্টগ্রাম সিটির ভিতরে", 70],
-                ["outside", "ঢাকা এবং চট্টগ্রাম সিটির বাহিরে", 130],
               ].map(([key, label, price]) => (
                 <label
                   key={key}
@@ -197,7 +196,7 @@ const CashOnDeliveryModal = ({ open, onClose }) => {
             {/* Actions */}
             <button
               onClick={handleConfirm}
-              className="w-full bg-green-600 text-white py-2 rounded"
+              className="w-full bg-[#2CC4F4] text-white py-2 rounded"
             >
               আপনার অর্ডার কনফার্ম করতে ক্লিক করুন
             </button>

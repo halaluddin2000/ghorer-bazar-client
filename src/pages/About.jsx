@@ -1,7 +1,7 @@
 import aboutImg from "../assets/about.jpg";
 function About() {
   return (
-    <div>
+    <div className="mt-16">
       <div className="container flex justify-center  gap-2 bg-white py-6">
         <div className="flex-1">
           <img className="h-500 w-400 mx-auto" src={aboutImg} alt="" />

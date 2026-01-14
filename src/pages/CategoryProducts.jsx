@@ -1,7 +1,8 @@
 import { useContext, useEffect, useState } from "react";
-import { useParams } from "react-router-dom";
-import { CartContext } from "../Components/context/CartContext";
+import { Link, useParams } from "react-router-dom";
 import api from "../api/axios";
+import Loader from "../Components/Common/Loader";
+import { CartContext } from "../Components/context/CartContext";
 
 const CategoryProducts = () => {
   const { slug } = useParams();
@@ -11,7 +12,6 @@ const CategoryProducts = () => {
 
   useEffect(() => {
     setLoading(true);
-
     api
       .get(`/products/category/${slug}`)
       .then((res) => {
@@ -21,34 +21,43 @@ const CategoryProducts = () => {
       .catch(() => setLoading(false));
   }, [slug]);
 
-  if (!products) return <p className="text-center py-10">Loading...</p>;
+  if (loading) return <Loader />;
 
   return (
-    <div className=" bg-white ">
-      <h2 className="text-3xl font-semibold text-center py-6 text-white bg-[#8EC644] mb-10">
+    <div className="bg-white">
+      <h2
+        className="text-3xl font-medium text-center py-6 text-white
+        bg-gradient-to-t from-[#2CC4F4] to-slate-100 mb-10"
+      >
         Category: {slug}
       </h2>
 
-      <div className="grid grid-cols-2 pb-32 md:grid-cols-4 gap-6">
+      <div className="grid grid-cols-2 md:grid-cols-4 gap-6 px-4 pb-32">
         {products.map((product) => (
           <div key={product.id} className="border p-4 rounded">
-            <img
-              src={product.thumbnail_image}
-              className="h-40 w-full object-cover"
-            />
-            <h3 className="mt-2">{product.name}</h3>
-            <p>{product.main_price}</p>
+            {/* ✅ CLICKABLE AREA */}
+            <Link to={`/products/details/${product.slug}`}>
+              <img
+                src={product.thumbnail_image}
+                className="h-40 w-full object-cover"
+                alt={product.name}
+              />
+              <h3 className="mt-2 font-medium line-clamp-2">{product.name}</h3>
+              <p className="text-gray-600">{product.main_price}</p>
+            </Link>
 
+            {/* ✅ ADD TO CART */}
             <button
-              onClick={() =>
+              onClick={(e) => {
+                e.preventDefault(); // 🔴 link block করবে
                 addToCart({
                   id: product.id,
                   name: product.name,
                   price: Number(product.main_price.replace(/[^\d]/g, "")),
                   image: product.thumbnail_image,
                   qty: 1,
-                })
-              }
+                });
+              }}
               className="w-full bg-[#8EC644] text-white font-medium mt-2 py-1 rounded"
             >
               Add to Cart

@@ -1,6 +1,7 @@
 import { useContext, useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 import api from "../api/axios";
+import Loader from "../Components/Common/Loader";
 import { CartContext } from "../Components/context/CartContext";
 
 const AllProducts = () => {
@@ -19,24 +20,38 @@ const AllProducts = () => {
       .catch(() => setLoading(false));
   }, []);
 
-  const handleAddToCart = (product) => {
-    addToCart({
-      id: product.id,
-      name: product.name,
-      price: Number(product.main_price.replace(/[^\d]/g, "")),
-      image: product.thumbnail_image,
-      qty: 1,
-    });
+  const handleAddToCart = async (product) => {
+    const payload = {
+      product_id: product.id,
+      quantity: 1,
+    };
 
-    addToCart(product);
-    setShowPopup(true);
+    try {
+      const res = await api.post("/carts/add", payload);
+      console.log("API response:", res.data);
 
-    setTimeout(() => {
-      setShowPopup(false);
-    }, 2000);
+      // local cart update
+      addToCart({
+        id: product.id,
+        name: product.name,
+        price: Number(product.main_price.replace(/[^\d]/g, "")),
+        image: product.thumbnail_image,
+        qty: 1,
+      });
+
+      setShowPopup(true);
+      setTimeout(() => setShowPopup(false), 2000);
+    } catch (err) {
+      console.error("Cart API error:", err);
+    }
   };
 
-  if (loading) return <p className="text-center text-xl py-10">Loading...</p>;
+  if (!products)
+    return (
+      <p className="text-center text-xl py-10">
+        <Loader />
+      </p>
+    );
 
   return (
     <div className="container mx-auto px-3 sm:px-4 bg-white mb-24">
@@ -44,14 +59,14 @@ const AllProducts = () => {
         ALL PRODUCT
       </h2>
 
-      {/* ✅ Popup */}
+      {/*  Popup */}
       {showPopup && (
         <div className="fixed top-5 right-3 sm:right-5 bg-green-600 text-white px-4 py-2 rounded shadow-lg z-50 text-sm">
-          ✅ Product added to cart
+          Product added to cart
         </div>
       )}
 
-      {/* ✅ Mobile: 1 card | Tablet: 3 | Desktop: 5 */}
+      {/*  Mobile: 1 card | Tablet: 3 | Desktop: 5 */}
       <div className="grid grid-cols-1 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 gap-4">
         {products.map((product) => (
           <div
@@ -81,7 +96,7 @@ const AllProducts = () => {
                 e.stopPropagation();
                 handleAddToCart(product);
               }}
-              className="btn-primary w-full mt-3"
+              className="bg-[#2CC4F4] rounded-lg p-2 text-white w-full mt-3"
             >
               Quick Add
             </button>
@@ -89,7 +104,7 @@ const AllProducts = () => {
         ))}
       </div>
 
-      {/* ✅ Mobile Sticky Add to Cart Bar */}
+      {/* Mobile Sticky Add to Cart Bar */}
       {cart.length > 0 && (
         <div className="fixed bottom-0 left-0 right-0 md:hidden bg-white border-t shadow-lg z-40">
           <div className="flex items-center justify-between px-4 py-3">

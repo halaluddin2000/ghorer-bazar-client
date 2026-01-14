@@ -10,7 +10,7 @@ function MainLayout() {
 
   return (
     <div className="bg-white">
-      <div className="mb-5">
+      <div className="">
         <Navbar />
       </div>
 
@@ -20,7 +20,7 @@ function MainLayout() {
 
       {/*  ROOT LEVEL MODAL */}
       <CashOnDeliveryModal open={openCOD} onClose={() => setOpenCOD(false)} />
-      <div className="pt-10">
+      <div className="pt-16">
         <Footer />
       </div>
     </div>

@@ -7,6 +7,7 @@ import CashOnDeliveryModal from "../Components/Modal/CashOnDeliveryModal.jsx";
 
 import { useParams } from "react-router-dom";
 import api from "../api/axios";
+import Loader from "../Components/Common/Loader.jsx";
 
 function ProductDetails() {
   const { slug } = useParams();
@@ -39,13 +40,18 @@ function ProductDetails() {
     setOpenCOD(true);
   };
 
-  if (!product) return <p className="text-center py-10">Loading...</p>;
+  if (!product)
+    return (
+      <p className="text-center py-10">
+        <Loader />
+      </p>
+    );
 
   return (
     <div className="container mx-auto px-3 sm:px-4 mt-6 bg-white mb-10">
       <div className="flex flex-col md:flex-row md:justify-between gap-6">
         {/*  Product Image */}
-        <div className=" w-full md:w-1/2 flex items-center justify-center">
+        <div className=" w-full md:w-2/5 flex items-center justify-center">
           <img
             src={`https://backend.zhennatural.com/public/${product.thumbnail?.file_name}`}
             alt={product.name}
@@ -54,7 +60,7 @@ function ProductDetails() {
         </div>
 
         {/* Product Info */}
-        <div className="w-full md:flex-1 space-y-6 mt-10">
+        <div className="w-full md:flex-1 md:w-3/4 space-y-6 mt-10">
           <h1 className="text-2xl sm:text-3xl md:text-4xl mt-4 md:mt-10 font-bold">
             {product.name}
           </h1>
@@ -71,12 +77,15 @@ function ProductDetails() {
                 qty: 1,
               })
             }
-            className="w-full bg-[#8EC644] text-white font-medium mt-2 py-2 rounded"
+            className="w-full bg-[#2CC4F4] text-white font-medium mt-2 py-2 rounded"
           >
             Add to Cart
           </button>
 
-          <button onClick={handleCOD} className="btn btn-primary w-full my-2">
+          <button
+            onClick={handleCOD}
+            className="btn bg-[#2CC4F4]  text-white rounded-md p-2 w-full my-2"
+          >
             <FontAwesomeIcon icon={faCartShopping} /> ক্যাশ অন ডেলিভারিতে অর্ডার
             করুন
           </button>
@@ -86,11 +95,11 @@ function ProductDetails() {
             onClose={() => setOpenCOD(false)}
           />
 
-          <button className="btn bg-[#8EC644] w-full text-white my-2">
+          <button className="btn bg-[#2CC4F4] w-full text-white my-2">
             <FontAwesomeIcon icon={faMessage} /> Chat with us
           </button>
 
-          <button className="btn bg-[#8EC644] w-full text-white">
+          <button className="btn bg-[#2CC4F4] w-full text-white">
             <FontAwesomeIcon icon={faWhatsapp} /> WhatsApp Us
           </button>
         </div>

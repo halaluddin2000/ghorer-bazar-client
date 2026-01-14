@@ -6,6 +6,8 @@ import UserDashboard from "../Components/User/UserDashboard";
 import MainLayout from "../layouts/MainLayout";
 import About from "../pages/About";
 import AllProducts from "../pages/AllProducts";
+import BlogDetails from "../pages/BlogDetails";
+import BlogList from "../pages/BlogList";
 import CartPage from "../pages/CartPage";
 import CategoryProducts from "../pages/CategoryProducts";
 import Home from "../pages/Home";
@@ -50,6 +52,14 @@ export const router = createBrowserRouter([
       {
         path: "/about",
         element: <About />,
+      },
+      {
+        path: "/blog",
+        element: <BlogList />,
+      },
+      {
+        path: "/blogs/:slug",
+        element: <BlogDetails />,
       },
       {
         path: "user-dashboard",
