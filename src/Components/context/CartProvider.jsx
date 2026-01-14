@@ -5,7 +5,8 @@ const CartProvider = ({ children }) => {
   const [cart, setCart] = useState([]);
   const [isDrawerOpen, setIsDrawerOpen] = useState(false);
 
-  const addToCart = (product) => {
+  // 🔥 openDrawer = true (default)
+  const addToCart = (product, openDrawer = true) => {
     setCart((prev) => {
       const exists = prev.find((item) => item.id === product.id);
 
@@ -14,10 +15,14 @@ const CartProvider = ({ children }) => {
           item.id === product.id ? { ...item, qty: item.qty + 1 } : item
         );
       }
+
       return [...prev, { ...product, qty: 1 }];
     });
 
-    setIsDrawerOpen(true);
+    // ✅ Only open drawer if allowed
+    if (openDrawer) {
+      setIsDrawerOpen(true);
+    }
   };
 
   const increaseQty = (id) => {

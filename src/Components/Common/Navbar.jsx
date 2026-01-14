@@ -13,6 +13,7 @@ import "./navbar.css";
 
 const Navbar = () => {
   const { cart, setIsDrawerOpen } = useContext(CartContext);
+  const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
 
   /* ================= USER ================= */
   const user = JSON.parse(localStorage.getItem("user"));
@@ -183,28 +184,78 @@ const Navbar = () => {
 
       {/* ================= MENU ================= */}
       <nav className="border-t border-b">
-        <div className="flex justify-center gap-10 py-3">
-          <Link to="/">Home</Link>
-          <Link to="/products">Products</Link>
+        <div className="container mx-auto px-4">
+          {/* Desktop Menu */}
+          <div className="hidden md:flex justify-center gap-10 py-3">
+            <Link to="/">Home</Link>
+            <Link to="/products">Products</Link>
 
-          <div className="relative group">
-            <span className="cursor-pointer select-none">Category ▾</span>
-            <div className="absolute left-0 top-full bg-white shadow-lg rounded hidden group-hover:block z-50">
-              {categories.map((cat) => (
-                <Link
-                  key={cat.id}
-                  to={`/category/${cat.slug}`}
-                  className="block px-4 py-2 whitespace-nowrap hover:bg-gray-100"
-                >
-                  {cat.name}
-                </Link>
-              ))}
+            <div className="relative group">
+              <span className="cursor-pointer select-none">Category ▾</span>
+              <div className="absolute left-0 top-full bg-white shadow-lg rounded hidden group-hover:block z-50">
+                {categories.map((cat) => (
+                  <Link
+                    key={cat.id}
+                    to={`/category/${cat.slug}`}
+                    className="block px-4 py-2 whitespace-nowrap hover:bg-gray-100"
+                  >
+                    {cat.name}
+                  </Link>
+                ))}
+              </div>
             </div>
+
+            <Link to="/about">About</Link>
+            <Link to="/blog">Blog</Link>
+            <Link to="/contact">Contact</Link>
           </div>
 
-          <Link to="/about">About</Link>
-          <Link to="/blog">Blog</Link>
-          <Link to="/contact">Contact</Link>
+          {/* Mobile Hamburger */}
+          <div className="flex md:hidden justify-between items-center py-3">
+            <span className="font-semibold">Menu</span>
+            <button
+              onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
+              className="text-2xl"
+            >
+              ☰
+            </button>
+          </div>
+
+          {/* Mobile Menu */}
+          {mobileMenuOpen && (
+            <div className="md:hidden flex flex-col gap-3 pb-4">
+              <Link onClick={() => setMobileMenuOpen(false)} to="/">
+                Home
+              </Link>
+              <Link onClick={() => setMobileMenuOpen(false)} to="/products">
+                Products
+              </Link>
+
+              <div className="border rounded">
+                <p className="px-3 py-2 font-semibold">Category</p>
+                {categories.map((cat) => (
+                  <Link
+                    key={cat.id}
+                    to={`/category/${cat.slug}`}
+                    className="block px-4 py-2 text-sm hover:bg-gray-100"
+                    onClick={() => setMobileMenuOpen(false)}
+                  >
+                    {cat.name}
+                  </Link>
+                ))}
+              </div>
+
+              <Link onClick={() => setMobileMenuOpen(false)} to="/about">
+                About
+              </Link>
+              <Link onClick={() => setMobileMenuOpen(false)} to="/blog">
+                Blog
+              </Link>
+              <Link onClick={() => setMobileMenuOpen(false)} to="/contact">
+                Contact
+              </Link>
+            </div>
+          )}
         </div>
       </nav>
     </header>

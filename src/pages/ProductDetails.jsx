@@ -18,39 +18,48 @@ function ProductDetails() {
     api
       .get(`/products/details/${slug}`)
       .then((res) => {
-        setProduct(res.data); // ✅ FIXED
+        setProduct(res.data);
         console.log("API product:", res.data);
       })
       .catch(console.error);
   }, [slug]);
 
   const handleCOD = () => {
-    addToCart({
-      id: product.id,
-      name: product.name,
-      price: Number(product.unit_price),
-      image: `https://backend.zhennatural.com/public/${product.thumbnail?.file_name}`,
-      qty: 1,
-    });
+    addToCart(
+      {
+        id: product.id,
+        name: product.name,
+        price: Number(product.unit_price),
+        image: `https://backend.zhennatural.com/public/${product.thumbnail?.file_name}`,
+        qty: 1,
+      },
+      false // 👈 IMPORTANT
+    );
 
     setOpenCOD(true);
   };
 
-  if (!product) return <p>Loading...</p>;
+  if (!product) return <p className="text-center py-10">Loading...</p>;
 
   return (
-    <div className="container mx-auto mt-6 bg-white mb-5">
-      <div className="flex justify-between gap-6 mb-10">
-        <div className="w-80 items-center justify-center">
+    <div className="container mx-auto px-3 sm:px-4 mt-6 bg-white mb-10">
+      <div className="flex flex-col md:flex-row md:justify-between gap-6">
+        {/*  Product Image */}
+        <div className=" w-full md:w-1/2 flex items-center justify-center">
           <img
             src={`https://backend.zhennatural.com/public/${product.thumbnail?.file_name}`}
             alt={product.name}
+            className="w-full max-w-sm md:max-w-full object-contain"
           />
         </div>
 
-        <div>
-          <h1 className="text-4xl mt-10 font-bold">{product.name}</h1>
-          <p className="text-xl my-4">৳ {product.unit_price}</p>
+        {/* Product Info */}
+        <div className="w-full md:flex-1 space-y-6 mt-10">
+          <h1 className="text-2xl sm:text-3xl md:text-4xl mt-4 md:mt-10 font-bold">
+            {product.name}
+          </h1>
+
+          <p className="text-lg sm:text-xl my-4">৳ {product.unit_price}</p>
 
           <button
             onClick={() =>
@@ -62,18 +71,16 @@ function ProductDetails() {
                 qty: 1,
               })
             }
-            className="w-full bg-[#8EC644] text-white font-medium mt-2 py-1 rounded"
+            className="w-full bg-[#8EC644] text-white font-medium mt-2 py-2 rounded"
           >
             Add to Cart
           </button>
 
-          <button
-            onClick={handleCOD} // ✅ REQUIRED
-            className="btn btn-primary w-full my-2"
-          >
+          <button onClick={handleCOD} className="btn btn-primary w-full my-2">
             <FontAwesomeIcon icon={faCartShopping} /> ক্যাশ অন ডেলিভারিতে অর্ডার
             করুন
           </button>
+
           <CashOnDeliveryModal
             open={openCOD}
             onClose={() => setOpenCOD(false)}

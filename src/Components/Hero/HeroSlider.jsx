@@ -23,11 +23,13 @@ const HeroSlider = () => {
   }, [slides]);
 
   if (!slides.length) {
-    return <div className="h-[450px] bg-gray-200" />;
+    return (
+      <div className="h-[220px] sm:h-[300px] md:h-[380px] lg:h-[450px] bg-gray-200" />
+    );
   }
 
   return (
-    <div className="relative w-full h-[450px] overflow-hidden">
+    <div className="relative w-full h-[220px] sm:h-[300px] md:h-[380px] lg:h-[450px] overflow-hidden">
       {slides.map((slide, index) => (
         <img
           key={index}

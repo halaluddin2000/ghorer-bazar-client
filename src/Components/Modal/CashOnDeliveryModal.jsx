@@ -1,7 +1,7 @@
 import { useContext, useEffect, useState } from "react";
-import { CartContext } from "../context/CartContext";
-import { toast } from "react-toastify";
 import { useNavigate } from "react-router-dom";
+import { toast } from "react-toastify";
+import { CartContext } from "../context/CartContext";
 
 const CashOnDeliveryModal = ({ open, onClose }) => {
   const { cart, clearCart } = useContext(CartContext);
@@ -34,10 +34,8 @@ const CashOnDeliveryModal = ({ open, onClose }) => {
   if (!open) return null;
 
   const subtotal = cart.reduce((s, i) => s + i.price * i.qty, 0);
-
   const shippingCharge =
     form.shipping === "dhaka" || form.shipping === "ctg" ? 70 : 130;
-
   const total = subtotal + shippingCharge;
 
   const phoneRegex = /^(?:\+88|01)?[3-9]\d{8}$/;
@@ -71,22 +69,25 @@ const CashOnDeliveryModal = ({ open, onClose }) => {
       {/* Modal */}
       <div className="fixed inset-0 z-[1000] flex items-center justify-center p-4">
         <div
-          className={`bg-white w-[45%] max-w-3xl rounded shadow-lg
-          max-h-[90vh] overflow-y-auto transform transition-all duration-300
-          ${animate ? "scale-100 opacity-100" : "scale-95 opacity-0"}`}
+          className={`bg-white w-full sm:w-3/4 md:w-2/5 rounded shadow-lg
+            max-h-[90vh] overflow-y-auto transform transition-all duration-300
+            ${animate ? "scale-100 opacity-100" : "scale-95 opacity-0"}`}
         >
           {/* Header */}
           <div className="p-4 border-b flex justify-between items-center">
-            <h2 className="font-semibold">
+            <h2 className="font-semibold text-sm sm:text-base md:text-lg">
               ক্যাশ অন ডেলিভারিতে অর্ডার করতে আপনার তথ্য দিন
             </h2>
-            <button onClick={onClose} className="text-xl font-bold">
+            <button
+              onClick={onClose}
+              className="text-xl font-bold hover:text-red-500"
+            >
               ×
             </button>
           </div>
 
           {/* Body */}
-          <div className="p-4 space-y-4 text-sm">
+          <div className="p-4 space-y-4 text-sm sm:text-base">
             {/* User info */}
             <input
               placeholder="আপনার নাম"
@@ -96,20 +97,19 @@ const CashOnDeliveryModal = ({ open, onClose }) => {
 
             <input
               placeholder="ফোন নাম্বার"
-              className="w-full bg-white border p-2 rounded"
+              className="w-full border bg-white p-2 rounded"
               onChange={(e) => setForm({ ...form, phone: e.target.value })}
             />
 
             <textarea
               placeholder="এড্রেস"
-              className="w-full bg-white border p-2 rounded"
+              className="w-full border bg-white p-2 rounded resize-none"
               onChange={(e) => setForm({ ...form, address: e.target.value })}
             />
 
             {/* Shipping Method */}
             <div>
               <p className="font-medium mb-1">শিপিং মেথড</p>
-
               {[
                 ["dhaka", "ঢাকা সিটির ভিতরে", 70],
                 ["ctg", "চট্টগ্রাম সিটির ভিতরে", 70],
@@ -117,15 +117,16 @@ const CashOnDeliveryModal = ({ open, onClose }) => {
               ].map(([key, label, price]) => (
                 <label
                   key={key}
-                  className="flex justify-between border p-2 rounded mb-1"
+                  className="flex justify-between border p-2 rounded mb-1 cursor-pointer"
                 >
-                  <div>
+                  <div className="flex items-center">
                     <input
                       type="radio"
                       checked={form.shipping === key}
                       onChange={() => setForm({ ...form, shipping: key })}
+                      className="mr-2"
                     />
-                    <span className="pl-3">{label}</span>
+                    <span>{label}</span>
                   </div>
                   <span>Tk {price}.00</span>
                 </label>
@@ -138,7 +139,7 @@ const CashOnDeliveryModal = ({ open, onClose }) => {
               <div className="flex gap-2">
                 <input
                   placeholder="Enter coupon code"
-                  className="flex-1 border p-2 rounded"
+                  className="flex-1 border p-2 rounded bg-white"
                   value={coupon}
                   onChange={(e) => setCoupon(e.target.value)}
                 />
@@ -156,7 +157,11 @@ const CashOnDeliveryModal = ({ open, onClose }) => {
               {cart.map((i) => (
                 <div key={i.id} className="flex justify-between items-center">
                   <div className="flex items-center gap-3">
-                    <img src={i.image} className="w-16 h-14" alt="" />
+                    <img
+                      src={i.image}
+                      className="w-16 h-14 object-cover"
+                      alt=""
+                    />
                     <span>
                       {i.qty} × {i.name}
                     </span>
@@ -185,7 +190,7 @@ const CashOnDeliveryModal = ({ open, onClose }) => {
             {/* Order Note */}
             <textarea
               placeholder="Order note"
-              className="w-full bg-white border p-2 rounded"
+              className="w-full border bg-white p-2 rounded resize-none"
               onChange={(e) => setForm({ ...form, note: e.target.value })}
             />
 
@@ -205,7 +210,7 @@ const CashOnDeliveryModal = ({ open, onClose }) => {
             </button>
 
             <p className="text-xs text-gray-500 text-center">
-              উপরের বাটনে ক্লিক করলে আপনার অর্ডারটি সাথে সাথে কনফার্ম হয়ে যাবে !
+              উপরের বাটনে ক্লিক করলে আপনার অর্ডারটি সাথে সাথে কনফার্ম হয়ে যাবে!
             </p>
           </div>
         </div>
