@@ -1,5 +1,11 @@
 import { faFacebook } from "@fortawesome/free-brands-svg-icons";
+import {
+  faEnvelope,
+  faLocationDot,
+  faPhone,
+} from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+
 import { Link } from "react-router-dom";
 import logo from "../../assets/logo.png";
 
@@ -58,19 +64,34 @@ function Footer() {
 
           {/* DBID */}
           <div className="md:col-span-2">
-            <h3 className=" sm:text-lg font-medium">
-              <h6 className="text-xl  text-[#2CC4F4]">Contact</h6>
-              <div className="text-gray-500">
-                <p className="mt-2">
-                  Address: 117/A, Old Airport Road, Bijoy Sharani, Tejgaon,
-                  Dhaka-1215.
-                </p>
-                <p>
-                  Call Us: +8801844545500 (whatsapp)
-                  <p>Email: support@zhenauar.net</p>
-                </p>
-              </div>
-            </h3>
+            <div className="space-y-4">
+              <h3 className="text-xl font-semibold">Contact</h3>
+
+              <p className="flex items-start gap-3 text-gray-700">
+                <FontAwesomeIcon
+                  icon={faLocationDot}
+                  className="text-[#2CC4F4] mt-1"
+                />
+                <span>
+                  <strong>Address:</strong> 117/A, Old Airport Road, Bijoy
+                  Sharani, Tejgaon, Dhaka-1215.
+                </span>
+              </p>
+
+              <p className="flex items-center gap-3 text-gray-700">
+                <FontAwesomeIcon icon={faPhone} className="text-[#2CC4F4]" />
+                <span>
+                  <strong>Call Us:</strong> +8801844545500
+                </span>
+              </p>
+
+              <p className="flex items-center gap-3 text-gray-700">
+                <FontAwesomeIcon icon={faEnvelope} className="text-[#2CC4F4]" />
+                <span>
+                  <strong>Email:</strong> info@zhensg.com
+                </span>
+              </p>
+            </div>
           </div>
         </div>
       </div>

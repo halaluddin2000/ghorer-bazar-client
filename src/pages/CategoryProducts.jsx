@@ -49,7 +49,7 @@ const CategoryProducts = () => {
             {/* ✅ ADD TO CART */}
             <button
               onClick={(e) => {
-                e.preventDefault(); // 🔴 link block করবে
+                e.preventDefault(); // link block করবে
                 addToCart({
                   id: product.id,
                   name: product.name,

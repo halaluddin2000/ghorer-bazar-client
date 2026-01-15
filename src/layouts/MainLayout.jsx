@@ -1,15 +1,17 @@
 import { useState } from "react";
 import { Outlet } from "react-router-dom";
+import CartDrawer from "../Components/cart/CartDrawer";
 import Footer from "../Components/Common/Footer";
 import Navbar from "../Components/Common/Navbar";
+import ScrollToTop from "../Components/Common/ScrollToTop";
 import CashOnDeliveryModal from "../Components/Modal/CashOnDeliveryModal";
-import CartDrawer from "../Components/cart/CartDrawer";
 
 function MainLayout() {
   const [openCOD, setOpenCOD] = useState(false);
 
   return (
     <div className="bg-white">
+      <ScrollToTop />
       <div className="">
         <Navbar />
       </div>

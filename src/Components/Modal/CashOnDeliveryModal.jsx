@@ -1,11 +1,16 @@
 import { useContext, useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { toast } from "react-toastify";
+import api from "../../api/axios";
 import { CartContext } from "../context/CartContext";
 
 const CashOnDeliveryModal = ({ open, onClose }) => {
   const { cart, clearCart } = useContext(CartContext);
   const navigate = useNavigate();
+  // OTP related states
+  const [otpSent, setOtpSent] = useState(false); // OTP পাঠানো হয়েছে কি না
+  const [otpVerified, setOtpVerified] = useState(false); // OTP verify হয়েছে কি না
+  const [otp, setOtp] = useState(""); // User OTP input
 
   const [animate, setAnimate] = useState(false);
   const [coupon, setCoupon] = useState("");
@@ -16,6 +21,7 @@ const CashOnDeliveryModal = ({ open, onClose }) => {
     shipping: "dhaka",
     note: "",
   });
+  console.log("Form data", form);
 
   useEffect(() => {
     if (open) {
@@ -23,6 +29,35 @@ const CashOnDeliveryModal = ({ open, onClose }) => {
       return () => clearTimeout(t);
     }
   }, [open]);
+
+  //OTP
+  const handleSendOtp = async () => {
+    if (!form.phone || !phoneRegex.test(form.phone)) {
+      toast.error("সঠিক ফোন নাম্বার দিন");
+      return;
+    }
+    try {
+      await api.post("/send-otp", { phone: form.phone }); // তোমার backend api
+      toast.success("OTP পাঠানো হয়েছে ✅");
+      setOtpSent(true);
+    } catch (err) {
+      toast.error("OTP পাঠানো যায়নি। আবার চেষ্টা করুন।");
+    }
+  };
+
+  const handleVerifyOtp = async () => {
+    if (!otp) {
+      toast.error("OTP দিন");
+      return;
+    }
+    try {
+      await api.post("/verify-otp", { phone: form.phone, otp }); // backend verify
+      toast.success("OTP verified ✅");
+      setOtpVerified(true);
+    } catch (err) {
+      toast.error("OTP ভুল, আবার চেষ্টা করুন");
+    }
+  };
 
   // ESC close
   useEffect(() => {
@@ -89,21 +124,49 @@ const CashOnDeliveryModal = ({ open, onClose }) => {
           {/* Body */}
           <div className="p-4 space-y-4 text-sm sm:text-base">
             {/* User info */}
-            <input
-              placeholder="আপনার নাম"
-              className="w-full border bg-white p-2 rounded"
-              onChange={(e) => setForm({ ...form, name: e.target.value })}
-            />
 
             <input
               placeholder="ফোন নাম্বার"
-              className="w-full border bg-white p-2 rounded"
+              className="w-full border bg-white p-2 rounded disabled:bg-gray-100"
+              disabled={otpVerified} // OTP verify হলে phone change না করতে
               onChange={(e) => setForm({ ...form, phone: e.target.value })}
+            />
+
+            {/* Send OTP */}
+            {!otpSent && (
+              <button
+                onClick={handleSendOtp}
+                className="mt-2 px-4 py-1 bg-[#2CC4F4] text-white rounded"
+              >
+                Send OTP
+              </button>
+            )}
+            {otpSent && !otpVerified && (
+              <div className="flex gap-2 mt-2">
+                <input
+                  placeholder="Verification Code"
+                  className="flex-1 border p-2 rounded"
+                  value={otp}
+                  onChange={(e) => setOtp(e.target.value)}
+                />
+                <button
+                  onClick={handleVerifyOtp}
+                  className="px-3 bg-green-500 text-white rounded"
+                >
+                  Verify
+                </button>
+              </div>
+            )}
+
+            <input
+              placeholder="আপনার নাম"
+              className="w-full border bg-white p-2 rounded disabled:bg-gray-100"
+              onChange={(e) => setForm({ ...form, name: e.target.value })}
             />
 
             <textarea
               placeholder="এড্রেস"
-              className="w-full border bg-white p-2 rounded resize-none"
+              className="w-full border bg-white p-2 rounded resize-none disabled:bg-gray-100"
               onChange={(e) => setForm({ ...form, address: e.target.value })}
             />
 
@@ -196,7 +259,7 @@ const CashOnDeliveryModal = ({ open, onClose }) => {
             {/* Actions */}
             <button
               onClick={handleConfirm}
-              className="w-full bg-[#2CC4F4] text-white py-2 rounded"
+              className="w-full bg-[#2CC4F4] text-white py-2 rounded disabled:opacity-50"
             >
               আপনার অর্ডার কনফার্ম করতে ক্লিক করুন
             </button>

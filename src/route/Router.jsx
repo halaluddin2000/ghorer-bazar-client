@@ -10,6 +10,7 @@ import BlogDetails from "../pages/BlogDetails";
 import BlogList from "../pages/BlogList";
 import CartPage from "../pages/CartPage";
 import CategoryProducts from "../pages/CategoryProducts";
+import ContactUs from "../pages/ContactUs";
 import Home from "../pages/Home";
 import NotFound from "../pages/NotFound";
 import OrderSuccess from "../pages/OrderSuccess";
@@ -58,8 +59,12 @@ export const router = createBrowserRouter([
         element: <BlogList />,
       },
       {
-        path: "/blogs/:slug",
+        path: "/blog/:slug",
         element: <BlogDetails />,
+      },
+      {
+        path: "/contact",
+        element: <ContactUs />,
       },
       {
         path: "user-dashboard",

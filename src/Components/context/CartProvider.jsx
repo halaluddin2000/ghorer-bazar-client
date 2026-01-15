@@ -6,23 +6,16 @@ const CartProvider = ({ children }) => {
   const [isDrawerOpen, setIsDrawerOpen] = useState(false);
 
   // 🔥 openDrawer = true (default)
-  const addToCart = (product, openDrawer = true) => {
+  const addToCart = (product) => {
     setCart((prev) => {
-      const exists = prev.find((item) => item.id === product.id);
-
-      if (exists) {
-        return prev.map((item) =>
-          item.id === product.id ? { ...item, qty: item.qty + 1 } : item
+      const exist = prev.find((p) => p.id === product.id);
+      if (exist) {
+        return prev.map((p) =>
+          p.id === product.id ? { ...p, qty: p.qty + 1 } : p
         );
       }
-
-      return [...prev, { ...product, qty: 1 }];
+      return [...prev, product];
     });
-
-    // ✅ Only open drawer if allowed
-    if (openDrawer) {
-      setIsDrawerOpen(true);
-    }
   };
 
   const increaseQty = (id) => {

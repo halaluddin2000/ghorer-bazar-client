@@ -1,19 +1,43 @@
+import { motion } from "framer-motion";
 import aboutImg from "../assets/about.jpg";
+
 function About() {
   return (
-    <div className="mt-16">
-      <div className="container flex justify-center  gap-2 bg-white py-6">
-        <div className="flex-1">
-          <img className="h-500 w-400 mx-auto" src={aboutImg} alt="" />
-        </div>
-        <div className="flex-1 px-6">
-          <h2>
+    <div className="mt-16 bg-white overflow-hidden">
+      {/* Section 1 */}
+      <div className="container mx-auto flex flex-col md:flex-row items-center gap-6 py-6 px-4">
+        {/* Image */}
+        <motion.div
+          className="flex-1"
+          initial={{ opacity: 0, x: -40 }}
+          whileInView={{ opacity: 1, x: 0 }}
+          transition={{ duration: 0.6 }}
+          viewport={{ once: true }}
+        >
+          <img
+            className="w-full max-w-sm md:max-w-md mx-auto rounded-lg"
+            src={aboutImg}
+            alt="About Zhen Natural"
+          />
+        </motion.div>
+
+        {/* Text */}
+        <motion.div
+          className="flex-1 px-2 md:px-6"
+          initial={{ opacity: 0, x: 40 }}
+          whileInView={{ opacity: 1, x: 0 }}
+          transition={{ duration: 0.6 }}
+          viewport={{ once: true }}
+        >
+          <h2 className="text-2xl md:text-3xl font-semibold">
             About <span className="text-[#8DC642]">Zhen Natural Ltd</span>
           </h2>
-          <h4 className="text-xl font-medium py-2">
+
+          <h4 className="text-lg md:text-xl font-medium py-2">
             Discover the Power of Nature with Zhen Natural Ltd.
           </h4>
-          <p>
+
+          <p className="text-sm md:text-base leading-relaxed text-justify">
             Imagine sitting down to a course crafted from the finest organic
             food products, knowing each bite is a step toward a better,
             healthier future. Yes, Zhen Natural Ltd is on a mission to make that
@@ -27,11 +51,22 @@ function About() {
             is here for all. We also have natural and organic superfoods for
             people dealing with delicate conditions.
           </p>
-        </div>
+        </motion.div>
       </div>
-      <div className="container text-center bg-white">
-        <h2 className="pb-3 pt-10">The Origin</h2>
-        <p className="text-justify pb-20">
+
+      {/* Section 2 */}
+      <motion.div
+        className="container mx-auto px-4 text-center"
+        initial={{ opacity: 0, y: 40 }}
+        whileInView={{ opacity: 1, y: 0 }}
+        transition={{ duration: 0.6 }}
+        viewport={{ once: true }}
+      >
+        <h2 className="text-2xl md:text-3xl font-semibold pb-3 pt-16">
+          The Origin
+        </h2>
+
+        <p className="text-sm md:text-base text-justify pb-20 leading-relaxed">
           With a simple, transformative discovery our story began in the kitchen
           when our beloved Managing Director tried to find a healthy solution
           for her family. Chia seeds, turmeric, ginger, honey, and fresh greens-
@@ -44,7 +79,7 @@ function About() {
           a quest for wellness as Zhen Natural Ltd, a company that not only
           sells but also thrives on organic items and superfoods.
         </p>
-      </div>
+      </motion.div>
     </div>
   );
 }

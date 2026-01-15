@@ -95,7 +95,7 @@ const Navbar = () => {
                   value={query}
                   onChange={(e) => setQuery(e.target.value)}
                   placeholder="Search products..."
-                  className="w-full border px-3 py-2 outline-none"
+                  className="w-full bg-white  border px-3 py-2 outline-none"
                 />
 
                 {results.length > 0 && (
@@ -136,31 +136,15 @@ const Navbar = () => {
           </Link>
 
           {/* USER + CART */}
-          <div className="flex items-center gap-6">
+          <div className="flex items-center justify-center gap-6">
             {user ? (
               <div className="relative group cursor-pointer">
-                <div className="flex items-center gap-2">
-                  <img
-                    src={user.avatar_original}
-                    className="w-8 h-8 rounded-full"
-                    alt=""
-                  />
-                  <span className="text-sm">{user.name}</span>
-                </div>
-
-                <div className="absolute right-0 top-full mt-2 bg-white shadow-md rounded hidden group-hover:block">
-                  <Link
-                    to="/user-dashboard"
-                    className="block px-4 py-2 hover:bg-gray-100"
-                  >
-                    Dashboard
+                <div className="flex items-center gap-2 ">
+                  <Link to="/user-dashboard">
+                    <span className=" md:text-sm text-xs">
+                      <FontAwesomeIcon icon={faUser} className="text-xl" />
+                    </span>
                   </Link>
-                  <button
-                    onClick={handleLogout}
-                    className="block w-full text-left px-4 py-2 hover:bg-gray-100"
-                  >
-                    Logout
-                  </button>
                 </div>
               </div>
             ) : (
@@ -195,7 +179,7 @@ const Navbar = () => {
               <span className="cursor-pointer select-none hover:text-black transition">
                 Category ▾
               </span>
-              <div className="absolute left-0 pt-2 top-full bg-[#2CC4F4] text-white shadow-lg rounded hidden group-hover:block z-70 text-center py-3">
+              <div className="absolute left-0 pt-2 top-full bg-gradient-to-br from-[#2CC4F4] via-[#5ED1CE] to-[#8DC642] text-white shadow-lg rounded hidden group-hover:block z-70 text-center py-3">
                 {categories.map((cat) => (
                   <Link
                     key={cat.id}

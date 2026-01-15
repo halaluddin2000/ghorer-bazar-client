@@ -1,20 +1,22 @@
 import { useContext, useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 import api from "../api/axios";
+import CartDrawer from "../Components/Cart/CartDrawer";
 import Loader from "../Components/Common/Loader";
 import { CartContext } from "../Components/context/CartContext";
 
 const AllProducts = () => {
-  const { addToCart, cart } = useContext(CartContext);
-  const [showPopup, setShowPopup] = useState(false);
+  const { addToCart, cart, setIsDrawerOpen } = useContext(CartContext);
+
   const [products, setProducts] = useState([]);
-  const [loading, setLoading] = useState(false);
+  const [loading, setLoading] = useState(true);
 
   useEffect(() => {
+    setLoading(true);
     api
       .get("/all-products")
       .then((res) => {
-        setProducts(res.data.data);
+        setProducts(res.data.data || []);
         setLoading(false);
       })
       .catch(() => setLoading(false));
@@ -22,31 +24,35 @@ const AllProducts = () => {
 
   const handleAddToCart = async (product) => {
     const payload = {
-      product_id: product.id,
+      id: product.id,
       quantity: 1,
     };
 
     try {
       const res = await api.post("/carts/add", payload);
-      console.log("API response:", res.data);
 
-      // local cart update
-      addToCart({
-        id: product.id,
-        name: product.name,
-        price: Number(product.main_price.replace(/[^\d]/g, "")),
-        image: product.thumbnail_image,
-        qty: 1,
-      });
+      if (res.data?.result) {
+        if (res.data.temp_user_id) {
+          localStorage.setItem("temp_user_id", res.data.temp_user_id);
+        }
 
-      setShowPopup(true);
-      setTimeout(() => setShowPopup(false), 2000);
+        addToCart({
+          id: product.id,
+          name: product.name,
+          price: Number(product.main_price.replace(/[^\d]/g, "")),
+          image: product.thumbnail_image,
+          qty: 1,
+        });
+
+        // Open Cart Drawer instead of popup
+        setIsDrawerOpen(true);
+      }
     } catch (err) {
       console.error("Cart API error:", err);
     }
   };
 
-  if (!products)
+  if (loading)
     return (
       <p className="text-center text-xl py-10">
         <Loader />
@@ -56,34 +62,25 @@ const AllProducts = () => {
   return (
     <div className="container mx-auto px-3 sm:px-4 bg-white mb-24">
       <h2 className="text-2xl sm:text-3xl md:text-4xl font-semibold mb-6 py-10 sm:py-16 text-center">
-        ALL PRODUCT
+        ALL PRODUCTS
       </h2>
 
-      {/*  Popup */}
-      {showPopup && (
-        <div className="fixed top-5 right-3 sm:right-5 bg-green-600 text-white px-4 py-2 rounded shadow-lg z-50 text-sm">
-          Product added to cart
-        </div>
-      )}
-
-      {/*  Mobile: 1 card | Tablet: 3 | Desktop: 5 */}
-      <div className="grid grid-cols-1 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 gap-4">
+      {/* Products Grid */}
+      <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 gap-4">
         {products.map((product) => (
           <div
             key={product.id}
-            className="border rounded-lg p-3 sm:p-4 hover:shadow transition"
+            className="border rounded-lg p-3 sm:p-4 hover:shadow-lg transition-transform transform hover:-translate-y-1"
           >
             <Link to={`/products/details/${product.slug}`}>
               <img
                 src={product.thumbnail_image}
                 alt={product.name}
-                className="w-full h-48 sm:h-36 md:h-40 object-cover mb-3"
+                className="w-full h-48 sm:h-36 md:h-40 object-cover mb-3 rounded"
               />
-
               <h3 className="font-semibold text-base py-2 text-center line-clamp-2">
                 {product.name}
               </h3>
-
               <p className="text-base text-gray-600 text-center">
                 {product.main_price}
               </p>
@@ -96,7 +93,7 @@ const AllProducts = () => {
                 e.stopPropagation();
                 handleAddToCart(product);
               }}
-              className="bg-[#2CC4F4] rounded-lg p-2 text-white w-full mt-3"
+              className="bg-[#2CC4F4] rounded-lg p-2 text-white w-full mt-3 hover:bg-[#1fa3dc] transition-colors duration-300"
             >
               Quick Add
             </button>
@@ -104,7 +101,7 @@ const AllProducts = () => {
         ))}
       </div>
 
-      {/* Mobile Sticky Add to Cart Bar */}
+      {/* Mobile Sticky Add to Cart */}
       {cart.length > 0 && (
         <div className="fixed bottom-0 left-0 right-0 md:hidden bg-white border-t shadow-lg z-40">
           <div className="flex items-center justify-between px-4 py-3">
@@ -112,13 +109,16 @@ const AllProducts = () => {
 
             <Link
               to="/cart"
-              className="bg-black text-white px-5 py-2 rounded text-sm"
+              className="bg-black text-white px-5 py-2 rounded text-sm hover:bg-gray-800 transition-colors duration-300"
             >
               View Cart
             </Link>
           </div>
         </div>
       )}
+
+      {/* Cart Drawer */}
+      <CartDrawer />
     </div>
   );
 };
