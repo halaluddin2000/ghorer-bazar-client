@@ -24,7 +24,7 @@ const BlogDetails = () => {
 
   return (
     <div className="mt-16 sm:mt-5">
-      <div className="container  mx-auto px-4 py-10 max-w-4xl">
+      <div className="container  mx-auto px-4 py-10 max-w-4xl sm:max-w-2xl">
         {/* Banner */}
         <img
           src={blog.banner}
