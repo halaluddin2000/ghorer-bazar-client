@@ -46,12 +46,16 @@ function Footer() {
                 Blog
               </h5>
             </Link>
-            <p className="my-1 text-sm hover:text-[#2CC4F4] sm:text-base">
-              রিটার্ন পলিসি
-            </p>
-            <p className="text-sm hover:text-[#2CC4F4] sm:text-base">
-              রিফান্ড পলিসি
-            </p>
+            <Link to="/returns-policy">
+              <p className="my-1 text-sm hover:text-[#2CC4F4] sm:text-base">
+                রিটার্ন পলিসি
+              </p>
+            </Link>
+            <Link to="/repand">
+              <p className="text-sm hover:text-[#2CC4F4] sm:text-base">
+                রিফান্ড পলিসি
+              </p>
+            </Link>
           </div>
 
           {/* Quick Help */}

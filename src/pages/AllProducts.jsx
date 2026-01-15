@@ -23,9 +23,12 @@ const AllProducts = () => {
   }, []);
 
   const handleAddToCart = async (product) => {
+    const tempUserId = localStorage.getItem("temp_user_id");
+
     const payload = {
       id: product.id,
       quantity: 1,
+      temp_user_id: tempUserId,
     };
 
     try {
@@ -39,24 +42,24 @@ const AllProducts = () => {
         addToCart({
           id: product.id,
           name: product.name,
-          price: Number(product.main_price.replace(/[^\d]/g, "")),
+          price: parseFloat(product.main_price.replace(/[^0-9.]/g, "")),
           image: product.thumbnail_image,
           qty: 1,
         });
 
-        // Open Cart Drawer instead of popup
         setIsDrawerOpen(true);
       }
     } catch (err) {
       console.error("Cart API error:", err);
     }
+    console.log("Cart payload:", payload);
   };
 
   if (loading)
     return (
-      <p className="text-center text-xl py-10">
+      <div className="text-center text-xl py-10">
         <Loader />
-      </p>
+      </div>
     );
 
   return (

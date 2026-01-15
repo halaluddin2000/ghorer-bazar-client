@@ -12,8 +12,12 @@ const CartPage = () => {
   const [coupon, setCoupon] = useState("");
   const [couponApplied, setCouponApplied] = useState(false);
 
-  // Subtotal calculation
-  const subtotal = cart.reduce((sum, item) => sum + item.price * item.qty, 0);
+  // Subtotal calculation (decimal safe)
+  const subtotal = cart.reduce((s, i) => {
+    const price = parseFloat(i.price);
+    return s + price * i.qty;
+  }, 0);
+
   const discount = couponApplied && coupon === "SAVE10" ? subtotal * 0.1 : 0;
   const total = subtotal - discount;
 
@@ -72,7 +76,7 @@ const CartPage = () => {
 
                       {/* Price */}
                       <td className="py-4 text-sm">
-                        Tk {item.price.toLocaleString()}
+                        Tk {parseFloat(item.price).toFixed(2)}
                       </td>
 
                       {/* Quantity */}
@@ -101,7 +105,7 @@ const CartPage = () => {
 
                       {/* Total */}
                       <td className="py-4 text-right font-medium">
-                        Tk {(item.price * item.qty).toLocaleString()}
+                        Tk {(parseFloat(item.price) * item.qty).toFixed(2)}
                       </td>
                     </tr>
                   ))}
@@ -134,7 +138,7 @@ const CartPage = () => {
 
                   <div className="flex justify-between text-sm">
                     <span>Price:</span>
-                    <span>Tk {item.price.toLocaleString()}</span>
+                    <span>Tk {parseFloat(item.price).toFixed(2)}</span>
                   </div>
 
                   <div className="flex justify-between items-center">
@@ -161,7 +165,9 @@ const CartPage = () => {
 
                   <div className="flex justify-between font-medium text-sm">
                     <span>Total:</span>
-                    <span>Tk {(item.price * item.qty).toLocaleString()}</span>
+                    <span>
+                      Tk {(parseFloat(item.price) * item.qty).toFixed(2)}
+                    </span>
                   </div>
                 </div>
               ))}
@@ -190,7 +196,7 @@ const CartPage = () => {
                   />
                   <button
                     onClick={() => setCouponApplied(true)}
-                    className="bg-[#2CC4F4] text-white w-[50%] mx-auto  p-2 rounded"
+                    className="bg-[#2CC4F4] text-white w-[50%] mx-auto p-2 rounded"
                   >
                     Apply
                   </button>
@@ -207,15 +213,19 @@ const CartPage = () => {
             <div className="border-t pt-4 space-y-2 text-right">
               <p className="text-sm">
                 Subtotal:{" "}
-                <span className="font-semibold">
-                  Tk {subtotal.toLocaleString()}
-                </span>
+                <span className="font-semibold">Tk {subtotal.toFixed(2)}</span>
               </p>
+
               {discount > 0 && (
                 <p className="text-sm text-green-600">
-                  Discount: − Tk {discount.toLocaleString()}
+                  Discount: − Tk {discount.toFixed(2)}
                 </p>
               )}
+
+              <p className="text-sm font-semibold">
+                Total: Tk {total.toFixed(2)}
+              </p>
+
               <p className="text-xs text-gray-500 mt-1">
                 Taxes and shipping calculated at checkout
               </p>

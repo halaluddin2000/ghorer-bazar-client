@@ -15,6 +15,8 @@ import Home from "../pages/Home";
 import NotFound from "../pages/NotFound";
 import OrderSuccess from "../pages/OrderSuccess";
 import ProductDetails from "../pages/ProductDetails";
+import Repand from "../pages/Repand";
+import ReturnsPolicy from "../pages/ReturnsPolicy";
 import ProtectedRoute from "./ProtectedRoute";
 
 export const router = createBrowserRouter([
@@ -65,6 +67,14 @@ export const router = createBrowserRouter([
       {
         path: "/contact",
         element: <ContactUs />,
+      },
+      {
+        path: "/returns-policy",
+        element: <ReturnsPolicy />,
+      },
+      {
+        path: "/repand",
+        element: <Repand />,
       },
       {
         path: "user-dashboard",

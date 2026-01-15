@@ -23,8 +23,6 @@ const CashOnDeliveryModal = ({ open, onClose }) => {
     note: "",
   });
 
-  console.log("Form Data:", form);
-
   const phoneRegex = /^(?:\+88|01)?[3-9]\d{8}$/;
 
   useEffect(() => {
@@ -124,7 +122,12 @@ const CashOnDeliveryModal = ({ open, onClose }) => {
     }
   };
 
-  const subtotal = cart.reduce((s, i) => s + i.price * i.qty, 0);
+  // Subtotal calculation with proper decimal
+  const subtotal = cart.reduce((s, i) => {
+    const price = parseFloat(i.price); // string থেকে float
+    return s + price * i.qty;
+  }, 0);
+
   const shippingCharge =
     form.shipping === "dhaka" || form.shipping === "ctg" ? 70 : 130;
   const total = subtotal + shippingCharge;
@@ -213,7 +216,7 @@ const CashOnDeliveryModal = ({ open, onClose }) => {
               onChange={(e) => setForm({ ...form, address: e.target.value })}
             />
 
-            {/* Shipping */}
+            {/* Shipping Method */}
             <div>
               <p className="font-medium mb-1">শিপিং মেথড</p>
               {[
@@ -233,7 +236,7 @@ const CashOnDeliveryModal = ({ open, onClose }) => {
                     />
                     <span>{label}</span>
                   </div>
-                  <span>Tk {price}.00</span>
+                  <span>Tk {price.toFixed(2)}</span>
                 </label>
               ))}
             </div>
@@ -271,7 +274,7 @@ const CashOnDeliveryModal = ({ open, onClose }) => {
                       {i.qty} × {i.name}
                     </span>
                   </div>
-                  <span>Tk {(i.price * i.qty).toLocaleString()}</span>
+                  <span>Tk {(parseFloat(i.price) * i.qty).toFixed(2)}</span>
                 </div>
               ))}
             </div>
@@ -280,15 +283,15 @@ const CashOnDeliveryModal = ({ open, onClose }) => {
             <div className="border-t pt-2 space-y-1">
               <div className="flex justify-between">
                 <span>সাব টোটাল</span>
-                <span>Tk {subtotal.toLocaleString()}</span>
+                <span>Tk {subtotal.toFixed(2)}</span>
               </div>
               <div className="flex justify-between">
                 <span>ডেলিভারি চার্জ</span>
-                <span>Tk {shippingCharge}.00</span>
+                <span>Tk {shippingCharge.toFixed(2)}</span>
               </div>
               <div className="flex justify-between font-semibold">
                 <span>সর্বমোট</span>
-                <span>Tk {total.toLocaleString()}</span>
+                <span>Tk {total.toFixed(2)}</span>
               </div>
             </div>
 
