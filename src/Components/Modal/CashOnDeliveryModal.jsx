@@ -7,10 +7,11 @@ import { CartContext } from "../context/CartContext";
 const CashOnDeliveryModal = ({ open, onClose }) => {
   const { cart, clearCart } = useContext(CartContext);
   const navigate = useNavigate();
-  // OTP related states
-  const [otpSent, setOtpSent] = useState(false); // OTP পাঠানো হয়েছে কি না
-  const [otpVerified, setOtpVerified] = useState(false); // OTP verify হয়েছে কি না
-  const [otp, setOtp] = useState(""); // User OTP input
+
+  // OTP states
+  const [otpSent, setOtpSent] = useState(false);
+  const [otpVerified, setOtpVerified] = useState(false);
+  const [otp, setOtp] = useState(""); // OTP string
 
   const [animate, setAnimate] = useState(false);
   const [coupon, setCoupon] = useState("");
@@ -21,7 +22,10 @@ const CashOnDeliveryModal = ({ open, onClose }) => {
     shipping: "dhaka",
     note: "",
   });
-  console.log("Form data", form);
+
+  console.log("Form Data:", form);
+
+  const phoneRegex = /^(?:\+88|01)?[3-9]\d{8}$/;
 
   useEffect(() => {
     if (open) {
@@ -30,68 +34,102 @@ const CashOnDeliveryModal = ({ open, onClose }) => {
     }
   }, [open]);
 
-  //OTP
-  const handleSendOtp = async () => {
-    if (!form.phone || !phoneRegex.test(form.phone)) {
-      toast.error("সঠিক ফোন নাম্বার দিন");
-      return;
-    }
-    try {
-      await api.post("/send-otp", { phone: form.phone }); // তোমার backend api
-      toast.success("OTP পাঠানো হয়েছে ✅");
-      setOtpSent(true);
-    } catch (err) {
-      toast.error("OTP পাঠানো যায়নি। আবার চেষ্টা করুন।");
-    }
-  };
-
-  const handleVerifyOtp = async () => {
-    if (!otp) {
-      toast.error("OTP দিন");
-      return;
-    }
-    try {
-      await api.post("/verify-otp", { phone: form.phone, otp }); // backend verify
-      toast.success("OTP verified ✅");
-      setOtpVerified(true);
-    } catch (err) {
-      toast.error("OTP ভুল, আবার চেষ্টা করুন");
-    }
-  };
-
-  // ESC close
   useEffect(() => {
     const esc = (e) => e.key === "Escape" && onClose();
     window.addEventListener("keydown", esc);
     return () => window.removeEventListener("keydown", esc);
   }, [onClose]);
 
-  if (!open) return null;
+  // Send OTP
+  const handleSendOtp = async () => {
+    if (!form.phone || !phoneRegex.test(form.phone)) {
+      toast.error("সঠিক ফোন নাম্বার দিন");
+      return;
+    }
+    try {
+      await api.post("/auth/check-phone-number", { phone: form.phone });
+      toast.success("Verification code পাঠানো হয়েছে ✅");
+      setOtpSent(true);
+    } catch (err) {
+      console.error(err);
+      toast.error("Verification code পাঠানো যায়নি। আবার চেষ্টা করুন।");
+    }
+  };
+
+  // Verify OTP
+  const handleVerifyOtp = async () => {
+    if (!otp) {
+      toast.error("Verification code দিন");
+      return;
+    }
+    try {
+      const res = await api.post("/auth/verify-otp", {
+        phone: form.phone,
+        otp,
+      });
+      if (res.data?.success) {
+        toast.success("OTP verified ✅");
+        setOtpVerified(true);
+      } else {
+        toast.error("OTP mismatch! আবার চেষ্টা করুন");
+        setOtpVerified(false);
+      }
+    } catch (err) {
+      console.error(err);
+      toast.error("OTP verification failed");
+      setOtpVerified(false);
+    }
+  };
+
+  // Confirm Order
+  const handleConfirm = async () => {
+    if (!otpVerified) {
+      toast.error("OTP verify করুন");
+      return;
+    }
+    if (!form.name || !form.phone || !form.address) {
+      toast.error("সব তথ্য পূরণ করুন");
+      return;
+    }
+
+    const payload = {
+      user: {
+        name: form.name,
+        phone: form.phone,
+        address: form.address,
+        note: form.note,
+        shipping: form.shipping,
+        coupon,
+      },
+      cart,
+      verification_code: otp,
+    };
+
+    console.log("Order Payload:", payload);
+
+    try {
+      const res = await api.post("/gust/user/order/store", payload);
+      console.log("Backend Response:", res.data);
+      if (res.data?.success) {
+        toast.success("অর্ডার কনফার্ম হয়েছে ✅");
+        clearCart();
+        onClose();
+        navigate("/order-success");
+      } else {
+        toast.error("Order failed");
+      }
+    } catch (err) {
+      console.error(err);
+      toast.error("Order failed");
+    }
+  };
 
   const subtotal = cart.reduce((s, i) => s + i.price * i.qty, 0);
   const shippingCharge =
     form.shipping === "dhaka" || form.shipping === "ctg" ? 70 : 130;
   const total = subtotal + shippingCharge;
 
-  const phoneRegex = /^(?:\+88|01)?[3-9]\d{8}$/;
-
-  const handleConfirm = () => {
-    if (!form.name || !form.phone || !form.address) {
-      toast.error("সব তথ্য পূরণ করুন");
-      return;
-    }
-    if (!phoneRegex.test(form.phone)) {
-      toast.error("সঠিক ফোন নাম্বার দিন");
-      return;
-    }
-
-    toast.success("অর্ডার কনফার্ম হয়েছে ✅");
-    setTimeout(() => {
-      clearCart();
-      onClose();
-      navigate("/order-success");
-    }, 1200);
-  };
+  if (!open) return null;
 
   return (
     <>
@@ -110,7 +148,7 @@ const CashOnDeliveryModal = ({ open, onClose }) => {
         >
           {/* Header */}
           <div className="p-4 border-b flex justify-between items-center">
-            <h2 className="font-semibold text-sm sm:text-base md:text-lg">
+            <h2 className="font-semibold text-center px-2 text-sm sm:text-base md:text-lg">
               ক্যাশ অন ডেলিভারিতে অর্ডার করতে আপনার তথ্য দিন
             </h2>
             <button
@@ -123,12 +161,11 @@ const CashOnDeliveryModal = ({ open, onClose }) => {
 
           {/* Body */}
           <div className="p-4 space-y-4 text-sm sm:text-base">
-            {/* User info */}
-
+            {/* Phone */}
             <input
               placeholder="ফোন নাম্বার"
-              className="w-full border bg-white p-2 rounded disabled:bg-gray-100"
-              disabled={otpVerified} // OTP verify হলে phone change না করতে
+              className="w-full bg-white border p-2 rounded"
+              value={form.phone}
               onChange={(e) => setForm({ ...form, phone: e.target.value })}
             />
 
@@ -138,14 +175,16 @@ const CashOnDeliveryModal = ({ open, onClose }) => {
                 onClick={handleSendOtp}
                 className="mt-2 px-4 py-1 bg-[#2CC4F4] text-white rounded"
               >
-                Send OTP
+                Apply
               </button>
             )}
+
+            {/* OTP input */}
             {otpSent && !otpVerified && (
               <div className="flex gap-2 mt-2">
                 <input
                   placeholder="Verification Code"
-                  className="flex-1 border p-2 rounded"
+                  className="flex-1 bg-white border p-2 rounded"
                   value={otp}
                   onChange={(e) => setOtp(e.target.value)}
                 />
@@ -158,19 +197,23 @@ const CashOnDeliveryModal = ({ open, onClose }) => {
               </div>
             )}
 
+            {/* Name */}
             <input
               placeholder="আপনার নাম"
-              className="w-full border bg-white p-2 rounded disabled:bg-gray-100"
+              className="w-full bg-white border p-2 rounded"
+              value={form.name}
               onChange={(e) => setForm({ ...form, name: e.target.value })}
             />
 
+            {/* Address */}
             <textarea
               placeholder="এড্রেস"
-              className="w-full border bg-white p-2 rounded resize-none disabled:bg-gray-100"
+              className="w-full bg-white border p-2 rounded resize-none"
+              value={form.address}
               onChange={(e) => setForm({ ...form, address: e.target.value })}
             />
 
-            {/* Shipping Method */}
+            {/* Shipping */}
             <div>
               <p className="font-medium mb-1">শিপিং মেথড</p>
               {[
@@ -209,7 +252,7 @@ const CashOnDeliveryModal = ({ open, onClose }) => {
                   onClick={() => toast.info("Coupon feature coming soon")}
                   className="px-4 bg-gray-200 rounded"
                 >
-                  এপ্লাই
+                  Apply
                 </button>
               </div>
             </div>
@@ -252,11 +295,12 @@ const CashOnDeliveryModal = ({ open, onClose }) => {
             {/* Order Note */}
             <textarea
               placeholder="Order note"
-              className="w-full border bg-white p-2 rounded resize-none"
+              className="w-full bg-white border p-2 rounded resize-none"
+              value={form.note}
               onChange={(e) => setForm({ ...form, note: e.target.value })}
             />
 
-            {/* Actions */}
+            {/* Confirm */}
             <button
               onClick={handleConfirm}
               className="w-full bg-[#2CC4F4] text-white py-2 rounded disabled:opacity-50"
@@ -272,7 +316,7 @@ const CashOnDeliveryModal = ({ open, onClose }) => {
             </button>
 
             <p className="text-xs text-gray-500 text-center">
-              উপরের বাটনে ক্লিক করলে আপনার অর্ডারটি সাথে সাথে কনফার্ম হয়ে যাবে!
+              OTP verify না হলে Confirm button কাজ করবে না, সব input editable।
             </p>
           </div>
         </div>
