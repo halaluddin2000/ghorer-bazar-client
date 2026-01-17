@@ -221,7 +221,7 @@ const CashOnDeliveryModal = ({ open, onClose }) => {
               <p className="font-medium mb-1">শিপিং মেথড</p>
               {[
                 ["dhaka", "ঢাকা সিটির ভিতরে", 70],
-                ["ctg", "চট্টগ্রাম সিটির ভিতরে", 70],
+                ["outsite", "ঢাকা সিটির বাহিরে", 160],
               ].map(([key, label, price]) => (
                 <label
                   key={key}

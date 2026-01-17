@@ -6,16 +6,20 @@ import { CartContext } from "../Components/context/CartContext";
 
 const CategoryProducts = () => {
   const { slug } = useParams();
+
   const [products, setProducts] = useState([]);
   const [loading, setLoading] = useState(true);
-  const { addToCart } = useContext(CartContext);
 
+  // ✅ ONLY CartContext (single source of truth)
+  const { addToCart, setIsDrawerOpen } = useContext(CartContext);
+
+  // ✅ fetch category products
   useEffect(() => {
     setLoading(true);
     api
       .get(`/products/category/${slug}`)
       .then((res) => {
-        setProducts(res.data.data);
+        setProducts(res.data.data || []);
         setLoading(false);
       })
       .catch(() => setLoading(false));
@@ -49,14 +53,19 @@ const CategoryProducts = () => {
             {/* ✅ ADD TO CART */}
             <button
               onClick={(e) => {
-                e.preventDefault(); // link block করবে
+                e.preventDefault();
+                e.stopPropagation();
+
                 addToCart({
                   id: product.id,
                   name: product.name,
-                  price: Number(product.main_price.replace(/[^\d]/g, "")),
+                  price: parseFloat(product.main_price.replace(/[^0-9.]/g, "")),
                   image: product.thumbnail_image,
                   qty: 1,
                 });
+
+                // 🔥 drawer open (already in your logic)
+                setIsDrawerOpen(true);
               }}
               className="w-full bg-[#8EC644] text-white font-medium mt-2 py-1 rounded"
             >

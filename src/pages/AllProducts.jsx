@@ -7,6 +7,7 @@ import { CartContext } from "../Components/context/CartContext";
 
 const AllProducts = () => {
   const { addToCart, cart, setIsDrawerOpen } = useContext(CartContext);
+  console.log("AllProducts cart:", cart);
 
   const [products, setProducts] = useState([]);
   const [loading, setLoading] = useState(true);
@@ -23,12 +24,11 @@ const AllProducts = () => {
   }, []);
 
   const handleAddToCart = async (product) => {
-    const tempUserId = localStorage.getItem("temp_user_id");
+    // const tempUserId = localStorage.getItem("temp_user_id");
 
     const payload = {
       id: product.id,
       quantity: 1,
-      temp_user_id: tempUserId,
     };
 
     try {
