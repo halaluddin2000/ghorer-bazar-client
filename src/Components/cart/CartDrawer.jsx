@@ -185,15 +185,11 @@ const CartDrawer = ({ onCODClick }) => {
             Pay Online
           </button>
           <button
-            onClick={() => setOpenCOD(true)}
+            onClick={onCODClick}
             className="w-full bg-gray-200 text-black py-2 rounded text-sm"
           >
             ক্যাশ অন ডেলিভারিতে অর্ডার করুন
           </button>
-          <CashOnDeliveryModal
-            open={openCOD}
-            onClose={() => setOpenCOD(false)}
-          />
           <CashOnDeliveryModal
             open={openCOD}
             onClose={() => setOpenCOD(false)}

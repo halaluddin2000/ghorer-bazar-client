@@ -118,13 +118,18 @@ function ProductDetails() {
             onClose={() => setOpenCOD(false)}
           />
 
-          <button className="btn bg-[#2CC4F4] w-full text-white my-2">
+          <button className="btn bg-[#2CC4F4] w-full text-white py-1 my-2">
             <FontAwesomeIcon icon={faMessage} /> Chat with us
           </button>
 
-          <button className="btn bg-[#2CC4F4] w-full text-white">
+          <a
+            href="https://wa.me/8801844545500?text=Hello%20I%20want%20to%20know%20about%20this%20product"
+            target="_blank"
+            rel="noopener noreferrer"
+            className="btn py-1 bg-[#2CC4F4] w-full text-white text-center inline-block"
+          >
             <FontAwesomeIcon icon={faWhatsapp} /> WhatsApp Us
-          </button>
+          </a>
         </div>
       </div>
     </div>

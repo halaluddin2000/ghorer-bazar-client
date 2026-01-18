@@ -4,8 +4,62 @@ import {
   faPhone,
 } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { useState } from "react";
 
 const Contact = () => {
+  const [formData, setFormData] = useState({
+    name: "",
+    email: "",
+    phone: "",
+    content: "",
+  });
+
+  const [loading, setLoading] = useState(false);
+  const [message, setMessage] = useState("");
+
+  // handle input change
+  const handleChange = (e) => {
+    setFormData({
+      ...formData,
+      [e.target.name]: e.target.value,
+    });
+  };
+
+  // handle submit
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+    setLoading(true);
+    setMessage("");
+
+    try {
+      const res = await fetch("https://backend.zhenaura.net/api/v2/contact", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(formData),
+      });
+
+      const data = await res.json();
+
+      if (res.ok) {
+        setMessage("Message sent successfully ✅");
+        setFormData({
+          name: "",
+          email: "",
+          phone: "",
+          content: "",
+        });
+      } else {
+        setMessage("Something went wrong ❌");
+      }
+    } catch (error) {
+      setMessage("Server error ❌");
+    } finally {
+      setLoading(false);
+    }
+  };
+
   return (
     <div className="bg-white pt-20 pb-24">
       <div className="container mx-auto px-4">
@@ -15,88 +69,97 @@ const Contact = () => {
             Get In Touch
           </h2>
           <p className="text-gray-400 max-w-2xl mx-auto">
-            Please select a topic below related to your inquiry. If you don't
-            find what you need, fill out our contact form.
+            Please select a topic below related to your inquiry.
           </p>
         </div>
 
-        {/* Main Grid */}
         <div className="grid grid-cols-1 md:grid-cols-2 gap-10">
           {/* Contact Form */}
           <div className="border rounded-lg p-6 shadow-sm">
-            <form className="space-y-4">
+            <form className="space-y-4" onSubmit={handleSubmit}>
               <input
                 type="text"
+                name="name"
+                value={formData.name}
+                onChange={handleChange}
                 placeholder="Enter Your Name"
-                className="w-full border bg-white px-4 py-3 rounded focus:outline-none focus:border-[#2CC4F4]"
+                className="w-full bg-white border px-4 py-3 rounded"
+                required
               />
 
               <input
                 type="email"
+                name="email"
+                value={formData.email}
+                onChange={handleChange}
                 placeholder="Enter Your Email"
-                className="w-full bg-white border px-4 py-3 rounded focus:outline-none focus:border-[#2CC4F4]"
+                className="w-full bg-white border px-4 py-3 rounded"
+                required
               />
 
               <input
                 type="text"
+                name="phone"
+                value={formData.phone}
+                onChange={handleChange}
                 placeholder="Enter Your Phone Number"
-                className="w-full bg-white border px-4 py-3 rounded focus:outline-none focus:border-[#2CC4F4]"
+                className="w-full border bg-white px-4 py-3 rounded"
+                required
               />
 
               <textarea
+                name="content"
                 rows="5"
+                value={formData.content}
+                onChange={handleChange}
                 placeholder="Please leave your comments here.."
-                className="w-full border bg-white px-4 py-3 rounded focus:outline-none focus:border-[#2CC4F4]"
+                className="w-full bg-white border px-4 py-3 rounded"
+                required
               ></textarea>
 
               <button
                 type="submit"
-                className="w-full bg-[#2CC4F4] hover:bg-[#24b3e0] text-white py-3 rounded font-medium transition"
+                disabled={loading}
+                className="w-full bg-[#2CC4F4] text-white py-3 rounded"
               >
-                Submit
+                {loading ? "Sending..." : "Submit"}
               </button>
+
+              {message && (
+                <p className="text-center text-sm mt-2 text-green-600">
+                  {message}
+                </p>
+              )}
             </form>
           </div>
 
           {/* Map + Contact Info */}
           <div className="space-y-6">
-            {/* Google Map */}
-            <div className="w-full h-64 md:h-72 rounded overflow-hidden border">
+            <div className="w-full h-64 rounded overflow-hidden border">
               <iframe
-                title="Zhen Natural Location"
+                title="Location"
                 src="https://www.google.com/maps?q=117/A,Old%20Airport%20Road,Tejgaon,Dhaka&output=embed"
                 className="w-full h-full border-0"
                 loading="lazy"
               ></iframe>
             </div>
 
-            {/* Contact Info */}
             <div className="space-y-4">
               <h3 className="text-xl font-semibold">Contact</h3>
 
-              <p className="flex items-start gap-3 text-gray-700">
-                <FontAwesomeIcon
-                  icon={faLocationDot}
-                  className="text-[#2CC4F4] mt-1"
-                />
-                <span>
-                  <strong>Address:</strong> 117/A, Old Airport Road, Bijoy
-                  Sharani, Tejgaon, Dhaka-1215.
-                </span>
+              <p className="flex gap-3">
+                <FontAwesomeIcon icon={faLocationDot} />
+                117/A, Old Airport Road, Tejgaon, Dhaka
               </p>
 
-              <p className="flex items-center gap-3 text-gray-700">
-                <FontAwesomeIcon icon={faPhone} className="text-[#2CC4F4]" />
-                <span>
-                  <strong>Call Us:</strong> +8801844545500
-                </span>
+              <p className="flex gap-3">
+                <FontAwesomeIcon icon={faPhone} />
+                +8801844545500
               </p>
 
-              <p className="flex items-center gap-3 text-gray-700">
-                <FontAwesomeIcon icon={faEnvelope} className="text-[#2CC4F4]" />
-                <span>
-                  <strong>Email:</strong> info@zhensg.com
-                </span>
+              <p className="flex gap-3">
+                <FontAwesomeIcon icon={faEnvelope} />
+                info@zhensg.com
               </p>
             </div>
           </div>

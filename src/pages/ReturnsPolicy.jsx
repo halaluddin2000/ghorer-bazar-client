@@ -1,9 +1,6 @@
-import Hero from "../Components/home/Hero";
-
 function ReturnsPolicy() {
   return (
     <div>
-      <Hero />
       <div className="grid mx-auto  font-semibold w-[60%]">
         <h2 className="border-b mt-5 py-6">Return & Refund Policy</h2>
         <ul className="mt-4 pl-5 list-disc space-y-3">

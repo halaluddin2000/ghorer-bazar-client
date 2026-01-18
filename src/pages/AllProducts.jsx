@@ -1,7 +1,6 @@
 import { useContext, useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 import api from "../api/axios";
-import CartDrawer from "../Components/Cart/CartDrawer";
 import Loader from "../Components/Common/Loader";
 import { CartContext } from "../Components/context/CartContext";
 
@@ -119,9 +118,6 @@ const AllProducts = () => {
           </div>
         </div>
       )}
-
-      {/* Cart Drawer */}
-      <CartDrawer />
     </div>
   );
 };
