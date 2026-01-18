@@ -60,15 +60,18 @@ const Navbar = () => {
 
   // search api
   useEffect(() => {
-    if (query.length < 2) {
+    if (!query.trim()) {
       setResults([]);
       return;
     }
 
     const delay = setTimeout(() => {
-      api.get(`/products/search?name=${query}`).then((res) => {
-        setResults(res.data.data || []);
-      });
+      api
+        .get(`/products/search?name=${query}`)
+        .then((res) => {
+          setResults(res.data.data || []);
+        })
+        .catch((err) => console.log(err));
     }, 400);
 
     return () => clearTimeout(delay);
@@ -77,8 +80,8 @@ const Navbar = () => {
   return (
     <header className="bg-white  sticky top-0 z-50">
       {/* ================= TOP BAR ================= */}
-      <div className="container mx-auto px-4">
-        <div className="flex items-center justify-between py-4">
+      <div className="py-4">
+        <div className="px-4 container mx-auto flex items-center justify-between py-4">
           {/* SEARCH ICON */}
           <div ref={searchRef} className="relative">
             <FontAwesomeIcon
