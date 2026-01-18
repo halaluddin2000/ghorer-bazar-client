@@ -66,15 +66,15 @@ const CartDrawer = ({ onCODClick }) => {
                 <img
                   src={item.image}
                   alt={item.name}
-                  className="w-full sm:w-28 h-40 sm:h-20 object-cover rounded"
+                  className="w-full sm:w-24 h-32 sm:h-20 object-cover rounded"
                 />
               )}
 
               <div className="flex-1">
-                <h4 className="font-medium text-base sm:text-base">
+                <h4 className="font-medium text-base sm:text-sm">
                   {item.name}
                 </h4>
-                <p className="text-base sm:text-lg text-gray-600">
+                <p className="text-base sm:text-base text-gray-600">
                   Tk {item.price.toLocaleString()}
                 </p>
 
@@ -102,7 +102,7 @@ const CartDrawer = ({ onCODClick }) => {
               {/* Remove */}
               <button
                 onClick={() => removeFromCart(item.id)}
-                className="text-red-500 text-lg mt-2 sm:mt-0"
+                className="text-red-500 text-base mt-2 sm:mt-0"
               >
                 Remove
               </button>
@@ -185,11 +185,15 @@ const CartDrawer = ({ onCODClick }) => {
             Pay Online
           </button>
           <button
-            onClick={onCODClick}
+            onClick={() => setOpenCOD(true)}
             className="w-full bg-gray-200 text-black py-2 rounded text-sm"
           >
             ক্যাশ অন ডেলিভারিতে অর্ডার করুন
           </button>
+          <CashOnDeliveryModal
+            open={openCOD}
+            onClose={() => setOpenCOD(false)}
+          />
           <CashOnDeliveryModal
             open={openCOD}
             onClose={() => setOpenCOD(false)}

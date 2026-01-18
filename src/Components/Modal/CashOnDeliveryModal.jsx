@@ -5,8 +5,9 @@ import api from "../../api/axios";
 import { CartContext } from "../context/CartContext";
 
 const CashOnDeliveryModal = ({ open, onClose }) => {
-  const { cart, tempUserId } = useContext(CartContext);
+  const { cart } = useContext(CartContext);
   const navigate = useNavigate();
+  const tempUserId = localStorage.getItem("temp_user_id") || "";
 
   const [animate, setAnimate] = useState(false);
   const [otpSent, setOtpSent] = useState(false);
@@ -57,6 +58,7 @@ const CashOnDeliveryModal = ({ open, onClose }) => {
       toast.error("সব তথ্য পূরণ করুন");
       return;
     }
+
     const payload = {
       user: {
         name: form.name,
@@ -65,9 +67,15 @@ const CashOnDeliveryModal = ({ open, onClose }) => {
         note: form.note,
         shipping: form.shipping,
         coupon,
+        verification_code: Number(otp),
       },
+      cart: cart.map((item) => ({
+        id: item.id,
+        name: item.name,
+        price: parseFloat(item.price),
+        qty: item.qty,
+      })),
       temp_user_id: tempUserId,
-      verification_code: Number(otp),
     };
 
     console.log("Transformed Payload:", payload);
@@ -76,13 +84,13 @@ const CashOnDeliveryModal = ({ open, onClose }) => {
       const res = await api.post("/gust/user/order/store", payload);
       console.log("Backend Response:", res.data);
 
-      if (res.data?.success) {
-        toast.success("অর্ডার কনফার্ম হয়েছে ✅");
-        // clearCart(); // Clear cart
+      if (res.data?.result) {
+        // <-- change here
+        toast.success(res.data.message || "অর্ডার কনফার্ম হয়েছে ✅");
         onClose();
-        navigate("/"); // Redirect to Home page
+        navigate("/");
       } else {
-        toast.error("Order failed");
+        toast.error(res.data.message || "Order failed");
       }
     } catch (err) {
       console.error(err);

@@ -18,7 +18,7 @@ function Login() {
     try {
       const res = await api.post(
         "https://backend.zhennatural.com/api/v2/auth/login",
-        data
+        data,
       );
 
       if (res.data.result === true) {
@@ -29,7 +29,7 @@ function Login() {
         localStorage.setItem("user", JSON.stringify(res.data.user));
 
         // ✅ dashboard redirect
-        navigate("/dashboard");
+        navigate("/user-dashboard");
       }
     } catch (err) {
       alert("Invalid phone or password");

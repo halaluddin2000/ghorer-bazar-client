@@ -23,7 +23,7 @@ const CartProvider = ({ children }) => {
     localStorage.setItem("cart", JSON.stringify(cart));
   }, [cart]);
 
-  // 🔥 Add to cart (frontend + backend)
+  //  Add to cart
   const addToCart = async (product) => {
     setCart((prev) => {
       const exist = prev.find((p) => p.id === product.id);
@@ -35,16 +35,16 @@ const CartProvider = ({ children }) => {
       return [...prev, { ...product, qty: 1 }];
     });
 
-    // 🔥 backend guest cart sync
-    try {
-      await api.post("/guest/cart/add", {
-        temp_user_id: tempUserId,
-        product_id: product.id,
-        qty: 1,
-      });
-    } catch (err) {
-      console.error("Guest cart add failed", err);
-    }
+    //  backend guest cart sync
+    // try {
+    //   await api.post("/guest/cart/add", {
+    //     temp_user_id: tempUserId,
+    //     id: product.id,
+    //     qty: 1,
+    //   });
+    // } catch (err) {
+    //   console.error("Guest cart add failed", err);
+    // }
   };
 
   const increaseQty = async (id) => {
@@ -88,9 +88,9 @@ const CartProvider = ({ children }) => {
         cart,
         tempUserId, // 🔥 expose this
         addToCart,
+        removeFromCart,
         increaseQty,
         decreaseQty,
-        removeFromCart,
         isDrawerOpen,
         setIsDrawerOpen,
       }}
