@@ -41,7 +41,7 @@ const CartDrawer = ({ onCODClick }) => {
       >
         {/* Header */}
         <div className="p-4 flex justify-between items-center border-b">
-          <h2 className="text-lg font-semibold">Shopping Cart</h2>
+          <h2 className="text-xl font-semibold">Shopping Cart</h2>
           <button
             onClick={() => setIsDrawerOpen(false)}
             className="text-xl font-bold"
@@ -66,12 +66,12 @@ const CartDrawer = ({ onCODClick }) => {
                 <img
                   src={item.image}
                   alt={item.name}
-                  className="w-full sm:w-24 h-40 sm:h-20 object-cover rounded"
+                  className="w-full sm:w-28 h-40 sm:h-20 object-cover rounded"
                 />
               )}
 
               <div className="flex-1">
-                <h4 className="font-medium text-base sm:text-lg">
+                <h4 className="font-medium text-base sm:text-base">
                   {item.name}
                 </h4>
                 <p className="text-base sm:text-lg text-gray-600">
@@ -111,9 +111,9 @@ const CartDrawer = ({ onCODClick }) => {
         </div>
 
         {/* Note & Coupon */}
-        <div className="flex flex-col sm:flex-row mt-2 px-4 items-start sm:items-center justify-between border-t gap-2">
+        <div className="grid grid-col sm:flex-row mt-4 px-4 items-start sm:items-center justify-between border-t gap-2">
           {/* Note */}
-          <div className="flex-1">
+          <div className="w-full mt-3">
             <label className="block text-sm font-medium mb-1">Note</label>
             <textarea
               value={note}
@@ -125,14 +125,14 @@ const CartDrawer = ({ onCODClick }) => {
           </div>
 
           {/* Coupon */}
-          <div className="flex-1">
+          <div className="w-full mb-4">
             <label className="block text-sm font-medium mb-1">Coupon</label>
             <div className="flex gap-2">
               <input
                 type="text"
                 value={coupon}
                 onChange={(e) => setCoupon(e.target.value)}
-                className="flex-1 bg-white border rounded p-2 text-sm"
+                className=" bg-white border rounded p-2 text-sm"
                 placeholder="Enter discount code here"
                 disabled={couponApplied}
               />

@@ -30,26 +30,18 @@ function About() {
           viewport={{ once: true }}
         >
           <h2 className="text-2xl md:text-3xl font-semibold">
-            About <span className="text-[#8DC642]">Zhen Natural Ltd</span>
+            About <span className="text-[#8DC642]">Zhen Aura</span>
           </h2>
 
-          <h4 className="text-lg md:text-xl font-medium py-2">
-            Discover the Power of Nature with Zhen Natural Ltd.
-          </h4>
-
-          <p className="text-sm md:text-base leading-relaxed text-justify">
-            Imagine sitting down to a course crafted from the finest organic
-            food products, knowing each bite is a step toward a better,
-            healthier future. Yes, Zhen Natural Ltd is on a mission to make that
-            dream of yours come true! We aspire to establish a Bangladesh where
-            everyone has access to nutritious, healthful, and organic foods.
+          <p className="text-lg md:text-xl font-medium py-2">
+            Zhen Aura is an organic food eCommerce brand dedicated to bringing
+            nature’s purest goodness directly to your doorstep. We believe that
+            healthy living begins with clean, honest, and responsibly sourced
+            food.
             <br />
-            As part of the RANGS Group, our goal is to offer more than just
-            organic products; we strive to give comprehensive guidance to
-            nourish your body, mind, and soul. Whether you are a
-            health-conscious individual or seeking to lead a healthy life, Zhen
-            is here for all. We also have natural and organic superfoods for
-            people dealing with delicate conditions.
+            Our mission is simple: to make authentic organic foods accessible,
+            affordable, and trustworthy for everyone who values wellness,
+            sustainability, and conscious living.
           </p>
         </motion.div>
       </div>
@@ -62,24 +54,74 @@ function About() {
         transition={{ duration: 0.6 }}
         viewport={{ once: true }}
       >
-        <h2 className="text-2xl md:text-3xl font-semibold pb-3 pt-16">
-          The Origin
-        </h2>
-
-        <p className="text-sm md:text-base text-justify pb-20 leading-relaxed">
-          With a simple, transformative discovery our story began in the kitchen
-          when our beloved Managing Director tried to find a healthy solution
-          for her family. Chia seeds, turmeric, ginger, honey, and fresh greens-
-          mixing all these items she made a fresh smoothie that came as a
-          perfect nutrition solution against persistent skin issues and
-          bloating. The remarkable result spurred her to explore more
-          nutrient-dense diets to balance and prevent long-term health
-          difficulties, such as PCOS, PCOD, thyroid, diabetes, heart disease,
-          weight loss, etc. Thus, a voyage for individual remedy blossomed into
-          a quest for wellness as Zhen Natural Ltd, a company that not only
-          sells but also thrives on organic items and superfoods.
+        <h2 className="mb-8">Our Story</h2>
+        <p className="text-sm md:text-base leading-relaxed text-justify">
+          Zhen Aura was created with a vision to reconnect people with natural
+          nutrition in a world dominated by processed and chemical-laden foods.
+          We work closely with ethical farmers and trusted suppliers who follow
+          organic farming practices, ensuring every product meets our strict
+          quality standards.
         </p>
       </motion.div>
+      <div className="grid my-5 grid-cols-2 gap-4  items-center">
+        <motion.div
+          className="container mx-auto px-4 text-center"
+          initial={{ opacity: 0, y: 40 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.6 }}
+          viewport={{ once: true }}
+        >
+          <h2 className="text-2xl md:text-3xl font-semibold pb-3 pt-6">
+            What We Offer
+          </h2>
+
+          <p className="text-sm md:text-base text-justify pb-20 leading-relaxed">
+            We provide a carefully curated range of organic food products,
+            including:
+            <ul>
+              <li>● Certified organic and chemical-free foods</li>
+              <li>● Natural, preservative-free essentials</li>
+              <li>● Nutrient-rich products for everyday wellness</li>
+              <li>● Sustainably sourced and responsibly packaged items</li>
+            </ul>
+          </p>
+        </motion.div>
+        <div className="border-l">
+          <motion.div
+            className="container mx-auto px-4 text-center"
+            initial={{ opacity: 0, y: 40 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.6 }}
+            viewport={{ once: true }}
+          >
+            <h2 className="text-2xl md:text-3xl font-semibold pb-1 pt-2">
+              Our Mission
+            </h2>
+
+            <p className="text-sm md:text-base text-justify pb-20 leading-relaxed">
+              To empower people to live better by providing pure, safe, and
+              nourishing organic foods with honesty and care.
+            </p>
+          </motion.div>
+          <motion.div
+            className="container mx-auto px-4 text-center"
+            initial={{ opacity: 0, y: 40 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.6 }}
+            viewport={{ once: true }}
+          >
+            <h2 className="text-2xl md:text-3xl font-semibold pb-1 pt-2">
+              Our Vision
+            </h2>
+
+            <p className="text-sm md:text-base text-justify pb-20 leading-relaxed">
+              To become a leading organic food destination that inspires
+              healthier communities and promotes sustainable living across
+              generations.
+            </p>
+          </motion.div>
+        </div>
+      </div>
     </div>
   );
 }

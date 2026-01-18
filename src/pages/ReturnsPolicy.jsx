@@ -5,34 +5,98 @@ function ReturnsPolicy() {
     <div>
       <Hero />
       <div className="grid mx-auto  font-semibold w-[60%]">
-        <h3 className="border-b mt-5 py-6">রিটার্ন পলিসি</h3>
-        <ul className="container mt-4 list-disc space-y-3">
+        <h2 className="border-b mt-5 py-6">Return & Refund Policy</h2>
+        <ul className="mt-4 pl-5 list-disc space-y-3">
+          <p className="py-2">
+            <span className="text-green-400">Last Updated: [01-01-2026]</span>
+            <br />
+            At Zhen Aura, customer satisfaction is our priority. We ensure
+            transparency and fairness in all return and refund matters, in
+            accordance with applicable laws of Bangladesh.
+          </p>
+          <h2 className="-ml-5">Eligibility for Return</h2>
+          <p>
+            Due to the nature of organic and food products, returns are accepted
+            only under the following conditions:
+          </p>
           <li className="mt-5">
-            ডেলিভারির সময় পণ্য যদি ক্ষতিগ্রস্ত, ত্রুটিপূর্ণ, ভুল বা অসম্পূর্ণ
-            হয়, তাহলে রিটার্ন বা রিফান্ডের জন্য আমাদের কাস্টমার সার্ভিসের সাথে
-            যোগাযোগ করুন।
+            The product is damaged, spoiled, or defective at the time of
+            delivery
           </li>
           <li>
-            পন্য গ্রহনের ৭ দিনের মধ্যেই পন্য রিটার্ন করে ব্যাংক পেমেন্ট, বিকাশ
-            অথবা ভাউচার এর মাধ্যমে বুঝে নিন রিফান্ড। রির্টান পলিসি সম্পর্কে আরও
-            তথ্যের জন্য, দয়া করে আমাদের পন্য ফেরত নীতিমালা দেখুন।
+            The product delivered is incorrect or mismatched with the order
           </li>
           <li>
-            নির্বাচিত কিছু পন্যে আপনার সিধান্ত পরিবর্তনকে অগ্রাধিকার দেয়া হয়।
-            বিস্তারিত তথ্যের জন্য অনুগ্রহ করে রিটার্ন পলিসির নিচের অংশ দেখুন।
-          </li>
-          <h3 className="text-green-500">পণ্য ফেরত দেওয়ার বৈধ কারণ</h3>
-          <li>পণ্য ক্ষতিগ্রস্ত হলে। (ফাটা/ ভাঙা)/ত্রুটিপূর্ণ </li>
-          <li>
-            ডেলিভার করা পণ্য অসম্পূর্ণ থাকলে । (যদি কোন পন্য পরিমানে কম থাকে)
+            The issue is reported within 24 hours of receiving the product
           </li>
           <li>
-            ডেলিভার করা পণ্যটি ভুল হলে। (ভুল পণ্য/আকার/রঙ, অথবা মেয়াদ উত্তীর্ণ)
+            The product is unused, unopened, and in original packaging (where
+            applicable)
+          </li>
+          <p>
+            ⚠️ Perishable food items are non-returnable once opened, except in
+            case of quality or safety issues.
+          </p>
+          <h2 className="-ml-6 text-green-500">Non-Returnable Items</h2>
+          <p>Returns will not be accepted for:</p>
+          <li>Opened or partially consumed food items</li>
+          <li>Products damaged due to improper storage by the customer</li>
+          <li>Change of mind after delivery</li>
+          <li>
+            Items purchased during discounts, promotions, or clearance sales
           </li>
           <li>
-            ডেলিভার করা পণ্যটি যদি পণ্যের বিবরণ বা ছবির সাথে না মেলে।
-            (বিজ্ঞাপনের সাথে পন্যের মিল না থাকলে।)
+            Orders with incorrect delivery information provided by the customer
           </li>
+
+          <h2 className="-ml-6 text-green-500">Return Process</h2>
+          <p>To request a return, please follow these steps:</p>
+          <li>Contact our customer support via phone, WhatsApp, or email</li>
+          <li>Provide your order number, product photos, and issue details</li>
+          <li>Our team will review and respond within 1–2 business days</li>
+          <li>
+            If approved, we will arrange return pickup or provide instructions
+          </li>
+          <h2 className="-ml-6 text-green-500">Refund Policy</h2>
+
+          <li>Approved refunds will be processed within 7–10 working days</li>
+          <li>
+            Refunds will be issued via the original payment method (bKash,
+            Nagad, Rocket, bank transfer, or card)
+          </li>
+          <li>
+            For Cash on Delivery (COD) orders, refunds will be sent via mobile
+            banking or bank transfer
+          </li>
+          <li>
+            Delivery charges are non-refundable, unless the error occurred from
+            our side
+          </li>
+
+          <h2 className="-ml-6 text-green-500">Replacement Option</h2>
+          <p>
+            Instead of a refund, customers may choose a replacement product,
+            subject to availability.
+          </p>
+
+          <h2 className="-ml-6 text-green-500">Order Cancellation</h2>
+          <li>Orders can be cancelled before dispatch only</li>
+          <li>Once shipped, cancellation requests will not be accepted</li>
+          <h2 className="-ml-6 text-green-500">Contact Information</h2>
+          <p>For any return or refund-related queries, please contact:</p>
+          <h3>Zhen Aura Customer Support</h3>
+          <p>Address: 427, Tejgaon Industrial Area, Dhaka-1208, Bangladesh.</p>
+          <p>Call Us: +8801844545500</p>
+          <p>Email: info@zhenaura.net</p>
+          <h2 className="-ml-6 text-green-500">Legal Compliance</h2>
+          <p className="font-medium">
+            This policy is governed by the{" "}
+            <span className="font-bold">
+              laws of the People’s Republic of Bangladesh.
+            </span>{" "}
+            Zhen Aura reserves the right to update or modify this policy at any
+            time without prior notice.
+          </p>
         </ul>
       </div>
     </div>

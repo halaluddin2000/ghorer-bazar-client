@@ -5,7 +5,8 @@ import {
 } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { useContext, useEffect, useRef, useState } from "react";
-import { Link, useLocation } from "react-router-dom";
+import { Link, useLocation, useNavigate } from "react-router-dom";
+
 import api from "../../api/axios";
 import logo from "../../assets/logo.png";
 import { CartContext } from "../context/CartContext";
@@ -39,6 +40,7 @@ const Navbar = () => {
   const [results, setResults] = useState([]);
   const searchRef = useRef(null);
   const location = useLocation();
+  const navigate = useNavigate();
 
   // close search on route change
   useEffect(() => {
@@ -67,7 +69,8 @@ const Navbar = () => {
 
     const delay = setTimeout(() => {
       api
-        .get(`/products/search?name=${query}`)
+        .get(`/products/search?q=${query}`)
+
         .then((res) => {
           setResults(res.data.data || []);
         })
@@ -101,30 +104,28 @@ const Navbar = () => {
                   className="w-full bg-white  border px-3 py-2 outline-none"
                 />
 
-                {results.length > 0 && (
-                  <div className="mt-2 max-h-60 overflow-y-auto">
-                    {results.map((item) => (
-                      <Link
-                        key={item.id}
-                        to={`/products/details/${item.slug}`}
-                        className="flex gap-3 items-center p-2 hover:bg-gray-100"
-                        onClick={() => setShowSearch(false)}
-                      >
-                        <img
-                          src={item.thumbnail_image}
-                          className="w-10 h-10 object-cover"
-                          alt=""
-                        />
-                        <div>
-                          <p className="text-sm font-semibold">{item.name}</p>
-                          <p className="text-xs text-gray-500">
-                            {item.main_price}
-                          </p>
-                        </div>
-                      </Link>
-                    ))}
-                  </div>
-                )}
+                {results.map((item) => (
+                  <li
+                    key={item.id}
+                    onClick={() => {
+                      navigate(`/category/${item.slug}`); // go to product page
+                      setShowSearch(false); // close search box
+                      setQuery(""); // clear search input
+                      setResults([]); // clear results
+                    }}
+                    className="p-2 hover:bg-gray-100 cursor-pointer flex gap-2"
+                  >
+                    <img
+                      src={item.thumbnail_image}
+                      alt={item.name}
+                      className="w-10 h-10 object-cover"
+                    />
+                    <div>
+                      <p className="text-sm font-medium">{item.name}</p>
+                      <p className="text-xs text-gray-500">{item.main_price}</p>
+                    </div>
+                  </li>
+                ))}
 
                 {query.length > 1 && results.length === 0 && (
                   <p className="text-sm text-gray-500 mt-2">No product found</p>

@@ -17,17 +17,14 @@ function Footer() {
         <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-7 pb-5 gap-8 items-start">
           {/* Brand */}
           <div className="md:col-span-3">
-            <img className="w-36 sm:w-40" src={logo} alt="Zhen Natural" />
-            <h3 className="text-lg sm:text-xl my-4">
-              Zhen Natural: Your Trusted Source for Safe & Organic Food
+            <img className="w-36 sm:w-56" src={logo} alt="Zhen Natural" />
+            <h3 className="text-lg sm:text-xl my-6">
+              Zhen Aura – Pure Organic Living
             </h3>
-            <p className="text-sm sm:text-base text-start leading-relaxed">
-              Zhen Natural Ltd. is passionate about promoting a healthy and
-              vibrant lifestyle through a curated range of organic products,
-              superfoods,
-              <br className="hidden sm:block" /> and gut health essentials. To
-              assure premium quality, we have sourced every single item from
-              globally renowned authentic vendors.
+            <p className="text-sm sm:text-base py-2 text-start leading-relaxed">
+              Zhen Aura delivers trusted organic foods sourced naturally to
+              support healthier lifestyles, sustainable choices, and everyday
+              wellness.
             </p>
           </div>
 
@@ -48,14 +45,14 @@ function Footer() {
             </Link>
             <Link to="/returns-policy">
               <p className="my-1 text-sm hover:text-[#2CC4F4] sm:text-base">
-                রিটার্ন পলিসি
+                Return & Refund Policy
               </p>
             </Link>
-            <Link to="/repand">
+            {/* <Link to="/repand">
               <p className="text-sm hover:text-[#2CC4F4] sm:text-base">
                 রিফান্ড পলিসি
               </p>
-            </Link>
+            </Link> */}
           </div>
 
           {/* Quick Help */}
@@ -77,8 +74,8 @@ function Footer() {
                   className="text-[#2CC4F4] mt-1"
                 />
                 <span>
-                  <strong>Address:</strong> 117/A, Old Airport Road, Bijoy
-                  Sharani, Tejgaon, Dhaka-1215.
+                  <strong>Address:</strong> 427, Tejgaon Industrial Area,
+                  Dhaka-1208, Bangladesh.
                 </span>
               </p>
 
@@ -92,7 +89,7 @@ function Footer() {
               <p className="flex items-center gap-3 text-gray-700">
                 <FontAwesomeIcon icon={faEnvelope} className="text-[#2CC4F4]" />
                 <span>
-                  <strong>Email:</strong> info@zhensg.com
+                  <strong>Email:</strong> info@zhenaura.net
                 </span>
               </p>
             </div>
