@@ -170,8 +170,8 @@ const Navbar = () => {
       </div>
 
       {/* ================= MENU ================= */}
-      <nav className="border-t border-b">
-        <div className="container bg-gradient-to-br from-[#2CC4F4] via-[#5ED1CE] to-[#8DC642] text-white mx-auto px-4">
+      <nav className="bg-gradient-to-br from-[#2CC4F4] via-[#5ED1CE] to-[#8DC642] border-t border-b">
+        <div className="container  text-white mx-auto px-4">
           {/* Desktop Menu */}
           <div className="hidden md:flex font-medium justify-center gap-14 py-3">
             <Link className="hover:text-black transition" to="/">
