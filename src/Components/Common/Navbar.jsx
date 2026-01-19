@@ -19,15 +19,8 @@ const Navbar = () => {
   /* ================= USER ================= */
   const user = JSON.parse(localStorage.getItem("user"));
 
-  const handleLogout = () => {
-    localStorage.removeItem("token");
-    localStorage.removeItem("user");
-    window.location.href = "/login";
-  };
-
   /* ================= CATEGORY ================= */
   const [categories, setCategories] = useState([]);
-
   useEffect(() => {
     api.get("/filter/categories").then((res) => {
       setCategories(res.data.data || []);
@@ -49,7 +42,7 @@ const Navbar = () => {
     setResults([]);
   }, [location.pathname]);
 
-  // click outside close
+  // click outside to close search
   useEffect(() => {
     const handler = (e) => {
       if (searchRef.current && !searchRef.current.contains(e.target)) {
@@ -66,11 +59,9 @@ const Navbar = () => {
       setResults([]);
       return;
     }
-
     const delay = setTimeout(() => {
       api
         .get(`/products/search?q=${query}`)
-
         .then((res) => {
           setResults(res.data.data || []);
         })
@@ -81,43 +72,40 @@ const Navbar = () => {
   }, [query]);
 
   return (
-    <header className="bg-white  sticky top-0 z-50">
-      {/* ================= TOP BAR ================= */}
-      <div className="py-4">
-        <div className="px-4 container mx-auto flex items-center justify-between py-4">
-          {/* SEARCH ICON */}
-          <div ref={searchRef} className="relative">
+    <header className="bg-white sticky top-0 z-50 shadow-md">
+      {/* ================= DESKTOP TOP BAR ================= */}
+      <div className="hidden md:block py-3 border-b">
+        <div className="px-4 container mx-auto flex items-center justify-between">
+          {/* LEFT: Search */}
+          <div ref={searchRef} className="relative flex-1 md:flex-none">
             <FontAwesomeIcon
               icon={faMagnifyingGlass}
               className="text-xl cursor-pointer"
               onClick={() => setShowSearch((p) => !p)}
             />
-
             {showSearch && (
-              <div className="absolute left-0 top-10 bg-white shadow-lg w-80 z-50 p-3">
+              <div className="absolute left-0 top-10 bg-white shadow-lg w-72 z-50 p-3">
                 <input
                   autoFocus
                   type="text"
                   value={query}
                   onChange={(e) => setQuery(e.target.value)}
                   placeholder="Search products..."
-                  className="w-full bg-white  border px-3 py-2 outline-none"
+                  className="w-full bg-white border px-3 py-2 outline-none"
                 />
-
                 {results.map((item) => (
                   <li
                     key={item.id}
                     onClick={() => {
-                      navigate(`/category/${item.slug}`); // go to product page
-                      setShowSearch(false); // close search box
-                      setQuery(""); // clear search input
-                      setResults([]); // clear results
+                      navigate(`/category/${item.slug}`);
+                      setShowSearch(false);
+                      setQuery("");
+                      setResults([]);
                     }}
                     className="p-2 hover:bg-gray-100 cursor-pointer flex gap-2"
                   >
                     <img
                       src={item.thumbnail_image}
-                      alt={item.name}
                       className="w-10 h-10 object-cover"
                     />
                     <div>
@@ -126,7 +114,6 @@ const Navbar = () => {
                     </div>
                   </li>
                 ))}
-
                 {query.length > 1 && results.length === 0 && (
                   <p className="text-sm text-gray-500 mt-2">No product found</p>
                 )}
@@ -134,28 +121,104 @@ const Navbar = () => {
             )}
           </div>
 
-          {/* LOGO */}
-          <Link to="/">
-            <img src={logo} alt="logo" className="w-28" />
-          </Link>
+          {/* CENTER: Logo */}
+          <div className="flex-1 flex justify-end">
+            <Link to="/">
+              <img src={logo} alt="logo" className="w-28" />
+            </Link>
+          </div>
 
-          {/* USER + CART */}
-          <div className="flex items-center justify-center gap-6">
+          {/* RIGHT: User + Cart */}
+          <div className="flex items-center gap-4 flex-1 justify-end">
             {user ? (
-              <div className="relative group cursor-pointer">
-                <div className="flex items-center gap-2 ">
-                  <Link to="/user-dashboard">
-                    <span className=" md:text-sm text-xs">
-                      <FontAwesomeIcon icon={faUser} className="text-xl" />
-                    </span>
-                  </Link>
-                </div>
-              </div>
+              <Link to="/user-dashboard">
+                <FontAwesomeIcon icon={faUser} className="text-xl" />
+              </Link>
             ) : (
               <Link to="/login">
                 <FontAwesomeIcon icon={faUser} className="text-xl" />
               </Link>
             )}
+            <div
+              onClick={() => setIsDrawerOpen(true)}
+              className="relative cursor-pointer"
+            >
+              <FontAwesomeIcon icon={faBagShopping} className="text-xl" />
+              <span className="absolute -top-2 -right-3 bg-red-500 text-white text-xs px-2 rounded-full">
+                {cart.length}
+              </span>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      {/* ================= MOBILE TOP BAR ================= */}
+      <div className="md:hidden py-3 border-b">
+        <div className="px-4 container mx-auto flex items-center justify-between">
+          {/* LEFT: Mobile Menu */}
+          <button
+            className="text-2xl"
+            onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
+          >
+            ☰
+          </button>
+
+          {/* CENTER: Logo */}
+          <div className="flex-1 flex justify-center">
+            <Link to="/">
+              <img src={logo} alt="logo" className="w-28" />
+            </Link>
+          </div>
+
+          {/* RIGHT: Search + User + Cart */}
+          <div className="flex items-center gap-4">
+            <div ref={searchRef} className="relative flex-1 md:flex-none">
+              <FontAwesomeIcon
+                icon={faMagnifyingGlass}
+                className="text-xl cursor-pointer"
+                onClick={() => setShowSearch((p) => !p)}
+              />
+              {showSearch && (
+                <div className="absolute right-0 top-10 bg-white shadow-lg w-52 z-50 p-3">
+                  <input
+                    autoFocus
+                    type="text"
+                    value={query}
+                    onChange={(e) => setQuery(e.target.value)}
+                    placeholder="Search products..."
+                    className="w-full bg-white border px-3 py-2 outline-none"
+                  />
+                  {results.map((item) => (
+                    <li
+                      key={item.id}
+                      onClick={() => {
+                        navigate(`/category/${item.slug}`);
+                        setShowSearch(false);
+                        setQuery("");
+                        setResults([]);
+                      }}
+                      className="p-2 hover:bg-gray-100 cursor-pointer flex gap-2"
+                    >
+                      <img
+                        src={item.thumbnail_image}
+                        className="w-10 h-10 object-cover"
+                      />
+                      <div>
+                        <p className="text-sm font-medium">{item.name}</p>
+                        <p className="text-xs text-gray-500">
+                          {item.main_price}
+                        </p>
+                      </div>
+                    </li>
+                  ))}
+                  {query.length > 1 && results.length === 0 && (
+                    <p className="text-sm text-gray-500 mt-2">
+                      No product found
+                    </p>
+                  )}
+                </div>
+              )}
+            </div>
 
             <div
               onClick={() => setIsDrawerOpen(true)}
@@ -170,9 +233,9 @@ const Navbar = () => {
         </div>
       </div>
 
-      {/* ================= MENU ================= */}
+      {/* ================= DESKTOP MENU ================= */}
       <nav className="bg-gradient-to-br from-[#2CC4F4] via-[#5ED1CE] to-[#8DC642] border-t border-b">
-        <div className="container  text-white mx-auto px-4">
+        <div className="container mx-auto px-4 text-white">
           {/* Desktop Menu */}
           <div className="hidden md:flex font-medium justify-center gap-14 py-3">
             <Link className="hover:text-black transition" to="/">
@@ -183,22 +246,22 @@ const Navbar = () => {
               <span className="cursor-pointer select-none hover:text-black transition">
                 Category ▾
               </span>
-              <div className="absolute left-0 pt-2 top-full bg-gradient-to-br from-[#2CC4F4] via-[#5ED1CE] to-[#8DC642] text-white shadow-lg rounded hidden group-hover:block z-70 text-center py-3">
+              <div className="absolute left-0 top-full bg-gradient-to-br from-[#2CC4F4] via-[#5ED1CE] to-[#8DC642] text-white shadow-lg rounded hidden group-hover:block z-50 py-3">
                 {categories.map((cat) => (
                   <Link
                     key={cat.id}
                     to={`/category/${cat.slug}`}
-                    className="block px-4 py-2 text-sm font-medium whitespace-nowrap hover:bg-gray-400"
+                    className="block px-4 py-2 text-sm font-medium hover:bg-gray-400"
                   >
                     {cat.name}
                   </Link>
                 ))}
               </div>
             </div>
+
             <Link className="hover:text-black transition" to="/products">
               Products
             </Link>
-
             <Link className="hover:text-black transition" to="/about">
               About
             </Link>
@@ -207,41 +270,34 @@ const Navbar = () => {
             </Link>
           </div>
 
-          {/* Mobile Hamburger */}
-          <div className="flex md:hidden justify-between items-center py-3">
-            <span className="font-semibold">Menu</span>
-            <button
-              onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
-              className="text-2xl"
-            >
-              ☰
-            </button>
-          </div>
-
           {/* Mobile Menu */}
           {mobileMenuOpen && (
-            <div className="md:hidden flex flex-col gap-3 pb-4">
+            <div className="md:hidden flex flex-col gap-3 pb-4 px-4">
               <Link onClick={() => setMobileMenuOpen(false)} to="/">
                 Home
               </Link>
 
-              <div className="border rounded">
-                <p className="px-3 py-2 font-semibold">Category</p>
-                {categories.map((cat) => (
-                  <Link
-                    key={cat.id}
-                    to={`/category/${cat.slug}`}
-                    className="block px-4 py-2 text-sm hover:bg-gray-100"
-                    onClick={() => setMobileMenuOpen(false)}
-                  >
-                    {cat.name}
-                  </Link>
-                ))}
+              <div className="relative group">
+                <span className="cursor-pointer select-none hover:text-black transition">
+                  Category ▾
+                </span>
+                <div className="absolute left-0 top-full bg-gradient-to-br from-[#2CC4F4] via-[#5ED1CE] to-[#8DC642] text-white shadow-lg rounded hidden group-hover:block z-50 py-3">
+                  {categories.map((cat) => (
+                    <Link
+                      key={cat.id}
+                      onClick={() => setMobileMenuOpen(false)}
+                      to={`/category/${cat.slug}`}
+                      className="block px-4 py-2 text-sm font-medium hover:bg-gray-400"
+                    >
+                      {cat.name}
+                    </Link>
+                  ))}
+                </div>
               </div>
+
               <Link onClick={() => setMobileMenuOpen(false)} to="/products">
                 Products
               </Link>
-
               <Link onClick={() => setMobileMenuOpen(false)} to="/about">
                 About
               </Link>
