@@ -1,5 +1,4 @@
 import { useEffect, useState } from "react";
-import { v4 as uuid } from "uuid";
 import api from "../../api/axios";
 import { CartContext } from "./CartContext";
 
@@ -7,13 +6,18 @@ const CartProvider = ({ children }) => {
   const [isDrawerOpen, setIsDrawerOpen] = useState(false);
 
   const [cart, setCart] = useState(() => {
-    const saved = localStorage.getItem("cart");
-    return saved ? JSON.parse(saved) : [];
+    try {
+      const saved = localStorage.getItem("cart");
+      return saved ? JSON.parse(saved) : [];
+    } catch {
+      localStorage.removeItem("cart");
+      return [];
+    }
   });
   const [tempUserId] = useState(() => {
     let id = localStorage.getItem("temp_user_id");
     if (!id) {
-      id = uuid().replace(/-/g, "").slice(0, 20);
+      id = crypto.randomUUID().replace(/-/g, "").slice(0, 20);
       localStorage.setItem("temp_user_id", id);
     }
     return id;
@@ -23,11 +27,15 @@ const CartProvider = ({ children }) => {
   useEffect(() => {
     localStorage.setItem("cart", JSON.stringify(cart));
   }, [cart]);
-  const clearCart = () => {
-    setCart([]);
-    localStorage.removeItem("cart");
-  };
+  const clearCart = () => setCart([]);
 
+  useEffect(() => {
+    if (cart.length === 0) {
+      localStorage.removeItem("cart");
+    } else {
+      localStorage.setItem("cart", JSON.stringify(cart));
+    }
+  }, [cart]);
   //  Add to cart
   const addToCart = async (product) => {
     setCart((prev) => {
