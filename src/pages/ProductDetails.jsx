@@ -19,7 +19,7 @@ function ProductDetails() {
       .get(`/products/details/${slug}`)
       .then((res) => {
         setProduct(res.data);
-        console.log("API product:", res.data);
+        // console.log("API product:", res.data);
       })
       .catch(console.error);
   }, [slug]);

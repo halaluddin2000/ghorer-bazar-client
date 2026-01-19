@@ -5,7 +5,7 @@ import api from "../../api/axios";
 import { CartContext } from "../context/CartContext";
 
 const CashOnDeliveryModal = ({ open, onClose }) => {
-  const { cart } = useContext(CartContext);
+  const { cart, clearCart, setIsDrawerOpen } = useContext(CartContext);
   const navigate = useNavigate();
   const tempUserId = localStorage.getItem("temp_user_id") || "";
 
@@ -78,16 +78,18 @@ const CashOnDeliveryModal = ({ open, onClose }) => {
       temp_user_id: tempUserId,
     };
 
-    console.log("Transformed Payload:", payload);
+    // console.log("Transformed Payload:", payload);
 
     try {
       const res = await api.post("/gust/user/order/store", payload);
-      console.log("Backend Response:", res.data);
+      // console.log("Backend Response:", res.data);
 
       if (res.data?.result) {
         // <-- change here
         toast.success(res.data.message || "অর্ডার কনফার্ম হয়েছে ✅");
+        clearCart();
         onClose();
+        setIsDrawerOpen(false);
         navigate("/");
       } else {
         toast.error(res.data.message || "Order failed");

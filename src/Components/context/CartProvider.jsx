@@ -1,4 +1,5 @@
 import { useEffect, useState } from "react";
+import { v4 as uuid } from "uuid";
 import api from "../../api/axios";
 import { CartContext } from "./CartContext";
 
@@ -22,6 +23,10 @@ const CartProvider = ({ children }) => {
   useEffect(() => {
     localStorage.setItem("cart", JSON.stringify(cart));
   }, [cart]);
+  const clearCart = () => {
+    setCart([]);
+    localStorage.removeItem("cart");
+  };
 
   //  Add to cart
   const addToCart = async (product) => {
@@ -36,27 +41,21 @@ const CartProvider = ({ children }) => {
     });
 
     //  backend guest cart sync
-    // try {
-    //   await api.post("/guest/cart/add", {
-    //     temp_user_id: tempUserId,
-    //     id: product.id,
-    //     qty: 1,
-    //   });
-    // } catch (err) {
-    //   console.error("Guest cart add failed", err);
-    // }
+    try {
+      await api.post("/guest/cart/add", {
+        temp_user_id: tempUserId,
+        product_id: product.id,
+        qty: 1,
+      });
+    } catch (err) {
+      console.error(err.response?.data || err.message);
+    }
   };
 
   const increaseQty = async (id) => {
     setCart((prev) =>
       prev.map((i) => (i.id === id ? { ...i, qty: i.qty + 1 } : i)),
     );
-
-    await api.post("/guest/cart/update", {
-      temp_user_id: tempUserId,
-      product_id: id,
-      type: "increase",
-    });
   };
 
   const decreaseQty = async (id) => {
@@ -65,32 +64,22 @@ const CartProvider = ({ children }) => {
         .map((i) => (i.id === id ? { ...i, qty: i.qty - 1 } : i))
         .filter((i) => i.qty > 0),
     );
-
-    await api.post("/guest/cart/update", {
-      temp_user_id: tempUserId,
-      product_id: id,
-      type: "decrease",
-    });
   };
 
   const removeFromCart = async (id) => {
     setCart((prev) => prev.filter((i) => i.id !== id));
-
-    await api.post("/guest/cart/remove", {
-      temp_user_id: tempUserId,
-      product_id: id,
-    });
   };
 
   return (
     <CartContext.Provider
       value={{
         cart,
-        tempUserId, // 🔥 expose this
+        tempUserId,
         addToCart,
         removeFromCart,
         increaseQty,
         decreaseQty,
+        clearCart,
         isDrawerOpen,
         setIsDrawerOpen,
       }}
