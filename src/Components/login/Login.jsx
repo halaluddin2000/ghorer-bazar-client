@@ -16,19 +16,16 @@ function Login() {
     };
 
     try {
-      const res = await api.post(
-        "https://backend.zhennatural.com/api/v2/auth/login",
-        data,
-      );
+      const res = await api.post("/auth/login", data);
 
       if (res.data.result === true) {
-        // ✅ token save
+        //  token save
         localStorage.setItem("token", res.data.access_token);
 
-        // ✅ user save
+        //  user save
         localStorage.setItem("user", JSON.stringify(res.data.user));
 
-        // ✅ dashboard redirect
+        //  dashboard redirect
         navigate("/user-dashboard");
       }
     } catch (err) {
