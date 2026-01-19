@@ -32,13 +32,16 @@ const Contact = () => {
     setMessage("");
 
     try {
-      const res = await fetch("https://backend.zhenaura.net/api/v2/contact", {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
+      const res = await fetch(
+        "https://backend.zhennatural.com/api/v2/contact",
+        {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify(formData),
         },
-        body: JSON.stringify(formData),
-      });
+      );
 
       const data = await res.json();
 

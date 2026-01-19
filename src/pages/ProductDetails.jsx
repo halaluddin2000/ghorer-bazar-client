@@ -29,7 +29,7 @@ function ProductDetails() {
       id: product.id,
       name: product.name,
       price: Number(product.unit_price),
-      image: `https://backend.zhenaura.net/public/${product.thumbnail?.file_name}`,
+      image: `https://backend.zhennatural.com/public/${product.thumbnail?.file_name}`,
       qty: 1,
     });
 
@@ -54,7 +54,7 @@ function ProductDetails() {
           id: product.id,
           name: product.name,
           price: Number(product.unit_price), // details page এর price
-          image: `https://backend.zhenaura.net/public/${product.thumbnail?.file_name}`,
+          image: `https://backend.zhennatural.com/public/${product.thumbnail?.file_name}`,
           qty: 1,
         });
 
@@ -79,7 +79,7 @@ function ProductDetails() {
         {/*  Product Image */}
         <div className=" w-full md:w-2/5 flex items-center justify-center">
           <img
-            src={`https://backend.zhenaura.net/public/${product?.thumbnail?.file_name}`}
+            src={`https://backend.zhennatural.com/public/${product?.thumbnail?.file_name}`}
             alt={product?.name}
             className="w-full max-w-sm md:max-w-full object-contain"
           />

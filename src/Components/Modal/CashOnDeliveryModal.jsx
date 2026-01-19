@@ -11,7 +11,7 @@ const CashOnDeliveryModal = ({ open, onClose }) => {
 
   const [animate, setAnimate] = useState(false);
   const [otpSent, setOtpSent] = useState(false);
-  const [otp, setOtp] = useState(""); // OTP input
+  const [otp, setOtp] = useState(); // OTP input
   const [form, setForm] = useState({
     name: "",
     phone: "",
@@ -78,11 +78,11 @@ const CashOnDeliveryModal = ({ open, onClose }) => {
       temp_user_id: tempUserId,
     };
 
-    // console.log("Transformed Payload:", payload);
+    console.log("Transformed Payload:", payload);
 
     try {
       const res = await api.post("/gust/user/order/store", payload);
-      // console.log("Backend Response:", res.data);
+      console.log("Backend Response:", res.data);
 
       if (res.data?.result) {
         // <-- change here

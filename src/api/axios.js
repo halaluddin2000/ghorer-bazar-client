@@ -1,7 +1,7 @@
 import axios from "axios";
 
 const api = axios.create({
-    baseURL: "https://backend.zhenaura.net/api/v2",
+    baseURL: "https://backend.zhennatural.com/api/v2",
     headers: {
         "Content-Type": "application/json",
     },

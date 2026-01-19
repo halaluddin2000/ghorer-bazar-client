@@ -22,21 +22,14 @@ const CartProvider = ({ children }) => {
 
   const [tempUserId] = useState(() => {
     let id = localStorage.getItem("temp_user_id");
-
     if (!id) {
       id = generateTempId();
       localStorage.setItem("temp_user_id", id);
     }
-
     return id;
   });
 
   // persist cart
-  useEffect(() => {
-    localStorage.setItem("cart", JSON.stringify(cart));
-  }, [cart]);
-  const clearCart = () => setCart([]);
-
   useEffect(() => {
     if (cart.length === 0) {
       localStorage.removeItem("cart");
@@ -44,8 +37,10 @@ const CartProvider = ({ children }) => {
       localStorage.setItem("cart", JSON.stringify(cart));
     }
   }, [cart]);
-  //  Add to cart
-  const addToCart = async (product) => {
+
+  const clearCart = () => setCart([]);
+
+  const addToCart = (product) => {
     setCart((prev) => {
       const exist = prev.find((p) => p.id === product.id);
       if (exist) {
@@ -55,26 +50,15 @@ const CartProvider = ({ children }) => {
       }
       return [...prev, { ...product, qty: 1 }];
     });
-
-    //  backend guest cart sync
-    // try {
-    //   await api.post("/guest/cart/add", {
-    //     temp_user_id: tempUserId,
-    //     product_id: product.id,
-    //     qty: 1,
-    //   });
-    // } catch (err) {
-    //   console.error(err.response?.data || err.message);
-    // }
   };
 
-  const increaseQty = async (id) => {
+  const increaseQty = (id) => {
     setCart((prev) =>
       prev.map((i) => (i.id === id ? { ...i, qty: i.qty + 1 } : i)),
     );
   };
 
-  const decreaseQty = async (id) => {
+  const decreaseQty = (id) => {
     setCart((prev) =>
       prev
         .map((i) => (i.id === id ? { ...i, qty: i.qty - 1 } : i))
@@ -82,7 +66,7 @@ const CartProvider = ({ children }) => {
     );
   };
 
-  const removeFromCart = async (id) => {
+  const removeFromCart = (id) => {
     setCart((prev) => prev.filter((i) => i.id !== id));
   };
 
