@@ -1,5 +1,4 @@
 import { useEffect, useState } from "react";
-import api from "../../api/axios";
 import { CartContext } from "./CartContext";
 
 const CartProvider = ({ children }) => {
@@ -14,12 +13,21 @@ const CartProvider = ({ children }) => {
       return [];
     }
   });
+
+  const generateTempId = () => {
+    return (
+      Date.now().toString(36) + Math.random().toString(36).substring(2, 12)
+    ).slice(0, 20);
+  };
+
   const [tempUserId] = useState(() => {
     let id = localStorage.getItem("temp_user_id");
+
     if (!id) {
-      id = crypto.randomUUID().replace(/-/g, "").slice(0, 20);
+      id = generateTempId();
       localStorage.setItem("temp_user_id", id);
     }
+
     return id;
   });
 
@@ -49,15 +57,15 @@ const CartProvider = ({ children }) => {
     });
 
     //  backend guest cart sync
-    try {
-      await api.post("/guest/cart/add", {
-        temp_user_id: tempUserId,
-        product_id: product.id,
-        qty: 1,
-      });
-    } catch (err) {
-      console.error(err.response?.data || err.message);
-    }
+    // try {
+    //   await api.post("/guest/cart/add", {
+    //     temp_user_id: tempUserId,
+    //     product_id: product.id,
+    //     qty: 1,
+    //   });
+    // } catch (err) {
+    //   console.error(err.response?.data || err.message);
+    // }
   };
 
   const increaseQty = async (id) => {
