@@ -146,7 +146,7 @@ const CashOnDeliveryModal = ({ open, onClose }) => {
             />
             {!otpSent && (
               <>
-                <p className="text-yellow-600">
+                <p className="text-start text-yellow-600">
                   OTP এর জন্য Apply বাটনে ক্লিক করুন{" "}
                 </p>
                 <button

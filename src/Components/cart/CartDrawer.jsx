@@ -13,6 +13,7 @@ const CartDrawer = ({ onCODClick }) => {
     increaseQty,
     decreaseQty,
     removeFromCart,
+    tempUserId,
   } = useContext(CartContext);
 
   const [note, setNote] = useState("");
@@ -101,7 +102,10 @@ const CartDrawer = ({ onCODClick }) => {
 
               {/* Remove */}
               <button
-                onClick={() => removeFromCart(item.id)}
+                onClick={() => {
+                  removeFromCart(item.id);
+                  localStorage.removeItem("temp_user_id");
+                }}
                 className="text-red-500 text-base mt-2 sm:mt-0"
               >
                 Remove
