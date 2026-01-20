@@ -25,12 +25,12 @@ const HeroSlider = () => {
 
   if (!slides.length) {
     return (
-      <div className="w-full h-[220px] sm:h-[300px] md:h-[380px] lg:h-[450px] bg-gray-200 animate-pulse" />
+      <div className="w-full h-[220px] sm:h-[115px] md:h-[380px] lg:h-[450px] bg-gray-200 animate-pulse" />
     );
   }
 
   return (
-    <div className="relative w-full h-[220px] sm:h-[300px] md:h-[380px] lg:h-[450px] overflow-hidden">
+    <div className="relative w-full h-[115px] sm:h-[115px] md:h-[380px] lg:h-[450px] overflow-hidden">
       {slides.map((slide, index) => (
         <img
           key={index}

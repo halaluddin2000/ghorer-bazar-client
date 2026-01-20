@@ -60,21 +60,19 @@ const CashOnDeliveryModal = ({ open, onClose }) => {
     }
 
     const payload = {
-      user: {
-        name: form.name,
-        phone: form.phone,
-        address: form.address,
-        note: form.note,
-        shipping: form.shipping,
-        coupon,
-        verification_code: Number(otp),
-      },
+      name: form.name,
+      phone: form.phone,
+      address: form.address,
+      note: form.note,
+      shipping: form.shipping,
+      coupon,
       cart: cart.map((item) => ({
         id: item.id,
         name: item.name,
         price: parseFloat(item.price),
         qty: item.qty,
       })),
+      verification_code: Number(otp),
       temp_user_id: tempUserId,
     };
 
@@ -145,12 +143,17 @@ const CashOnDeliveryModal = ({ open, onClose }) => {
               onChange={(e) => setForm({ ...form, phone: e.target.value })}
             />
             {!otpSent && (
-              <button
-                onClick={handleSendOtp}
-                className="bg-[#2CC4F4] text-white px-4 py-1 rounded"
-              >
-                Apply
-              </button>
+              <>
+                <p className="text-yellow-600">
+                  OTP এর জন্য Apply বাটনে ক্লিক করুন{" "}
+                </p>
+                <button
+                  onClick={handleSendOtp}
+                  className="bg-[#2CC4F4] w-full text-white px-4 py-1 rounded"
+                >
+                  Apply
+                </button>
+              </>
             )}
             {otpSent && (
               <input
@@ -227,7 +230,7 @@ const CashOnDeliveryModal = ({ open, onClose }) => {
                 <div key={i.id} className="flex justify-between items-center">
                   <div className="flex items-center gap-3">
                     <img
-                      src={i.image}
+                      src={i?.image}
                       className="w-16 h-14 object-cover"
                       alt=""
                     />

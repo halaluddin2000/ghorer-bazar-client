@@ -55,7 +55,7 @@ function About() {
         viewport={{ once: true }}
       >
         <h2 className="mb-8">Our Story</h2>
-        <p className="text-sm md:text-base leading-relaxed text-justify">
+        <p className="text-sm md:text-base leading-relaxed text-center">
           Zhen Aura was created with a vision to reconnect people with natural
           nutrition in a world dominated by processed and chemical-laden foods.
           We work closely with ethical farmers and trusted suppliers who follow
@@ -63,7 +63,30 @@ function About() {
           quality standards.
         </p>
       </motion.div>
-      <div className="grid my-5 grid-cols-2 gap-4  items-center">
+
+      <motion.div
+        className="container mx-auto px-4 text-center"
+        initial={{ opacity: 0, y: 40 }}
+        whileInView={{ opacity: 1, y: 0 }}
+        transition={{ duration: 0.6 }}
+        viewport={{ once: true }}
+      >
+        <h2 className="text-2xl md:text-3xl font-semibold pb-3 pt-6">
+          What We Offer
+        </h2>
+
+        <p className="text-sm md:text-base text-center leading-relaxed">
+          We provide a carefully curated range of organic food products,
+          including:
+        </p>
+        <ul className=" text-center py-3 pb-10">
+          <li>Certified organic and chemical-free foods</li>
+          <li>Natural, preservative-free essentials</li>
+          <li>Nutrient-rich products for everyday wellness</li>
+          <li>Sustainably sourced and responsibly packaged items</li>
+        </ul>
+      </motion.div>
+      <div className="border-l">
         <motion.div
           className="container mx-auto px-4 text-center"
           initial={{ opacity: 0, y: 40 }}
@@ -71,56 +94,31 @@ function About() {
           transition={{ duration: 0.6 }}
           viewport={{ once: true }}
         >
-          <h2 className="text-2xl md:text-3xl font-semibold pb-3 pt-6">
-            What We Offer
+          <h2 className="text-2xl md:text-3xl font-semibold pb-1 pt-2">
+            Our Mission
           </h2>
 
-          <p className="text-sm md:text-base text-justify pb-20 leading-relaxed">
-            We provide a carefully curated range of organic food products,
-            including:
-            <ul>
-              <li>● Certified organic and chemical-free foods</li>
-              <li>● Natural, preservative-free essentials</li>
-              <li>● Nutrient-rich products for everyday wellness</li>
-              <li>● Sustainably sourced and responsibly packaged items</li>
-            </ul>
+          <p className="text-sm md:text-base text-center pb-10 leading-relaxed">
+            To empower people to live better by providing pure, safe, and
+            nourishing organic foods with honesty and care.
           </p>
         </motion.div>
-        <div className="border-l">
-          <motion.div
-            className="container mx-auto px-4 text-center"
-            initial={{ opacity: 0, y: 40 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.6 }}
-            viewport={{ once: true }}
-          >
-            <h2 className="text-2xl md:text-3xl font-semibold pb-1 pt-2">
-              Our Mission
-            </h2>
+        <motion.div
+          className="container mx-auto px-4 text-center"
+          initial={{ opacity: 0, y: 40 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.6 }}
+          viewport={{ once: true }}
+        >
+          <h2 className="text-2xl md:text-3xl font-semibold pb-1 pt-2">
+            Our Vision
+          </h2>
 
-            <p className="text-sm md:text-base text-justify pb-20 leading-relaxed">
-              To empower people to live better by providing pure, safe, and
-              nourishing organic foods with honesty and care.
-            </p>
-          </motion.div>
-          <motion.div
-            className="container mx-auto px-4 text-center"
-            initial={{ opacity: 0, y: 40 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.6 }}
-            viewport={{ once: true }}
-          >
-            <h2 className="text-2xl md:text-3xl font-semibold pb-1 pt-2">
-              Our Vision
-            </h2>
-
-            <p className="text-sm md:text-base text-justify pb-20 leading-relaxed">
-              To become a leading organic food destination that inspires
-              healthier communities and promotes sustainable living across
-              generations.
-            </p>
-          </motion.div>
-        </div>
+          <p className="text-sm md:text-base text-center pb-20 leading-relaxed">
+            To become a leading organic food destination that inspires healthier
+            communities and promotes sustainable living across generations.
+          </p>
+        </motion.div>
       </div>
     </div>
   );

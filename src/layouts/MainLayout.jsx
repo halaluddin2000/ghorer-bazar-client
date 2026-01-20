@@ -36,7 +36,7 @@ function MainLayout() {
 
       {/*  ROOT LEVEL MODAL */}
 
-      <div className="pt-16">
+      <div className="pt-6 md:pt-8">
         <Footer />
       </div>
     </div>

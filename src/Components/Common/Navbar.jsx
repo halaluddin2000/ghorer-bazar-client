@@ -234,7 +234,7 @@ const Navbar = () => {
       </div>
 
       {/* ================= DESKTOP MENU ================= */}
-      <nav className="bg-gradient-to-br from-[#2CC4F4] via-[#5ED1CE] to-[#8DC642] border-t border-b">
+      <nav className="bg-gradient-to-br from-[#2CC4F4] via-[#5ED1CE] to-[#8DC642] border-t">
         <div className="container mx-auto px-4 text-white">
           {/* Desktop Menu */}
           <div className="hidden md:flex font-medium justify-center gap-14 py-3">
@@ -242,16 +242,30 @@ const Navbar = () => {
               Home
             </Link>
 
-            <div className="relative group">
+            <div className="relative group inline-block">
               <span className="cursor-pointer select-none hover:text-black transition">
                 Category ▾
               </span>
-              <div className="absolute left-0 top-full bg-gradient-to-br from-[#2CC4F4] via-[#5ED1CE] to-[#8DC642] text-white shadow-lg rounded hidden group-hover:block z-50 py-3">
+
+              <div
+                className="
+      absolute left-0 top-full
+      inline-block
+      bg-gradient-to-br from-[#2CC4F4] via-[#5ED1CE] to-[#8DC642]
+      text-white shadow-lg rounded
+      hidden group-hover:block
+      z-50 py-2
+      whitespace-nowrap
+    "
+              >
                 {categories.map((cat) => (
                   <Link
                     key={cat.id}
                     to={`/category/${cat.slug}`}
-                    className="block px-4 py-2 text-sm font-medium hover:bg-gray-400"
+                    className="
+          block px-4 py-2 text-sm font-medium
+          hover:bg-red-300
+        "
                   >
                     {cat.name}
                   </Link>

@@ -13,7 +13,7 @@ function Footer() {
   return (
     <>
       {/* ================= Main Footer ================= */}
-      <div className="container mx-auto px-4 bg-white pt-16 pb-6">
+      <div className="container mx-auto px-4 bg-white pt-6 md:pt-16 pb-6">
         <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-7 pb-5 gap-8 items-start">
           {/* Brand */}
           <div className="md:col-span-3">

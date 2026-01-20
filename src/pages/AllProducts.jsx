@@ -62,8 +62,8 @@ const AllProducts = () => {
     );
 
   return (
-    <div className="container mx-auto px-3 sm:px-4 bg-white mb-24">
-      <h2 className="text-2xl sm:text-3xl md:text-4xl font-semibold mb-6 py-10 sm:py-16 text-center">
+    <div className="container mx-auto px-3 sm:px-4 bg-white mb-6 md:mb-10">
+      <h2 className="text-2xl sm:text-3xl md:text-4xl font-semibold mb-2 py-6 lg:py-10 md:mt-6 sm:py-16 text-center">
         ALL PRODUCTS
       </h2>
 
@@ -78,12 +78,12 @@ const AllProducts = () => {
               <img
                 src={product.thumbnail_image}
                 alt={product.name}
-                className="w-full h-48 sm:h-36 md:h-40 object-cover mb-3 rounded"
+                className="w-full h-26 sm:h-28 md:h-56 object-cover mb-3 rounded"
               />
-              <h3 className="font-semibold text-base py-2 text-center line-clamp-2">
+              <h3 className="font-semibold text-base py-2 text-center">
                 {product.name}
               </h3>
-              <p className="text-base text-gray-600 text-center">
+              <p className="text-lg text-gray-600 text-center">
                 {product.main_price}
               </p>
             </Link>

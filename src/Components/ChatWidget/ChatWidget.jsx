@@ -11,9 +11,18 @@ const ChatWidget = () => {
   const sendMessage = () => {
     if (!message.trim()) return;
 
-    setMessages([...messages, { from: "user", text: message }]);
+    // show user message in chat UI
+    setMessages((prev) => [...prev, { from: "user", text: message }]);
+
+    // open WhatsApp with message
+    const whatsappUrl = `https://wa.me/8801844545500?text=${encodeURIComponent(
+      message,
+    )}`;
+    window.open(whatsappUrl, "_blank");
+
     setMessage("");
 
+    // optional bot reply (same as before)
     setTimeout(() => {
       setMessages((prev) => [
         ...prev,
