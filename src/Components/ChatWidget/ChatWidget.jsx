@@ -1,91 +1,24 @@
-import { useState } from "react";
-import { FaComments, FaPaperPlane, FaTimes } from "react-icons/fa";
+import { FaComments } from "react-icons/fa";
 
-const ChatWidget = () => {
-  const [open, setOpen] = useState(false);
-  const [message, setMessage] = useState("");
-  const [messages, setMessages] = useState([
-    { from: "bot", text: "Hello 👋 How can we help you?" },
-  ]);
+const WhatsAppButton = () => {
+  const phoneNumber = "8801844545500"; // your number
+  const defaultMessage = "Hello 👋 I need some information";
 
-  const sendMessage = () => {
-    if (!message.trim()) return;
-
-    // show user message in chat UI
-    setMessages((prev) => [...prev, { from: "user", text: message }]);
-
-    // open WhatsApp with message
-    const whatsappUrl = `https://wa.me/8801844545500?text=${encodeURIComponent(
-      message,
+  const handleClick = () => {
+    const whatsappUrl = `https://wa.me/${phoneNumber}?text=${encodeURIComponent(
+      defaultMessage,
     )}`;
     window.open(whatsappUrl, "_blank");
-
-    setMessage("");
-
-    // optional bot reply (same as before)
-    setTimeout(() => {
-      setMessages((prev) => [
-        ...prev,
-        { from: "bot", text: "Thanks for your message 😊" },
-      ]);
-    }, 1000);
   };
 
   return (
-    <>
-      {/* Chat Button */}
-      <button
-        onClick={() => setOpen(!open)}
-        className="fixed bottom-6 right-6 z-50 bg-[#2CC4F4] text-white p-4 rounded-full shadow-lg hover:scale-105 transition"
-      >
-        {open ? <FaTimes size={20} /> : <FaComments size={20} />}
-      </button>
-
-      {/* Chat Box */}
-      {open && (
-        <div className="fixed bottom-24 right-6 w-80 bg-white rounded-xl shadow-xl z-50 flex flex-col">
-          {/* Header */}
-          <div className="bg-[#2CC4F4] text-white p-4 rounded-t-xl font-semibold">
-            Live Chat
-          </div>
-
-          {/* Messages */}
-          <div className="flex-1 p-3 overflow-y-auto space-y-2">
-            {messages.map((msg, index) => (
-              <div
-                key={index}
-                className={`max-w-[75%] p-2 rounded-lg text-sm ${
-                  msg.from === "user"
-                    ? "bg-[#2CC4F4] text-white ml-auto"
-                    : "bg-gray-100 text-gray-800"
-                }`}
-              >
-                {msg.text}
-              </div>
-            ))}
-          </div>
-
-          {/* Input */}
-          <div className="flex items-center gap-2 p-3 border-t">
-            <input
-              type="text"
-              value={message}
-              onChange={(e) => setMessage(e.target.value)}
-              placeholder="Type your message..."
-              className="flex-1 bg-white border rounded px-3 py-2 text-sm focus:outline-none"
-              onKeyDown={(e) => e.key === "Enter" && sendMessage()}
-            />
-            <button
-              onClick={sendMessage}
-              className="bg-[#2CC4F4] text-white p-2 rounded"
-            >
-              <FaPaperPlane size={14} />
-            </button>
-          </div>
-        </div>
-      )}
-    </>
+    <button
+      onClick={handleClick}
+      className="fixed bottom-6 right-6 z-50 bg-green-500 text-white p-4 rounded-full shadow-lg hover:scale-105 transition"
+    >
+      <FaComments size={26} />
+    </button>
   );
 };
 
-export default ChatWidget;
+export default WhatsAppButton;
