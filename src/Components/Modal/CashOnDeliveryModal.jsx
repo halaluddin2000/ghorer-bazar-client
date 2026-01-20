@@ -86,8 +86,10 @@ const CashOnDeliveryModal = ({ open, onClose }) => {
         // <-- change here
         toast.success(res.data.message || "অর্ডার কনফার্ম হয়েছে ✅");
         clearCart();
+        localStorage.removeItem("temp_user_id");
         onClose();
         setIsDrawerOpen(false);
+
         navigate("/");
       } else {
         toast.error(res.data.message || "Order failed");
