@@ -8,12 +8,14 @@ import api from "../api/axios";
 import Loader from "../Components/Common/Loader.jsx";
 import { CartContext } from "../Components/context/CartContext.jsx";
 import CashOnDeliveryModal from "../Components/Modal/CashOnDeliveryModal.jsx";
+import OnlinePaymentModal from "../Components/Modal/OnlinePaymentModal";
 
 function ProductDetails() {
   const { slug } = useParams();
   const [product, setProduct] = useState(null);
   const { addToCart, setIsDrawerOpen } = useContext(CartContext);
   const [openCOD, setOpenCOD] = useState(false);
+  const [openOnline, setOpenOnline] = useState(false);
 
   useEffect(() => {
     api
@@ -34,6 +36,17 @@ function ProductDetails() {
     });
 
     setOpenCOD(true);
+  };
+  const handleOP = () => {
+    addToCart({
+      id: product.id,
+      name: product.name,
+      price: Number(product.unit_price),
+      image: `https://backend.zhenaura.net/public/${product.thumbnail?.file_name}`,
+      qty: 1,
+    });
+
+    setOpenOnline(true);
   };
 
   const handleAddToCart = async (product) => {
@@ -143,6 +156,17 @@ ${window.location.href}
               Add to Cart
             </button>
 
+            <button
+              onClick={handleOP}
+              className="btn bg-[#2CC4F4] text-white rounded-md p-2 w-full my-2"
+            >
+              <FontAwesomeIcon icon={faCartShopping} />
+              Pay Online
+            </button>
+            <OnlinePaymentModal
+              open={openOnline}
+              onClose={() => setOpenOnline(false)}
+            />
             <button
               onClick={handleCOD}
               className="btn bg-[#2CC4F4] text-white rounded-md p-2 w-full my-2"

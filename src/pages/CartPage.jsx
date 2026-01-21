@@ -2,6 +2,7 @@ import { useContext, useState } from "react";
 import { Link } from "react-router-dom";
 import CashOnDeliveryModal from ".././Components/Modal/CashOnDeliveryModal.jsx";
 import { CartContext } from "../Components/context/CartContext";
+import OnlinePaymentModal from "../Components/Modal/OnlinePaymentModal.jsx";
 
 const CartPage = () => {
   const [openCOD, setOpenCOD] = useState(false);
@@ -11,7 +12,7 @@ const CartPage = () => {
   const [note, setNote] = useState("");
   const [coupon, setCoupon] = useState("");
   const [couponApplied, setCouponApplied] = useState(false);
-
+  const [openOnline, setOpenOnline] = useState(false);
   // Subtotal calculation (decimal safe)
   const subtotal = cart.reduce((s, i) => {
     const price = parseFloat(i.price);
@@ -230,17 +231,29 @@ const CartPage = () => {
                 Taxes and shipping calculated at checkout
               </p>
 
-              <button
-                onClick={() => setOpenCOD(true)}
-                className="mt-3 w-full sm:w-auto bg-[#2CC4F4] text-white px-6 py-2 rounded"
-              >
-                ক্যাশ অন ডেলিভারিতে অর্ডার করুন
-              </button>
+              <div className="grid w-58 justify-end">
+                <button
+                  onClick={() => setOpenOnline(true)}
+                  className="mt-3 w-full sm:w-auto bg-[#cfa12c] text-white px-6 py-2 rounded"
+                >
+                  Pay Online
+                </button>
+                <OnlinePaymentModal
+                  open={openOnline}
+                  onClose={() => setOpenOnline(false)}
+                />
+                <button
+                  onClick={() => setOpenCOD(true)}
+                  className="mt-3 w-full sm:w-auto bg-[#2CC4F4] text-white px-6 py-2 rounded"
+                >
+                  ক্যাশ অন ডেলিভারিতে অর্ডার করুন
+                </button>
 
-              <CashOnDeliveryModal
-                open={openCOD}
-                onClose={() => setOpenCOD(false)}
-              />
+                <CashOnDeliveryModal
+                  open={openCOD}
+                  onClose={() => setOpenCOD(false)}
+                />
+              </div>
             </div>
           </div>
         )}

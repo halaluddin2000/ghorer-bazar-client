@@ -8,9 +8,11 @@ import Footer from "../Components/Common/Footer";
 import Navbar from "../Components/Common/Navbar";
 import ScrollToTop from "../Components/Common/ScrollToTop";
 import CashOnDeliveryModal from "../Components/Modal/CashOnDeliveryModal";
+import OnlinePaymentModal from "../Components/Modal/OnlinePaymentModal";
 
 function MainLayout() {
   const [openCOD, setOpenCOD] = useState(false);
+  const [openOnline, setOpenOnline] = useState(false);
 
   return (
     <div className="bg-white">
@@ -28,8 +30,15 @@ function MainLayout() {
         <Navbar />
       </div>
 
-      <CartDrawer onCODClick={() => setOpenCOD(true)} />
+      <CartDrawer
+        onCODClick={() => setOpenCOD(true)}
+        onPlayOnline={setOpenOnline}
+      />
       <CashOnDeliveryModal open={openCOD} onClose={() => setOpenCOD(false)} />
+      <OnlinePaymentModal
+        open={openOnline}
+        onClose={() => setOpenOnline(false)}
+      />
       <ChatWidget />
 
       <Outlet />

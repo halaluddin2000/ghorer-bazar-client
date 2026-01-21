@@ -2,9 +2,11 @@ import { useContext, useState } from "react";
 import { Link } from "react-router-dom";
 import { CartContext } from "../context/CartContext";
 import CashOnDeliveryModal from "../Modal/CashOnDeliveryModal";
+import OnlinePaymentModal from "../Modal/OnlinePaymentModal";
 
-const CartDrawer = ({ onCODClick }) => {
+const CartDrawer = ({ onCODClick, onPlayOnline }) => {
   const [openCOD, setOpenCOD] = useState(false);
+  const [openOnline, setOpenOnline] = useState(false);
 
   const {
     cart,
@@ -13,7 +15,6 @@ const CartDrawer = ({ onCODClick }) => {
     increaseQty,
     decreaseQty,
     removeFromCart,
-    tempUserId,
   } = useContext(CartContext);
 
   const [note, setNote] = useState("");
@@ -185,9 +186,16 @@ const CartDrawer = ({ onCODClick }) => {
           </div>
 
           {/* Buttons */}
-          <button className="w-full bg-[#2CC4F4] text-white py-2 rounded text-sm">
+          <button
+            onClick={onPlayOnline}
+            className="w-full bg-[#2CC4F4] text-white py-2 rounded text-sm"
+          >
             Pay Online
           </button>
+          <OnlinePaymentModal
+            open={openOnline}
+            onClose={() => setOpenOnline(false)}
+          />
           <button
             onClick={onCODClick}
             className="w-full bg-gray-200 text-black py-2 rounded text-sm"

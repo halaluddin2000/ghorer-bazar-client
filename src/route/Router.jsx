@@ -1,6 +1,7 @@
 import { createBrowserRouter } from "react-router-dom";
 import Login from "../Components/login/Login";
 import CashOnDeliveryPage from "../Components/Modal/CashOnDeliveryModal";
+import OnlinePaymentModal from "../Components/Modal/OnlinePaymentModal";
 import SingUp from "../Components/singUp/SingUp";
 import UserDashboard from "../Components/User/UserDashboard";
 import MainLayout from "../layouts/MainLayout";
@@ -47,6 +48,10 @@ export const router = createBrowserRouter([
       {
         path: "/cash-on-delivery",
         element: <CashOnDeliveryPage />,
+      },
+      {
+        path: "/pay-online",
+        element: <OnlinePaymentModal />,
       },
       { path: "/order-success", element: <OrderSuccess /> },
       { path: "/login", element: <Login /> },
