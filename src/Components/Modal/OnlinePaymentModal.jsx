@@ -115,7 +115,7 @@ const OnlinePaymentModal = ({ open, onClose }) => {
       {/* Modal */}
       <div className="fixed inset-0 z-[9999] flex items-center justify-center p-4">
         <div
-          className={`bg-white w-full sm:w-3/4 md:w-2/5 rounded shadow-lg
+          className={`bg-white w-full sm:w-4/6 md:w-2/5 rounded shadow-lg
           max-h-[90vh] overflow-y-auto transform transition-all duration-300
           ${animate ? "scale-100 opacity-100" : "scale-95 opacity-0"}`}
         >

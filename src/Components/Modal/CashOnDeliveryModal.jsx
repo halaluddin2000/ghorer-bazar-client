@@ -276,13 +276,6 @@ const CashOnDeliveryModal = ({ open, onClose }) => {
             >
               আপনার অর্ডার কনফার্ম করতে ক্লিক করুন
             </button>
-
-            <button
-              onClick={() => toast.info("Online payment coming soon")}
-              className="w-full bg-gray-200 py-2 rounded"
-            >
-              Pay Online
-            </button>
           </div>
         </div>
       </div>

@@ -1,9 +1,13 @@
 import { faUser } from "@fortawesome/free-regular-svg-icons";
 import {
   faBagShopping,
+  faChevronRight,
+  faLayerGroup,
   faMagnifyingGlass,
+  faQrcode,
 } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+
 import { useContext, useEffect, useRef, useState } from "react";
 import { Link, useLocation, useNavigate } from "react-router-dom";
 
@@ -237,51 +241,94 @@ const Navbar = () => {
       <nav className="bg-gradient-to-br from-[#2CC4F4] via-[#5ED1CE] to-[#8DC642] border-t">
         <div className="container mx-auto px-4 text-white">
           {/* Desktop Menu */}
-          <div className="hidden md:flex font-medium justify-center gap-14 py-3">
-            <Link className="hover:text-black transition" to="/">
-              Home
-            </Link>
+          <div className="hidden lg:flex items-center w-full">
+            {/* LEFT: Category */}
+            <div className="flex items-center">
+              <div className="relative group hover:border p-2 inline-flex items-center gap-3">
+                <FontAwesomeIcon
+                  className="w-6 h-6 -rotate-90"
+                  icon={faQrcode}
+                />
+                {/* Icon */}
+                {/* <svg
+                  xmlns="http://www.w3.org/2000/svg"
+                  className="w-5 h-5 text-white"
+                  fill="none"
+                  viewBox="0 0 24 24"
+                  stroke="currentColor"
+                >
+                  <path
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                    strokeWidth={2}
+                    d="M4 6h16M4 12h16M4 18h16"
+                  />
+                </svg> */}
 
-            <div className="relative group inline-block">
-              <span className="cursor-pointer select-none hover:text-black transition">
-                Category ▾
-              </span>
+                <span className="cursor-pointer text-base font-semibold select-none hover:text-black transition">
+                  Category ▾
+                </span>
 
-              <div
-                className="
-      absolute left-0 top-full
-      inline-block
-      bg-gradient-to-br from-[#2CC4F4] via-[#5ED1CE] to-[#8DC642]
-      text-white shadow-lg rounded
-      hidden group-hover:block
-      z-50 py-2
-      whitespace-nowrap
-    "
-              >
-                {categories.map((cat) => (
-                  <Link
-                    key={cat.id}
-                    to={`/category/${cat.slug}`}
-                    className="
-          block px-4 py-2 text-sm font-medium
-          hover:bg-red-300
-        "
-                  >
-                    {cat.name}
-                  </Link>
-                ))}
+                {/* Dropdown */}
+                <div
+                  className="
+    absolute left-0 top-full
+    
+    text-green-500 shadow-lg rounded
+    hidden group-hover:block
+    z-1 pt-3 
+    whitespace-nowrap
+  "
+                >
+                  {categories.map((cat) => (
+                    <Link
+                      key={cat.id}
+                      to={`/category/${cat.slug}`}
+                      className="bg-white
+        flex items-center gap-3 
+        px-4 py-4 text-sm font-medium hover:text-white
+        hover:bg-red-300
+        transition
+      "
+                    >
+                      {/* Category Icon */}
+                      <FontAwesomeIcon
+                        icon={faLayerGroup}
+                        className="text-sm"
+                      />
+
+                      {/* Category Name */}
+                      <span className="flex-1">{cat.name}</span>
+
+                      {/* Right Arrow */}
+                      <FontAwesomeIcon
+                        icon={faChevronRight}
+                        className="text-xs opacity-70"
+                      />
+                    </Link>
+                  ))}
+                </div>
               </div>
             </div>
 
-            <Link className="hover:text-black transition" to="/products">
-              Products
-            </Link>
-            <Link className="hover:text-black transition" to="/about">
-              About
-            </Link>
-            <Link className="hover:text-black transition" to="/contact">
-              Contact Us
-            </Link>
+            {/* CENTER: Main Menu */}
+            <div className="flex-1 flex justify-center gap-14 font-medium py-4">
+              <Link className="hover:text-black transition" to="/">
+                Home
+              </Link>
+
+              <Link className="hover:text-black transition" to="/products">
+                Products
+              </Link>
+
+              <Link className="hover:text-black transition" to="/about">
+                About
+              </Link>
+
+              <Link className="hover:text-black transition" to="/contact">
+                Contact Us
+              </Link>
+            </div>
           </div>
 
           {/* Mobile Menu */}
