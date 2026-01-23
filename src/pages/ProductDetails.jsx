@@ -193,6 +193,10 @@ ${window.location.href}
             >
               <FontAwesomeIcon icon={faWhatsapp} /> WhatsApp Us
             </button>
+            <div>
+              <h3 className="border-b text-xl mt-4 py-3">Description</h3>
+              <p className="text-base p-2">{product?.meta_description}</p>
+            </div>
           </div>
         </div>
       </div>

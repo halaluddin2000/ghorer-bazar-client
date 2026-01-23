@@ -1,9 +1,13 @@
-import { faFacebook } from "@fortawesome/free-brands-svg-icons";
+import {
+  faFacebook,
+  faFacebookMessenger,
+} from "@fortawesome/free-brands-svg-icons";
 import {
   faEnvelope,
   faLocationDot,
   faPhone,
 } from "@fortawesome/free-solid-svg-icons";
+
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 
 import { Link } from "react-router-dom";
@@ -60,7 +64,27 @@ function Footer() {
             <h3 className="text-[#FC8934] text-base sm:text-lg mb-2">
               QUICK HELP
             </h3>
-            <h6 className="my-1 text-sm sm:text-base">গ্রাহক সেবা</h6>
+            <a
+              href="https://m.me/110872968359736"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="hover:text-[#006fd6]   py-2 gap-3 text-sm sm:text-base inline-flex items-center"
+              //           className="
+              //   inline-flex items-center gap-3
+              //   mt-2 px-4 py-2
+              //   bg-[#0084FF]
+              //   text-white text-sm sm:text-base
+              //   rounded-full
+              //   hover:bg-[#006fd6]
+              //   transition
+              // "
+            >
+              <FontAwesomeIcon
+                icon={faFacebookMessenger}
+                className="text-base text-[#0084FF]"
+              />
+              Chat with Messenger
+            </a>
           </div>
 
           {/* DBID */}
@@ -99,10 +123,17 @@ function Footer() {
 
       {/* ================= Bottom Bar ================= */}
       <div className="bg-[#5bcbed] w-full  flex py-4 justify-between items-center px-4">
-        <FontAwesomeIcon
-          className="text-white text-xl py-4 sm:py-6"
-          icon={faFacebook}
-        />
+        <a
+          href="https://www.facebook.com/zhenaura.bd"
+          target="_blank"
+          rel="noopener noreferrer"
+          aria-label="Zhen Aura Facebook Page"
+        >
+          <FontAwesomeIcon
+            className="text-white text-xl py-4 sm:py-6 cursor-pointer hover:opacity-80 transition"
+            icon={faFacebook}
+          />
+        </a>
 
         <h4 className="text-white text-sm sm:text-base sm:pb-0">
           © ZHEN AURA 2026
