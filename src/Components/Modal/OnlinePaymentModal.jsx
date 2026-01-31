@@ -61,7 +61,7 @@ const OnlinePaymentModal = ({ open, onClose }) => {
       phone: form.phone,
       address: form.address,
       note: form.note,
-      shipping: form.shipping,
+      shipping_cost: form.shipping,
       coupon,
       cart: cart.map((item) => ({
         id: item.id,
