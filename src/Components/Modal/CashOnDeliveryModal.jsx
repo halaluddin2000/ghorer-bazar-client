@@ -43,7 +43,10 @@ const CashOnDeliveryModal = ({ open, onClose }) => {
       return;
     }
     try {
-      await api.post("/auth/check-phone-number", { phone: form.phone });
+      await api.post("/auth/check-phone-number", {
+        phone: form.phone,
+        temp_user_id: [tempUserId],
+      });
       toast.success("Verification code পাঠানো হয়েছে ✅");
       setOtpSent(true);
     } catch (err) {
@@ -64,7 +67,7 @@ const CashOnDeliveryModal = ({ open, onClose }) => {
       phone: form.phone,
       address: form.address,
       note: form.note,
-      shipping_cost: form.shipping,
+      shipping_cost: shippingCost,
       coupon,
       cart: cart.map((item) => ({
         id: item.id,
@@ -102,8 +105,8 @@ const CashOnDeliveryModal = ({ open, onClose }) => {
 
   // Subtotal calculation
   const subtotal = cart.reduce((s, i) => s + parseFloat(i.price) * i.qty, 0);
-  const shippingCharge = form.shipping === "dhaka" ? 70 : 160;
-  const total = subtotal + shippingCharge;
+  const shippingCost = form.shipping === "dhaka" ? 70 : 160;
+  const total = subtotal + shippingCost;
 
   if (!open) return null;
 
@@ -253,7 +256,7 @@ const CashOnDeliveryModal = ({ open, onClose }) => {
               </div>
               <div className="flex justify-between">
                 <span>ডেলিভারি চার্জ</span>
-                <span>Tk {shippingCharge.toFixed(2)}</span>
+                <span>Tk {shippingCost.toFixed(2)}</span>
               </div>
               <div className="flex justify-between font-semibold">
                 <span>সর্বমোট</span>
