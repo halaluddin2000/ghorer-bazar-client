@@ -16,6 +16,7 @@ import Home from "../pages/Home";
 import NotFound from "../pages/NotFound";
 import OrderSuccess from "../pages/OrderSuccess";
 import ProductDetails from "../pages/ProductDetails";
+import PurchaseOderPage from "../pages/PurchaseOderPage";
 import Repand from "../pages/Repand";
 import ReturnsPolicy from "../pages/ReturnsPolicy";
 
@@ -79,6 +80,10 @@ export const router = createBrowserRouter([
       {
         path: "/repand",
         element: <Repand />,
+      },
+      {
+        path: "/purchase-order/:orderId",
+        element: <PurchaseOderPage />,
       },
       {
         path: "user-dashboard",

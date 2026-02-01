@@ -69,12 +69,7 @@ const CashOnDeliveryModal = ({ open, onClose }) => {
       note: form.note,
       shipping_cost: shippingCost,
       coupon,
-      cart: cart.map((item) => ({
-        id: item.id,
-        name: item.name,
-        price: parseFloat(item.price),
-        qty: item.qty,
-      })),
+      cart: [...cart],
       verification_code: Number(otp),
       temp_user_id: tempUserId,
     };
@@ -86,6 +81,8 @@ const CashOnDeliveryModal = ({ open, onClose }) => {
       console.log("Backend Response:", res.data);
 
       if (res.data?.result) {
+        const orderId = res.data?.order_id;
+        console.log(orderId);
         // <-- change here
         toast.success(res.data.message || "অর্ডার কনফার্ম হয়েছে ✅");
         clearCart();
@@ -93,7 +90,7 @@ const CashOnDeliveryModal = ({ open, onClose }) => {
         onClose();
         setIsDrawerOpen(false);
 
-        navigate("/");
+        navigate(`/purchase-order/${orderId}`);
       } else {
         toast.error(res.data.message || "Order failed");
       }

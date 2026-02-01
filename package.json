@@ -19,6 +19,8 @@
     "axios": "^1.13.2",
     "daisyui": "^5.5.14",
     "framer-motion": "^12.26.2",
+    "lucide": "^0.563.0",
+    "lucide-react": "^0.563.0",
     "react": "^19.2.0",
     "react-dom": "^19.2.0",
     "react-helmet": "^6.1.0",

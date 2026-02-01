@@ -63,12 +63,7 @@ const OnlinePaymentModal = ({ open, onClose }) => {
       note: form.note,
       shipping_cost: form.shippingCharge,
       coupon,
-      cart: cart.map((item) => ({
-        id: item.id,
-        name: item.name,
-        price: parseFloat(item.price),
-        qty: item.qty,
-      })),
+      cart: [...cart],
       verification_code: Number(otp),
       temp_user_id: tempUserId,
       payment_method: "online",
@@ -78,6 +73,7 @@ const OnlinePaymentModal = ({ open, onClose }) => {
       const res = await api.post("/gust/user/order/store", payload);
 
       if (res.data?.result) {
+        const orderId = res.data?.order_id;
         toast.success("Payment initiated ✅");
 
         if (res.data?.payment_url) {
@@ -89,7 +85,7 @@ const OnlinePaymentModal = ({ open, onClose }) => {
         localStorage.removeItem("temp_user_id");
         onClose();
         setIsDrawerOpen(false);
-        navigate("/");
+        navigate(`/purchase-order/${orderId}`);
       } else {
         toast.error(res.data.message || "Payment failed");
       }

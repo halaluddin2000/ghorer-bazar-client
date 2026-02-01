@@ -5,12 +5,11 @@ const api = axios.create({
     headers: {
         "Content-Type": "application/json",
     },
-    withCredentials: true,
+
 });
 
-// Attach token or temp_user_id if exists
 api.interceptors.request.use((config) => {
-    const token = localStorage.getItem("token");
+    const token = localStorage.getItem("access_token");
     const tempUserId = localStorage.getItem("temp_user_id");
 
     if (token) {
