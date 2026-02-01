@@ -14,11 +14,11 @@ const CartProvider = ({ children }) => {
     }
   });
 
-  const generateTempId = () => {
-    return (
+  // Generate or retrieve temp user ID
+  const generateTempId = () =>
+    (
       Date.now().toString(36) + Math.random().toString(36).substring(2, 12)
     ).slice(0, 20);
-  };
 
   const [tempUserId] = useState(() => {
     let id = localStorage.getItem("temp_user_id");
@@ -29,26 +29,25 @@ const CartProvider = ({ children }) => {
     return id;
   });
 
-  // persist cart
+  // Persist cart in localStorage
   useEffect(() => {
-    if (cart.length === 0) {
-      localStorage.removeItem("cart");
-    } else {
-      localStorage.setItem("cart", JSON.stringify(cart));
-    }
+    if (cart.length === 0) localStorage.removeItem("cart");
+    else localStorage.setItem("cart", JSON.stringify(cart));
   }, [cart]);
 
+  // Cart actions
   const clearCart = () => setCart([]);
 
-  const addToCart = (product) => {
+  const addToCart = (item) => {
     setCart((prev) => {
-      const exist = prev.find((p) => p.id === product.id);
-      if (exist) {
-        return prev.map((p) =>
-          p.id === product.id ? { ...p, qty: p.qty + 1 } : p,
+      const exists = prev.find((i) => i.id === item.id);
+      if (exists) {
+        // Update quantity if already in cart
+        return prev.map((i) =>
+          i.id === item.id ? { ...i, qty: i.qty + item.qty } : i,
         );
       }
-      return [...prev, { ...product, qty: 1 }];
+      return [...prev, item];
     });
   };
 
@@ -66,9 +65,8 @@ const CartProvider = ({ children }) => {
     );
   };
 
-  const removeFromCart = (id) => {
+  const removeFromCart = (id) =>
     setCart((prev) => prev.filter((i) => i.id !== id));
-  };
 
   return (
     <CartContext.Provider

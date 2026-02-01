@@ -156,8 +156,8 @@ function ProductDetails() {
           </div>
 
           {/* Product Info */}
-          <div className="w-full md:flex-1 md:w-3/4 space-y-6 mt-10">
-            <h1 className="text-2xl sm:text-3xl md:text-4xl mt-4 md:mt-10 font-bold">
+          <div className="w-full md:flex-1 md:w-3/4 space-y-6 mt-5">
+            <h1 className="text-1xl sm:text-2xl md:text-3xl mt-4 md:mt-10 font-bold">
               {product.name}
             </h1>
 
