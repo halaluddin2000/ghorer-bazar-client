@@ -126,13 +126,13 @@ function ProductDetails() {
         <div className="flex flex-col md:flex-row md:justify-between gap-6">
           {/* Image Gallery */}
           <div className="w-full md:w-2/5 flex flex-col gap-3 relative">
-            {hasDiscount && (
+            {hasDiscount ? (
               <span className="absolute top-2 left-2 bg-white text-red-600 px-2 py-1 rounded text-xs shadow">
                 {product.discount_type === "percent"
                   ? `${product.discount}% OFF`
                   : `Save ৳ ${saveAmount.toFixed(2)}`}
               </span>
-            )}
+            ) : null}
             <img
               src={`https://backend.zhenaura.net/public/${selectedImage}`}
               alt={product.name}
@@ -163,7 +163,7 @@ function ProductDetails() {
 
             <div className="flex items-center gap-3">
               <p className="text-lg sm:text-xl">৳ {finalPrice.toFixed(2)}</p>
-              {hasDiscount && (
+              {hasDiscount ? (
                 <>
                   <p className="text-sm line-through text-gray-400">
                     ৳ {mainPrice.toFixed(2)}
@@ -172,7 +172,7 @@ function ProductDetails() {
                     Save ৳ {saveAmount.toFixed(2)}
                   </p>
                 </>
-              )}
+              ) : null}
             </div>
 
             {/* Quantity */}

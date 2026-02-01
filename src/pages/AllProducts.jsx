@@ -103,6 +103,8 @@ const AllProducts = () => {
           const showDiscountBadge = product.discount && product.discount > 0;
           const discountPercent =
             product.discount_type === "percent" ? product.discount : null;
+          const discountAmount =
+            product.discount_type === "amount" ? product.discount : null;
 
           return (
             <div
@@ -110,10 +112,13 @@ const AllProducts = () => {
               className="border rounded-lg p-3 sm:p-4 hover:shadow-lg transition-transform transform hover:-translate-y-1 relative"
             >
               {/* Discount Badge */}
-              {discountPercent && showDiscountBadge ? (
-                <span className="absolute top-2 left-2 bg-red-400 text-white text-sm font-semibold  p-2 rounded-3xl z-10 shadow">
-                  {discountPercent}%
-                  <br /> OFF
+              {(discountPercent || discountAmount) && showDiscountBadge ? (
+                <span className="absolute top-2 left-2 bg-red-400 text-white text-sm font-semibold p-2  rounded-3xl z-10 shadow">
+                  {discountPercent
+                    ? `${discountPercent} % OFF`
+                    : discountAmount
+                      ? `${discountAmount} TK`
+                      : null}
                 </span>
               ) : null}
 
