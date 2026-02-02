@@ -19,6 +19,7 @@ import ProductDetails from "../pages/ProductDetails";
 import PurchaseOderPage from "../pages/PurchaseOderPage";
 import Repand from "../pages/Repand";
 import ReturnsPolicy from "../pages/ReturnsPolicy";
+import ProtectedRoute from "./ProtectedRoute";
 
 export const router = createBrowserRouter([
   {
@@ -88,9 +89,9 @@ export const router = createBrowserRouter([
       {
         path: "user-dashboard",
         element: (
-          // <ProtectedRoute>
-          <UserDashboard />
-          // </ProtectedRoute>
+          <ProtectedRoute>
+            <UserDashboard />
+          </ProtectedRoute>
         ),
       },
     ],

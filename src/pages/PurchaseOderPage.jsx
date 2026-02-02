@@ -8,6 +8,7 @@ import {
 import { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
 import api from "../api/axios";
+import OrderTimeline from "./OrderTimeline";
 
 function PurchaseOderPage() {
   const { orderId } = useParams();
@@ -167,9 +168,10 @@ function PurchaseOderPage() {
           </div>
 
           {/* TOTAL */}
-          <div className="flex justify-end font-semibold mt-4">
+          <div className="flex justify-end font-semibold my-6">
             Grand Total: Tk {order.grand_total}
           </div>
+          <OrderTimeline status={order.delivery_status} />
         </div>
       </div>
     </div>

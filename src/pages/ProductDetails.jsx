@@ -76,7 +76,7 @@ function ProductDetails() {
         localStorage.setItem("temp_user_id", res.data.temp_user_id);
       }
 
-      // ✅ local cart (UI)
+      //  local cart (UI)
       addToCart({
         id: product.id,
         name: product.name,
@@ -91,8 +91,25 @@ function ProductDetails() {
     }
   };
 
-  const handleCOD = () => setOpenCOD(true);
-  const handleOP = () => setOpenOnline(true);
+  const handleCOD = async () => {
+    try {
+      // ✅ add to cart first
+      await handleAddToCart();
+
+      // ✅ then open COD modal
+      setOpenCOD(true);
+    } catch (err) {
+      console.error(err);
+    }
+  };
+  const handleOP = async () => {
+    try {
+      await handleAddToCart();
+      setOpenOnline(true);
+    } catch (err) {
+      console.error(err);
+    }
+  };
 
   const handleWhatsApp = () => {
     const imageUrl = `https://backend.zhenaura.net/public/${selectedImage}`;

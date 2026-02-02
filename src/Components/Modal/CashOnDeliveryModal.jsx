@@ -82,8 +82,6 @@ const CashOnDeliveryModal = ({ open, onClose }) => {
 
       if (res.data?.result) {
         const orderId = res.data?.order_id;
-        console.log(orderId);
-        // <-- change here
         toast.success(res.data.message || "অর্ডার কনফার্ম হয়েছে ✅");
         clearCart();
         localStorage.removeItem("temp_user_id");
