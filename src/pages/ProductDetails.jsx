@@ -64,7 +64,7 @@ function ProductDetails() {
     if (type === "minus") setQuantity((q) => Math.max(q - 1, 1));
   };
 
-  const handleAddToCart = async () => {
+  const handleAddToCart = async (openDrawer = true) => {
     try {
       const res = await api.post("/carts/add", {
         id: product.id,
@@ -84,8 +84,9 @@ function ProductDetails() {
         image: `https://backend.zhenaura.net/public/${selectedImage}`,
         qty: quantity,
       });
-
-      setIsDrawerOpen(true);
+      if (openDrawer) {
+        setIsDrawerOpen(true);
+      }
     } catch (err) {
       console.error("Add to cart error:", err);
     }
@@ -93,10 +94,10 @@ function ProductDetails() {
 
   const handleCOD = async () => {
     try {
-      // ✅ add to cart first
-      await handleAddToCart();
+      //add to cart first
+      await handleAddToCart(false);
 
-      // ✅ then open COD modal
+      //then open COD modal
       setOpenCOD(true);
     } catch (err) {
       console.error(err);
@@ -104,7 +105,7 @@ function ProductDetails() {
   };
   const handleOP = async () => {
     try {
-      await handleAddToCart();
+      await handleAddToCart(false);
       setOpenOnline(true);
     } catch (err) {
       console.error(err);

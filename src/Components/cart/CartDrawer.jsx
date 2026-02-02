@@ -21,7 +21,11 @@ const CartDrawer = ({ onCODClick, onPlayOnline }) => {
   const [coupon, setCoupon] = useState("");
   const [couponApplied, setCouponApplied] = useState(false);
 
-  const subtotal = cart.reduce((sum, item) => sum + item.price * item.qty, 0);
+  const subtotal = cart.reduce(
+    (sum, item) => sum + (item?.price ?? 0) * (item?.qty ?? 0),
+    0,
+  );
+
   const discount = couponApplied && coupon === "SAVE10" ? subtotal * 0.1 : 0;
   const total = subtotal - discount;
 
@@ -60,40 +64,40 @@ const CartDrawer = ({ onCODClick, onPlayOnline }) => {
 
           {cart.map((item) => (
             <div
-              key={item.id}
+              key={item?.id}
               className="flex flex-col sm:flex-row items-start sm:items-center gap-2 sm:gap-3 border rounded p-2"
             >
               {/* Image */}
-              {item.image && (
+              {item?.image && (
                 <img
-                  src={item.image}
-                  alt={item.name}
+                  src={item?.image}
+                  alt={item?.name}
                   className="w-full sm:w-24 h-32 sm:h-20 object-cover rounded"
                 />
               )}
 
               <div className="flex-1">
                 <h4 className="font-medium text-base sm:text-sm">
-                  {item.name}
+                  {item?.name}
                 </h4>
                 <p className="text-base sm:text-base text-gray-600">
-                  Tk {item.price.toLocaleString()}
+                  Tk {item?.price.toLocaleString()}
                 </p>
 
                 {/* Qty controls */}
                 <div className="flex items-center gap-2 mt-2">
                   <button
                     onClick={() => decreaseQty(item.id)}
-                    disabled={item.qty === 1}
+                    disabled={item?.qty === 1}
                     className={`px-2 py-1 border rounded ${
-                      item.qty === 1 ? "opacity-50 cursor-not-allowed" : ""
+                      item?.qty === 1 ? "opacity-50 cursor-not-allowed" : ""
                     }`}
                   >
                     −
                   </button>
-                  <span className="text-sm">{item.qty}</span>
+                  <span className="text-sm">{item?.qty}</span>
                   <button
-                    onClick={() => increaseQty(item.id)}
+                    onClick={() => increaseQty(item?.id)}
                     className="w-6 h-6 flex items-center justify-center border rounded"
                   >
                     +
@@ -104,7 +108,7 @@ const CartDrawer = ({ onCODClick, onPlayOnline }) => {
               {/* Remove */}
               <button
                 onClick={() => {
-                  removeFromCart(item.id);
+                  removeFromCart(item?.id);
                   localStorage.removeItem("temp_user_id");
                 }}
                 className="text-red-500 text-base mt-2 sm:mt-0"

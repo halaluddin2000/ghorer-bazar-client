@@ -87,7 +87,6 @@ const CashOnDeliveryModal = ({ open, onClose }) => {
         localStorage.removeItem("temp_user_id");
         onClose();
         setIsDrawerOpen(false);
-
         navigate(`/purchase-order/${orderId}`);
       } else {
         toast.error(res.data.message || "Order failed");
