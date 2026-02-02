@@ -9,16 +9,20 @@ const STEPS = [
 ];
 
 const OrderTimeline = ({ status }) => {
-  const currentStep = STEPS.findIndex((s) => s.key === status);
+  const normalizedStatus = status?.toLowerCase();
+  const currentStep = STEPS.findIndex((s) => s.key === normalizedStatus);
 
   return (
     <div className="w-full">
       {/* Progress Bar */}
       <div className="relative h-2 bg-gray-200 rounded-full mb-8 overflow-hidden">
         <div
-          className="absolute left-0 top-0 h-full bg-green-500 transition-all duration-700 ease-in-out"
+          className="absolute left-0 top-0 h-full bg-blue-500 transition-all duration-700 ease-in-out"
           style={{
-            width: `${(currentStep / (STEPS.length - 1)) * 100}%`,
+            width:
+              currentStep >= 0
+                ? `${(currentStep / (STEPS.length - 1)) * 100}%`
+                : "0%",
           }}
         />
       </div>
@@ -35,7 +39,7 @@ const OrderTimeline = ({ status }) => {
                 className={`w-10 h-10 flex items-center justify-center rounded-full border-2 transition-all duration-500
                   ${
                     completed
-                      ? "bg-green-500 border-green-500 text-white"
+                      ? "bg-blue-500 border-blue-500 text-white"
                       : "bg-white border-gray-300 text-gray-400"
                   }
                 `}
@@ -45,9 +49,9 @@ const OrderTimeline = ({ status }) => {
 
               {/* Label */}
               <p
-                className={`mt-2 text-sm text-center ${
-                  completed ? "text-green-600" : "text-gray-400"
-                }`}
+                className={`mt-2 text-sm text-center font-medium
+                  ${completed ? "text-blue-600" : "text-gray-400"}
+                `}
               >
                 {step.label}
               </p>

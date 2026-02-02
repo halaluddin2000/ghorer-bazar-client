@@ -19,6 +19,7 @@ import ProductDetails from "../pages/ProductDetails";
 import PurchaseOderPage from "../pages/PurchaseOderPage";
 import Repand from "../pages/Repand";
 import ReturnsPolicy from "../pages/ReturnsPolicy";
+import TrackOrder from "../pages/TrackOrder";
 import ProtectedRoute from "./ProtectedRoute";
 
 export const router = createBrowserRouter([
@@ -85,6 +86,10 @@ export const router = createBrowserRouter([
       {
         path: "/purchase-order/:orderId",
         element: <PurchaseOderPage />,
+      },
+      {
+        path: "/track-your-order",
+        element: <TrackOrder />,
       },
       {
         path: "user-dashboard",

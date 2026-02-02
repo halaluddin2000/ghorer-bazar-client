@@ -52,11 +52,6 @@ function Footer() {
                 Return & Refund Policy
               </p>
             </Link>
-            {/* <Link to="/repand">
-              <p className="text-sm hover:text-[#2CC4F4] sm:text-base">
-                রিফান্ড পলিসি
-              </p>
-            </Link> */}
           </div>
 
           {/* Quick Help */}
@@ -69,15 +64,6 @@ function Footer() {
               target="_blank"
               rel="noopener noreferrer"
               className="hover:text-[#006fd6]   py-2 gap-3 text-sm sm:text-base inline-flex items-center"
-              //           className="
-              //   inline-flex items-center gap-3
-              //   mt-2 px-4 py-2
-              //   bg-[#0084FF]
-              //   text-white text-sm sm:text-base
-              //   rounded-full
-              //   hover:bg-[#006fd6]
-              //   transition
-              // "
             >
               <FontAwesomeIcon
                 icon={faFacebookMessenger}
@@ -85,6 +71,7 @@ function Footer() {
               />
               Chat with Messenger
             </a>
+            <Link to="/track-your-order">Track Order</Link>
           </div>
 
           {/* DBID */}
