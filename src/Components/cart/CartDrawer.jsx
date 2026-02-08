@@ -81,7 +81,7 @@ const CartDrawer = ({ onCODClick, onPlayOnline }) => {
                   {item?.name}
                 </h4>
                 <p className="text-base sm:text-base text-gray-600">
-                  Tk {item?.price.toLocaleString()}
+                  Tk {(item?.price ?? 0).toLocaleString()}
                 </p>
 
                 {/* Qty controls */}

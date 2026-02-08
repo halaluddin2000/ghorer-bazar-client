@@ -20,26 +20,36 @@ const AllProducts = () => {
   }, []);
 
   const handleAddToCart = async (product) => {
-    const payload = { id: product.id, quantity: 1 };
-
     try {
+      // Make sure you send the right payload
+      const payload = { id: product.id, quantity: 1 };
+
       const res = await api.post("/carts/add", payload);
 
       if (res.data?.result) {
+        // Save temp_user_id if exists
         if (res.data.temp_user_id) {
           localStorage.setItem("temp_user_id", res.data.temp_user_id);
         }
 
-        // Use backend price directly
+        // Ensure price is a number
+        const price = parseFloat(
+          String(product.main_price ?? 0).replace(/[^0-9.]/g, ""),
+        );
+
+        // Update cart context
         addToCart({
           id: product.id,
           name: product.name,
-          price: product.price, // backend price
+          price: price,
           image: product.thumbnail_image,
           qty: 1,
         });
 
+        // Open cart drawer
         setIsDrawerOpen(true);
+      } else {
+        console.error("Add to cart failed, backend returned:", res.data);
       }
     } catch (err) {
       console.error("Cart API error:", err);
