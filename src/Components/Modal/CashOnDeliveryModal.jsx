@@ -89,9 +89,11 @@ const CashOnDeliveryModal = ({ open, onClose }) => {
         setIsDrawerOpen(false);
         navigate(`/purchase-order/${orderId}`);
       } else {
+        clearCart();
         toast.error(res.data.message || "Order failed");
       }
     } catch (err) {
+      clearCart();
       console.error(err);
       toast.error("Order failed");
     }

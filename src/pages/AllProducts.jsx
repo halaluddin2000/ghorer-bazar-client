@@ -21,23 +21,25 @@ const AllProducts = () => {
 
   const handleAddToCart = async (product) => {
     try {
-      // Make sure you send the right payload
-      const payload = { id: product.id, quantity: 1 };
+      const temp_user_id = localStorage.getItem("temp_user_id");
+
+      const payload = {
+        id: product.id,
+        quantity: 1,
+        ...(temp_user_id ? { temp_user_id } : {}),
+      };
 
       const res = await api.post("/carts/add", payload);
 
       if (res.data?.result) {
-        // Save temp_user_id if exists
         if (res.data.temp_user_id) {
           localStorage.setItem("temp_user_id", res.data.temp_user_id);
         }
 
-        // Ensure price is a number
         const price = parseFloat(
           String(product.main_price ?? 0).replace(/[^0-9.]/g, ""),
         );
 
-        // Update cart context
         addToCart({
           id: product.id,
           name: product.name,
@@ -46,7 +48,6 @@ const AllProducts = () => {
           qty: 1,
         });
 
-        // Open cart drawer
         setIsDrawerOpen(true);
       } else {
         console.error("Add to cart failed, backend returned:", res.data);

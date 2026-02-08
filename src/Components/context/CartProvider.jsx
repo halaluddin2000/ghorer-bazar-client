@@ -98,10 +98,10 @@ const CartProvider = ({ children }) => {
 
   const removeFromCart = async (id) => {
     try {
-      // 1️⃣ Backend API call to delete
+      //  Backend API call to delete
       await api.delete(`/carts/${id}`);
 
-      // 2️⃣ Local state update
+      //  Local state update
       setCart((prev) => prev.filter((i) => i.id !== id));
     } catch (err) {
       console.error("Remove from cart failed", err);
