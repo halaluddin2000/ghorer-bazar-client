@@ -138,7 +138,7 @@ const Contact = () => {
             <div className="w-full h-64 rounded overflow-hidden border">
               <iframe
                 title="Location"
-                src="https://www.google.com/maps?q=117/A,Old%20Airport%20Road,Tejgaon,Dhaka&output=embed"
+                src="https://www.google.com/maps?q=427,Tejgaon%20Industrial%20Area,Dhaka-1208,Bangladesh&output=embed"
                 className="w-full h-full border-0"
                 loading="lazy"
               ></iframe>
@@ -147,19 +147,19 @@ const Contact = () => {
             <div className="space-y-4">
               <h3 className="text-xl font-semibold">Contact</h3>
 
-              <p className="flex gap-3">
+              <p className="flex items-center gap-3">
                 <FontAwesomeIcon icon={faLocationDot} />
-                117/A, Old Airport Road, Tejgaon, Dhaka
+                427, Tejgaon Industrial Area, Dhaka-1208, Bangladesh.
               </p>
 
-              <p className="flex gap-3">
+              <p className="flex items-center gap-3">
                 <FontAwesomeIcon icon={faPhone} />
                 +8801844545500
               </p>
 
-              <p className="flex gap-3">
+              <p className="flex items-center gap-3">
                 <FontAwesomeIcon icon={faEnvelope} />
-                info@zhensg.com
+                info@zhenaura.net
               </p>
             </div>
           </div>

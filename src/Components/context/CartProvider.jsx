@@ -1,4 +1,5 @@
 import { useEffect, useState } from "react";
+import api from "../../api/axios";
 import { CartContext } from "./CartContext";
 
 const CartProvider = ({ children }) => {
@@ -51,22 +52,61 @@ const CartProvider = ({ children }) => {
     });
   };
 
-  const increaseQty = (id) => {
-    setCart((prev) =>
-      prev.map((i) => (i.id === id ? { ...i, qty: i.qty + 1 } : i)),
-    );
+  const increaseQty = async (id) => {
+    setCart((prev) => {
+      return prev.map((item) => {
+        if (item.id === id) {
+          const newQty = item.qty + 1;
+
+          //  Backend update
+          api
+            .post("/carts/change-quantity", {
+              id: id,
+              quantity: newQty,
+            })
+            .catch((err) => console.error("Increase qty failed", err));
+
+          return { ...item, qty: newQty };
+        }
+        return item;
+      });
+    });
   };
 
-  const decreaseQty = (id) => {
-    setCart((prev) =>
-      prev
-        .map((i) => (i.id === id ? { ...i, qty: i.qty - 1 } : i))
-        .filter((i) => i.qty > 0),
-    );
+  const decreaseQty = async (id) => {
+    setCart((prev) => {
+      return prev
+        .map((item) => {
+          if (item.id === id) {
+            const newQty = item.qty - 1;
+
+            // যদি 0 হয় backend remove করবে automatically (many systems do)
+            api
+              .post("/carts/change-quantity", {
+                id: id,
+                quantity: newQty,
+              })
+              .catch((err) => console.error("Decrease qty failed", err));
+
+            return { ...item, qty: newQty };
+          }
+          return item;
+        })
+        .filter((item) => item.qty > 0);
+    });
   };
 
-  const removeFromCart = (id) =>
-    setCart((prev) => prev.filter((i) => i.id !== id));
+  const removeFromCart = async (id) => {
+    try {
+      // 1️⃣ Backend API call to delete
+      await api.delete(`/carts/${id}`);
+
+      // 2️⃣ Local state update
+      setCart((prev) => prev.filter((i) => i.id !== id));
+    } catch (err) {
+      console.error("Remove from cart failed", err);
+    }
+  };
 
   return (
     <CartContext.Provider

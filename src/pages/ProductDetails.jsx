@@ -58,12 +58,6 @@ function ProductDetails() {
       : product.discount
     : 0;
 
-  const handleQuantityChange = (type) => {
-    if (type === "plus")
-      setQuantity((q) => Math.min(q + 1, product.current_stock));
-    if (type === "minus") setQuantity((q) => Math.max(q - 1, 1));
-  };
-
   const handleAddToCart = async (openDrawer = true) => {
     try {
       const res = await api.post("/carts/add", {
@@ -71,12 +65,10 @@ function ProductDetails() {
         quantity: quantity,
       });
 
-      //  backend temp_user_id save
       if (res.data?.temp_user_id) {
         localStorage.setItem("temp_user_id", res.data.temp_user_id);
       }
 
-      //  local cart (UI)
       addToCart({
         id: product.id,
         name: product.name,
@@ -84,11 +76,37 @@ function ProductDetails() {
         image: `https://backend.zhenaura.net/public/${selectedImage}`,
         qty: quantity,
       });
-      if (openDrawer) {
-        setIsDrawerOpen(true);
-      }
+
+      if (openDrawer) setIsDrawerOpen(true);
     } catch (err) {
       console.error("Add to cart error:", err);
+    }
+  };
+  const handleQuantityChange = async (type) => {
+    let newQty = quantity;
+
+    if (type === "plus") newQty = Math.min(quantity + 1, product.current_stock);
+    if (type === "minus") newQty = Math.max(quantity - 1, 1);
+
+    setQuantity(newQty);
+
+    try {
+      await api.post("/carts/change-quantity", {
+        id: product.id,
+        quantity: newQty,
+      });
+    } catch (error) {
+      //  যদি cart এ না থাকে, আগে add করবো
+      console.log("Not in cart, adding first...", error);
+
+      try {
+        await api.post("/carts/add", {
+          id: product.id,
+          quantity: newQty,
+        });
+      } catch (addError) {
+        console.error("Add to cart also failed", addError);
+      }
     }
   };
 
@@ -144,17 +162,10 @@ function ProductDetails() {
         <div className="flex flex-col md:flex-row md:justify-between gap-6">
           {/* Image Gallery */}
           <div className="w-full md:w-2/5 flex flex-col gap-3 relative">
-            {hasDiscount ? (
-              <span className="absolute top-2 left-2 bg-white text-red-600 px-2 py-1 rounded text-xs shadow">
-                {product.discount_type === "percent"
-                  ? `${product.discount}% OFF`
-                  : `Save ৳ ${saveAmount.toFixed(2)}`}
-              </span>
-            ) : null}
             <img
               src={`https://backend.zhenaura.net/public/${selectedImage}`}
               alt={product.name}
-              className="w-full max-w-sm md:max-w-full object-contain"
+              className="w-full mt-4 max-w-sm md:max-w-full object-contain"
             />
             <div className="flex gap-2">
               {(product.photo_list || []).map((img) => (
@@ -258,9 +269,11 @@ function ProductDetails() {
 
             {/* Description */}
             <div>
-              <h3 className="border-b text-xl mt-4 py-3">Description</h3>
+              <h3 className="border-b text-xl mt-4 leading-8 py-3">
+                Description
+              </h3>
               <div
-                className="text-base p-2"
+                className="text-base leading-10 space-y-2 p-2"
                 dangerouslySetInnerHTML={{ __html: product.description }}
               />
             </div>
