@@ -25,12 +25,14 @@ const CategoryProducts = () => {
   }, [slug]);
 
   const handleAddToCart = async (product) => {
-    const payload = {
-      id: product.id,
-      quantity: 1,
-    };
-
     try {
+      const temp_user_id = localStorage.getItem("temp_user_id");
+
+      const payload = {
+        id: product.id,
+        quantity: 1,
+        ...(temp_user_id ? { temp_user_id } : {}),
+      };
       const res = await api.post("/carts/add", payload);
 
       if (res.data?.result) {
@@ -39,21 +41,14 @@ const CategoryProducts = () => {
         }
 
         // finalPrice calculation
-        const mainPrice = parseFloat(
-          product.main_price?.replace(/[^0-9.]/g, "") || 0,
+        const price = parseFloat(
+          String(product.main_price ?? 0).replace(/[^0-9.]/g, ""),
         );
-
-        const finalPrice =
-          product.discount && product.discount_type === "percent"
-            ? mainPrice * (1 - product.discount / 100)
-            : product.discount && product.discount_type === "amount"
-              ? mainPrice - product.discount
-              : mainPrice;
 
         addToCart({
           id: product.id,
           name: product.name,
-          price: finalPrice,
+          price: price,
           image: product.thumbnail_image,
           qty: 1,
         });
@@ -82,81 +77,75 @@ const CategoryProducts = () => {
       </h2>
 
       {/* Products Grid */}
-      <div className="grid grid-cols-2 md:grid-cols-4 gap-6 px-4 pb-32">
-        {products.map((product) => {
-          const mainPrice = parseFloat(
-            product.main_price?.replace(/[^0-9.]/g, "") || 0,
-          );
+      <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 gap-4">
+        {products.map((product) => (
+          <div
+            key={product.id}
+            className="border rounded-lg p-3 sm:p-4 hover:shadow-lg transition-transform transform hover:-translate-y-1 relative"
+          >
+            {/* Discount Badge from backend */}
+            {product.discount && product.discount > 0 ? (
+              <span className="absolute top-2 left-2 bg-red-400 text-white text-sm font-semibold p-2 rounded-3xl z-10 shadow">
+                {product.discount_type === "percent"
+                  ? `${product.discount} % OFF`
+                  : `Save ৳ ${product.discount}`}
+              </span>
+            ) : null}
 
-          const hasDiscount = product.discount && product.discount > 0;
+            <Link to={`/products/details/${product.slug}`}>
+              <img
+                src={product.thumbnail_image}
+                alt={product.name}
+                className="w-full h-30 sm:h-30 md:h-60 object-cover mb-3 rounded"
+              />
+              <h3 className="font-semibold text-base py-2 text-center">
+                {product.name}
+              </h3>
 
-          const finalPrice = hasDiscount
-            ? product.discount_type === "percent"
-              ? mainPrice * (1 - product.discount / 100)
-              : mainPrice - product.discount
-            : mainPrice;
-
-          const saveAmount = hasDiscount
-            ? product.discount_type === "percent"
-              ? (mainPrice * product.discount) / 100
-              : product.discount
-            : 0;
-
-          return (
-            <div
-              key={product.id}
-              className="border rounded-lg p-3 sm:p-4 hover:shadow-lg transition-transform transform hover:-translate-y-1 relative"
-            >
-              <Link to={`/products/details/${product.slug}`}>
-                <div className="relative">
-                  <img
-                    src={product.thumbnail_image}
-                    className="h-26 w-full  object-cover mb-2 rounded"
-                    alt={product.name}
-                  />
-
-                  {/* % OFF Badge */}
-                  {hasDiscount && product.discount_type === "percent" ? (
-                    <span className="absolute top-2 left-2 bg-[#F87171] text-white text-xs font-semibold px-2 py-1 rounded shadow">
-                      {product.discount}% OFF
-                    </span>
-                  ) : null}
-
-                  {/* Save ৳ Badge */}
-                  {hasDiscount && product.discount_type === "amount" ? (
-                    <span className="absolute top-2 left-1 bg-[#F87171] text-white text-xs font-semibold px-2 py-1 rounded shadow">
-                      Save ৳ {saveAmount.toFixed(2)}
-                    </span>
-                  ) : null}
-                </div>
-
-                <h3 className="font-semibold text-base py-2 text-center">
-                  {product.name}
-                </h3>
-                <p className="text-base text-gray-600 text-center">
-                  ৳ {finalPrice.toFixed(2)}
-                  {hasDiscount ? (
-                    <span className="line-through text-gray-400 text-sm ml-2">
-                      {product.main_price}
-                    </span>
-                  ) : null}
+              <div className="text-center flex justify-center items-center gap-2">
+                <p className="text-lg text-gray-600">
+                  ৳{" "}
+                  {parseFloat(
+                    String(product.main_price).replace(/[^0-9.]/g, ""),
+                  ).toFixed(2)}
                 </p>
-              </Link>
 
-              {/* Add to Cart */}
-              <button
-                onClick={(e) => {
-                  e.preventDefault();
-                  e.stopPropagation();
-                  handleAddToCart(product);
-                }}
-                className="w-full bg-[#2CC4F4] text-white font-medium mt-2 py-1 rounded hover:bg-[#1fa3dc] transition-colors duration-300"
-              >
-                Quick Add
-              </button>
-            </div>
-          );
-        })}
+                {/* Original Price (struck-through) */}
+                {product.has_discount && product.stroked_price ? (
+                  <p className="text-sm line-through text-gray-400">
+                    ৳{" "}
+                    {parseFloat(
+                      String(product.stroked_price).replace(/[^0-9.]/g, ""),
+                    ).toFixed(2)}
+                  </p>
+                ) : null}
+
+                {/* Discount Badge */}
+                {product.has_discount && product.discount_amount ? (
+                  <p className="text-sm py-1 px-2 text-white rounded-lg bg-[#2CC4F4]">
+                    Save ৳ {parseFloat(product.discount_amount).toFixed(2)}
+                    {parseFloat(
+                      String(product.discount_amount).replace(/[^0-9.]/g, ""),
+                    ).toFixed(2)}
+                  </p>
+                ) : null}
+              </div>
+              {/* Final Price (after discount or just normal price) */}
+            </Link>
+
+            <button
+              type="button"
+              onClick={(e) => {
+                e.preventDefault();
+                e.stopPropagation();
+                handleAddToCart(product);
+              }}
+              className="bg-[#2CC4F4] rounded-lg p-2 text-white w-full mt-3 hover:bg-[#1fa3dc] transition-colors duration-300"
+            >
+              Quick Add
+            </button>
+          </div>
+        ))}
       </div>
 
       {/* Mobile Sticky Add to Cart */}
