@@ -1,7 +1,6 @@
 import { faWhatsapp } from "@fortawesome/free-brands-svg-icons";
 import {
   faCartShopping,
-  faMessage,
   faMinus,
   faPlus,
 } from "@fortawesome/free-solid-svg-icons";
@@ -13,19 +12,16 @@ import api from "../api/axios";
 import Loader from "../Components/Common/Loader.jsx";
 
 import { CartContext } from "../Components/context/CartContext";
-import CashOnDeliveryModal from "../Components/Modal/CashOnDeliveryModal.jsx";
-import OnlinePaymentModal from "../Components/Modal/OnlinePaymentModal.jsx";
 
 function ProductDetails() {
   const { slug } = useParams();
   const [product, setProduct] = useState(null);
-  const { cart, addToCart, setIsDrawerOpen } = useContext(CartContext);
+  const { addToCart, setIsDrawerOpen } = useContext(CartContext);
 
   const [openCOD, setOpenCOD] = useState(false);
   const [openOnline, setOpenOnline] = useState(false);
   const [quantity, setQuantity] = useState(1);
   const [selectedImage, setSelectedImage] = useState(null);
-  console.log("cart ki ado ace", cart);
 
   useEffect(() => {
     api
@@ -43,6 +39,8 @@ function ProductDetails() {
 
   if (!product) return <Loader />;
 
+  const isOutOfStock = product.current_stock === 0;
+
   const mainPrice = parseFloat(product.unit_price);
   const hasDiscount = product.discount && product.discount > 0;
 
@@ -59,6 +57,8 @@ function ProductDetails() {
     : 0;
 
   const handleAddToCart = async (openDrawer = true) => {
+    if (isOutOfStock) return;
+
     try {
       const res = await api.post("/carts/add", {
         id: product.id,
@@ -82,116 +82,73 @@ function ProductDetails() {
       console.error("Add to cart error:", err);
     }
   };
-  const handleQuantityChange = async (type) => {
-    let newQty = quantity;
 
+  const handleQuantityChange = (type) => {
+    if (isOutOfStock) return;
+
+    let newQty = quantity;
     if (type === "plus") newQty = Math.min(quantity + 1, product.current_stock);
     if (type === "minus") newQty = Math.max(quantity - 1, 1);
 
     setQuantity(newQty);
-
-    try {
-      await api.post("/carts/change-quantity", {
-        id: product.id,
-        quantity: newQty,
-      });
-    } catch (error) {
-      //  যদি cart এ না থাকে, আগে add করবো
-      console.log("Not in cart, adding first...", error);
-
-      try {
-        await api.post("/carts/add", {
-          id: product.id,
-          quantity: newQty,
-        });
-      } catch (addError) {
-        console.error("Add to cart also failed", addError);
-      }
-    }
   };
 
   const handleCOD = async () => {
-    try {
-      //add to cart first
-      await handleAddToCart(false);
-
-      //then open COD modal
-      setOpenCOD(true);
-    } catch (err) {
-      console.error(err);
-    }
+    if (isOutOfStock) return;
+    await handleAddToCart(false);
+    setOpenCOD(true);
   };
+
   const handleOP = async () => {
-    try {
-      await handleAddToCart(false);
-      setOpenOnline(true);
-    } catch (err) {
-      console.error(err);
-    }
+    if (isOutOfStock) return;
+    await handleAddToCart(false);
+    setOpenOnline(true);
   };
 
   const handleWhatsApp = () => {
     const imageUrl = `https://backend.zhenaura.net/public/${selectedImage}`;
-    const message = `${imageUrl}\nProduct Name: ${product.name}\nPrice: ৳ ${finalPrice.toFixed(
-      2,
-    )}\nLink: ${window.location.href}`;
-    const whatsappUrl = `https://wa.me/8801844545500?text=${encodeURIComponent(
-      message,
-    )}`;
-    window.open(whatsappUrl, "_blank");
+    const message = `${imageUrl}\nProduct Name: ${
+      product.name
+    }\nPrice: ৳ ${finalPrice.toFixed(2)}\nLink: ${window.location.href}`;
+    window.open(
+      `https://wa.me/8801844545500?text=${encodeURIComponent(message)}`,
+      "_blank",
+    );
   };
 
   return (
     <>
       <Helmet>
         <title>{product.name} | ZHEN AURA</title>
-        <meta property="og:title" content={product.name} />
-        <meta
-          property="og:description"
-          content={`Price: ৳ ${finalPrice.toFixed(2)}`}
-        />
-        <meta
-          property="og:image"
-          content={`https://backend.zhenaura.net/public/${selectedImage}`}
-        />
-        <meta property="og:url" content={window.location.href} />
-        <meta property="og:type" content="product" />
       </Helmet>
 
       <div className="container mx-auto px-3 sm:px-4 mt-6 bg-white mb-10">
-        <div className="flex flex-col md:flex-row md:justify-between gap-6">
-          {/* Image Gallery */}
-          <div className="w-full md:w-2/5 flex flex-col gap-3 relative">
+        <div className="flex flex-col md:flex-row gap-6">
+          {/* Image */}
+          <div className="w-full md:w-2/5 relative">
             <img
               src={`https://backend.zhenaura.net/public/${selectedImage}`}
               alt={product.name}
-              className="w-full mt-4 max-w-sm md:max-w-full object-contain"
+              className={`w-full mt-4 max-w-sm md:max-w-full object-contain ${
+                isOutOfStock ? "opacity-60 grayscale" : ""
+              }`}
             />
-            <div className="flex gap-2">
-              {(product.photo_list || []).map((img) => (
-                <img
-                  key={img.id}
-                  src={`https://backend.zhenaura.net/public/${img.file_name}`}
-                  alt={product.name}
-                  className={`w-16 h-16 object-cover cursor-pointer border ${
-                    selectedImage === img.file_name
-                      ? "border-blue-500"
-                      : "border-gray-200"
-                  }`}
-                  onClick={() => setSelectedImage(img.file_name)}
-                />
-              ))}
-            </div>
+
+            {isOutOfStock && (
+              <div className="absolute inset-0 flex items-center justify-center">
+                <span className="bg-black/70 text-white px-4 py-2 rounded-lg text-sm font-semibold">
+                  Out of Stock
+                </span>
+              </div>
+            )}
           </div>
 
-          {/* Product Info */}
-          <div className="w-full md:flex-1 md:w-3/4 space-y-6 mt-5">
-            <h1 className="text-1xl sm:text-2xl md:text-3xl mt-4 md:mt-10 font-bold">
-              {product.name}
-            </h1>
+          {/* Info */}
+          <div className="w-full md:flex-1 space-y-6 mt-5">
+            <h1 className="text-2xl md:text-3xl font-bold">{product.name}</h1>
 
             <div className="flex items-center gap-3">
-              <p className="text-lg sm:text-xl">৳ {finalPrice.toFixed(2)}</p>
+              <p className="text-xl">৳ {finalPrice.toFixed(2)}</p>
               {hasDiscount ? (
                 <>
                   <p className="text-sm line-through text-gray-400">
@@ -204,79 +161,63 @@ function ProductDetails() {
               ) : null}
             </div>
 
+            {isOutOfStock && (
+              <p className="text-red-500 font-semibold">Out of Stock</p>
+            )}
+
             {/* Quantity */}
             <div className="flex items-center gap-2">
               <button
+                disabled={isOutOfStock}
                 onClick={() => handleQuantityChange("minus")}
-                className="p-1 border rounded"
+                className="p-1 border rounded disabled:opacity-40"
               >
                 <FontAwesomeIcon icon={faMinus} />
               </button>
               <span className="px-2">{quantity}</span>
               <button
+                disabled={isOutOfStock}
                 onClick={() => handleQuantityChange("plus")}
-                className="p-1 border rounded"
+                className="p-1 border rounded disabled:opacity-40"
               >
                 <FontAwesomeIcon icon={faPlus} />
               </button>
             </div>
 
-            {/* Action Buttons */}
+            {/* Buttons */}
             <button
-              type="button"
+              disabled={isOutOfStock}
               onClick={() => handleAddToCart()}
-              className="w-full bg-[#2CC4F4] text-white font-medium mt-2 py-2 rounded"
+              className={`w-full py-2 rounded text-white ${
+                isOutOfStock ? "bg-gray-400 cursor-not-allowed" : "bg-[#2CC4F4]"
+              }`}
             >
               Add to Cart
             </button>
 
             <button
-              onClick={() => handleOP()}
-              className="btn bg-[#2CC4F4] text-white rounded-md p-2 w-full my-2"
+              disabled={isOutOfStock}
+              onClick={handleOP}
+              className="w-full bg-[#2CC4F4] text-white py-2 rounded disabled:bg-gray-400"
             >
               <FontAwesomeIcon icon={faCartShopping} /> Pay Online
             </button>
-            <OnlinePaymentModal
-              open={openOnline}
-              onClose={() => setOpenOnline(false)}
-            />
 
             <button
-              onClick={() => handleCOD()}
-              className="btn bg-[#2CC4F4] text-white rounded-md p-2 w-full my-2"
+              disabled={isOutOfStock}
+              onClick={handleCOD}
+              className="w-full bg-[#2CC4F4] text-white py-2 rounded disabled:bg-gray-400"
             >
               <FontAwesomeIcon icon={faCartShopping} /> ক্যাশ অন ডেলিভারিতে
               অর্ডার করুন
             </button>
-            <CashOnDeliveryModal
-              open={openCOD}
-              onClose={() => setOpenCOD(false)}
-            />
 
             <button
               onClick={handleWhatsApp}
-              className="btn bg-[#2CC4F4] w-full text-white py-1 my-2"
-            >
-              <FontAwesomeIcon icon={faMessage} /> Chat with us
-            </button>
-
-            <button
-              onClick={handleWhatsApp}
-              className="btn py-1 bg-[#2CC4F4] w-full text-white text-center inline-block"
+              className="w-full bg-[#2CC4F4] text-white py-2 rounded"
             >
               <FontAwesomeIcon icon={faWhatsapp} /> WhatsApp Us
             </button>
-
-            {/* Description */}
-            <div>
-              <h3 className="border-b text-xl mt-4 leading-8 py-3">
-                Description
-              </h3>
-              <div
-                className="text-base leading-10 space-y-2 p-2"
-                dangerouslySetInnerHTML={{ __html: product.description }}
-              />
-            </div>
           </div>
         </div>
       </div>
