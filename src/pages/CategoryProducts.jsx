@@ -16,12 +16,22 @@ const CategoryProducts = () => {
   // Fetch category products
   useEffect(() => {
     setLoading(true);
+
+    // 1️⃣ Fetch products
     api
       .get(`/products/category/${slug}`)
       .then((res) => {
         setProducts(res.data.data || []);
-        setCategoryName(res.data?.category?.name || slug);
+      })
+      .catch(() => {});
 
+    // 2️⃣ Fetch categories to get name
+    api
+      .get("/categories")
+      .then((res) => {
+        const matchedCategory = res.data.data.find((cat) => cat.slug === slug);
+
+        setCategoryName(matchedCategory?.name || slug);
         setLoading(false);
       })
       .catch(() => setLoading(false));

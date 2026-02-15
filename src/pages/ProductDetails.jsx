@@ -6,6 +6,9 @@ import {
 } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { useContext, useEffect, useState } from "react";
+import CashOnDeliveryModal from "../Components/Modal/CashOnDeliveryModal.jsx";
+import OnlinePaymentModal from "../Components/Modal/OnlinePaymentModal.jsx";
+
 import { Helmet } from "react-helmet";
 import { useParams } from "react-router-dom";
 import api from "../api/axios";
@@ -38,11 +41,20 @@ function ProductDetails() {
   }, [slug]);
 
   if (!product) return <Loader />;
+  const now = Math.floor(Date.now() / 1000); // current time in seconds
+
+  const isDiscountActive =
+    product.discount &&
+    product.discount > 0 &&
+    product.discount_start_date &&
+    product.discount_end_date &&
+    now >= product.discount_start_date &&
+    now <= product.discount_end_date;
 
   const isOutOfStock = product.current_stock === 0;
 
   const mainPrice = parseFloat(product.unit_price);
-  const hasDiscount = product.discount && product.discount > 0;
+  const hasDiscount = isDiscountActive;
 
   const finalPrice = hasDiscount
     ? product.discount_type === "percent"
@@ -202,6 +214,10 @@ function ProductDetails() {
             >
               <FontAwesomeIcon icon={faCartShopping} /> Pay Online
             </button>
+            <OnlinePaymentModal
+              open={openOnline}
+              onClose={() => setOpenOnline(false)}
+            />
 
             <button
               disabled={isOutOfStock}
@@ -211,6 +227,10 @@ function ProductDetails() {
               <FontAwesomeIcon icon={faCartShopping} /> ক্যাশ অন ডেলিভারিতে
               অর্ডার করুন
             </button>
+            <CashOnDeliveryModal
+              open={openCOD}
+              onClose={() => setOpenCOD(false)}
+            />
 
             <button
               onClick={handleWhatsApp}
