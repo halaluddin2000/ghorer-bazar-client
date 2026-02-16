@@ -238,6 +238,7 @@ function ProductDetails() {
             >
               <FontAwesomeIcon icon={faWhatsapp} /> WhatsApp Us
             </button>
+            <h2>{product.short_description}</h2>
           </div>
         </div>
       </div>
