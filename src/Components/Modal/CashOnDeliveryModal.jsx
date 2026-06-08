@@ -10,8 +10,7 @@ const CashOnDeliveryModal = ({ open, onClose }) => {
   const tempUserId = localStorage.getItem("temp_user_id") || "";
 
   const [animate, setAnimate] = useState(false);
-  const [otpSent, setOtpSent] = useState(false);
-  const [otp, setOtp] = useState(); // OTP input
+
   const [form, setForm] = useState({
     name: "",
     phone: "",
@@ -34,26 +33,7 @@ const CashOnDeliveryModal = ({ open, onClose }) => {
     return () => window.removeEventListener("keydown", esc);
   }, [onClose]);
 
-  const phoneRegex = /^(?:\+88|01)?[3-9]\d{8}$/;
-
   // Send OTP (frontend verification skipped)
-  const handleSendOtp = async () => {
-    if (!form.phone || !phoneRegex.test(form.phone)) {
-      toast.error("সঠিক ফোন নাম্বার দিন");
-      return;
-    }
-    try {
-      await api.post("/auth/check-phone-number", {
-        phone: form.phone,
-        temp_user_id: [tempUserId],
-      });
-      toast.success("Verification code পাঠানো হয়েছে ✅");
-      setOtpSent(true);
-    } catch (err) {
-      console.error(err);
-      toast.error("Verification code পাঠানো যায়নি।");
-    }
-  };
 
   // Confirm Order (OTP only backend)
   const handleConfirm = async () => {
@@ -70,7 +50,6 @@ const CashOnDeliveryModal = ({ open, onClose }) => {
       shipping_cost: shippingCost,
       coupon,
       cart: [...cart],
-      verification_code: Number(otp),
       temp_user_id: tempUserId,
     };
 
@@ -143,27 +122,6 @@ const CashOnDeliveryModal = ({ open, onClose }) => {
               value={form.phone}
               onChange={(e) => setForm({ ...form, phone: e.target.value })}
             />
-            {!otpSent && (
-              <>
-                <p className="text-start text-yellow-600">
-                  OTP এর জন্য Apply বাটনে ক্লিক করুন{" "}
-                </p>
-                <button
-                  onClick={handleSendOtp}
-                  className="bg-[#2CC4F4] w-full text-white px-4 py-1 rounded"
-                >
-                  Apply
-                </button>
-              </>
-            )}
-            {otpSent && (
-              <input
-                placeholder="Verification Code"
-                className="w-full bg-white border p-2 rounded"
-                value={otp}
-                onChange={(e) => setOtp(e.target.value)}
-              />
-            )}
 
             {/* Name */}
             <input

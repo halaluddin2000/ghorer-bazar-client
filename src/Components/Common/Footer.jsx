@@ -12,6 +12,7 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 
 import { Link } from "react-router-dom";
 import logo from "../../assets/logo.png";
+import traker from "../../assets/pin-location.png";
 
 function Footer() {
   return (
@@ -74,7 +75,10 @@ function Footer() {
               />
               Chat with Messenger
             </a>
-            <Link to="/track-your-order">Track Order</Link>
+            <div className="flex hover:text-[#0084FF] cursor-pointer items-center gap-2">
+              <img className="w-7 h-7 " src={traker} alt="" />
+              <Link to="/track-your-order">Track Order</Link>
+            </div>
           </div>
 
           {/* DBID */}

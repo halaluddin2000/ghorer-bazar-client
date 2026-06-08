@@ -1,6 +1,5 @@
 "use client";
 
-// import OrderTimeline from "@/components/OrderTimeline"; // adjust path if needed
 import { useState } from "react";
 import api from "../api/axios";
 import OrderTimeline from "./OrderTimeline";
@@ -23,10 +22,10 @@ const TrackOrder = () => {
       setOrderData(null);
 
       const res = await api.get("/track-your-order", {
-        params: { order_code: orderCode }, // query parameter হিসেবে যাবে
+        params: { order_code: orderCode }, // query parameter
       });
 
-      // axios response data directly এখানে থাকে
+      // axios response data directly
       setOrderData(res.data);
       setOrderCode("");
     } catch (err) {

@@ -9,8 +9,8 @@ import About from "../pages/About";
 import AllProducts from "../pages/AllProducts";
 import BlogDetails from "../pages/BlogDetails";
 import BlogList from "../pages/BlogList";
-import CartPage from "../pages/CartPage";
 import CategoryProducts from "../pages/CategoryProducts";
+import CheckoutPage from "../pages/Checkoutpage";
 import ContactUs from "../pages/ContactUs";
 import Home from "../pages/Home";
 import NotFound from "../pages/NotFound";
@@ -45,8 +45,8 @@ export const router = createBrowserRouter([
         element: <ProductDetails />,
       },
       {
-        path: "/cart",
-        element: <CartPage />,
+        path: "/checkout",
+        element: <CheckoutPage />,
       },
       {
         path: "/cash-on-delivery",
