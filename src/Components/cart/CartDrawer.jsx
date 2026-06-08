@@ -23,6 +23,7 @@ const CartDrawer = () => {
   // "You May Also Like" products
   const [suggestedProducts, setSuggestedProducts] = useState([]);
   const scrollRef = useRef(null);
+  const infiniteProducts = [...suggestedProducts, ...suggestedProducts];
 
   useEffect(() => {
     api
@@ -41,6 +42,23 @@ const CartDrawer = () => {
     (sum, item) => sum + (item?.price ?? 0) * (item?.qty ?? 0),
     0,
   );
+
+  useEffect(() => {
+    if (!scrollRef.current || !isDrawerOpen || suggestedProducts.length === 0)
+      return;
+
+    const container = scrollRef.current;
+
+    const interval = setInterval(() => {
+      container.scrollLeft += 1;
+
+      if (container.scrollLeft >= container.scrollWidth / 2) {
+        container.scrollLeft = 0;
+      }
+    }, 20);
+
+    return () => clearInterval(interval);
+  }, [isDrawerOpen, suggestedProducts]);
 
   return (
     <>
@@ -140,7 +158,7 @@ const CartDrawer = () => {
         </div>
 
         {/* ── You May Also Like ── */}
-        {suggestedProducts.length > 0 && (
+        {cart.length > 0 && suggestedProducts.length > 0 && (
           <div className="px-4 pt-3 pb-2 border-t bg-gray-50">
             <div className="flex items-center justify-between mb-2">
               <div>
@@ -171,13 +189,13 @@ const CartDrawer = () => {
               className="flex gap-3 overflow-x-auto pb-1 scrollbar-hide"
               style={{ scrollbarWidth: "none" }}
             >
-              {suggestedProducts.map((p) => {
+              {infiniteProducts.map((p, index) => {
                 const price = parseFloat(
                   String(p.main_price ?? 0).replace(/[^0-9.]/g, ""),
                 );
                 return (
                   <div
-                    key={p.id}
+                    key={`${p.id}-${index}`}
                     className="min-w-[200px] max-w-[200px] bg-white border border-gray-100 rounded-xl flex items-center gap-2 p-2 shrink-0"
                   >
                     <img

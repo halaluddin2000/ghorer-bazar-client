@@ -6,104 +6,9 @@ import api from "../api/axios";
 import { CartContext } from "../Components/context/CartContext";
 // import { CartContext } from "../context/CartContext";
 
-// ── Bangladesh districts (sample – extend as needed) ──
-const DISTRICTS = [
-  "Dhaka",
-  "Chattogram",
-  "Rajshahi",
-  "Khulna",
-  "Barishal",
-  "Sylhet",
-  "Rangpur",
-  "Mymensingh",
-  "Cumilla",
-  "Narayanganj",
-  "Gazipur",
-  "Narsingdi",
-  "Munshiganj",
-  "Manikganj",
-  "Tangail",
-  "Faridpur",
-  "Madaripur",
-  "Shariatpur",
-  "Gopalganj",
-  "Kishoreganj",
-  "Netrokona",
-  "Jamalpur",
-  "Sherpur",
-  "Bogura",
-  "Joypurhat",
-  "Naogaon",
-  "Natore",
-  "Chapai Nawabganj",
-  "Pabna",
-  "Sirajganj",
-  "Dinajpur",
-  "Gaibandha",
-  "Kurigram",
-  "Lalmonirhat",
-  "Nilphamari",
-  "Panchagarh",
-  "Thakurgaon",
-  "Rangamati",
-  "Bandarban",
-  "Khagrachhari",
-  "Cox's Bazar",
-  "Feni",
-  "Noakhali",
-  "Lakshmipur",
-  "Chandpur",
-  "Brahmanbaria",
-  "Habiganj",
-  "Moulvibazar",
-  "Sunamganj",
-  "Bagerhat",
-  "Chuadanga",
-  "Jessore",
-  "Jhenaidah",
-  "Khulna",
-  "Kushtia",
-  "Magura",
-  "Meherpur",
-  "Narail",
-  "Satkhira",
-  "Barguna",
-  "Bhola",
-  "Jhalokati",
-  "Patuakhali",
-  "Pirojpur",
-  "Barisal",
-  "Pirojpur",
-  "Lalmonirhat",
-];
-
-const THANAS = {
-  Dhaka: [
-    "Dhanmondi",
-    "Mirpur",
-    "Mohammadpur",
-    "Uttara",
-    "Gulshan",
-    "Badda",
-    "Khilgaon",
-    "Motijheel",
-    "Lalbagh",
-    "Kotwali",
-  ],
-  Chattogram: [
-    "Kotwali",
-    "Panchlaish",
-    "Khulshi",
-    "Halishahar",
-    "Double Mooring",
-    "Bayezid",
-    "Chandgaon",
-    "Pahartali",
-  ],
-};
-
 export default function CheckoutPage() {
   const navigate = useNavigate();
+  const [shippingArea, setShippingArea] = useState("dhaka");
   const {
     cart,
     setIsDrawerOpen,
@@ -141,7 +46,7 @@ export default function CheckoutPage() {
 
   // price
   const subtotal = cart.reduce((s, i) => s + parseFloat(i.price) * i.qty, 0);
-  const deliveryCost = 0; // adjust if needed
+  const deliveryCost = shippingArea === "dhaka" ? 70 : 160;
   const total = subtotal + deliveryCost;
 
   const handlePlaceOrder = async () => {
@@ -167,6 +72,7 @@ export default function CheckoutPage() {
       address: form.address,
       note: form.note,
       shipping_cost: deliveryCost,
+      shipping_area: shippingArea,
       coupon,
       cart: [...cart],
       payment_method: paymentMethod,
@@ -352,32 +258,56 @@ export default function CheckoutPage() {
                   placeholder="ex: House no. / building / street / area"
                   className="sm:col-span-2 border border-gray-200 rounded-lg px-3 py-2.5 text-sm bg-white focus:outline-none focus:border-orange-400 focus:ring-1 focus:ring-orange-200"
                 />
-                {/* <select
-                  value={form.district}
-                  onChange={(e) =>
-                    setForm({ ...form, district: e.target.value, thana: "" })
-                  }
-                  className="border border-gray-200 rounded-lg px-3 py-2.5 text-sm bg-white focus:outline-none focus:border-orange-400 focus:ring-1 focus:ring-orange-200 text-gray-500"
-                >
-                  <option value="">Select District</option>
-                  {DISTRICTS.map((d) => (
-                    <option key={d} value={d}>
-                      {d}
-                    </option>
-                  ))}
-                </select>
-                <select
-                  value={form.thana}
-                  onChange={(e) => setForm({ ...form, thana: e.target.value })}
-                  className="border border-gray-200 rounded-lg px-3 py-2.5 text-sm bg-white focus:outline-none focus:border-orange-400 focus:ring-1 focus:ring-orange-200 text-gray-500"
-                >
-                  <option value="">Select Thana (Optional)</option>
-                  {(THANAS[form.district] || []).map((t) => (
-                    <option key={t} value={t}>
-                      {t}
-                    </option>
-                  ))}
-                </select> */}
+                {/* Shipping Area */}
+                <div className="sm:col-span-2">
+                  <label className="block text-sm font-medium text-gray-700 mb-2">
+                    Delivery Area
+                  </label>
+
+                  <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
+                    <label
+                      className={`border rounded-lg p-3 cursor-pointer transition ${
+                        shippingArea === "dhaka"
+                          ? "border-[#1FA3DC] bg-blue-50"
+                          : "border-gray-200"
+                      }`}
+                    >
+                      <div className="flex items-center justify-between">
+                        <div className="flex items-center gap-2">
+                          <input
+                            type="radio"
+                            checked={shippingArea === "dhaka"}
+                            onChange={() => setShippingArea("dhaka")}
+                          />
+                          <span>Dhaka City</span>
+                        </div>
+
+                        <span className="font-semibold">৳70</span>
+                      </div>
+                    </label>
+
+                    <label
+                      className={`border rounded-lg p-3 cursor-pointer transition ${
+                        shippingArea === "outside"
+                          ? "border-[#1FA3DC] bg-blue-50"
+                          : "border-gray-200"
+                      }`}
+                    >
+                      <div className="flex items-center justify-between">
+                        <div className="flex items-center gap-2">
+                          <input
+                            type="radio"
+                            checked={shippingArea === "outside"}
+                            onChange={() => setShippingArea("outside")}
+                          />
+                          <span>Outside Dhaka</span>
+                        </div>
+
+                        <span className="font-semibold">৳160</span>
+                      </div>
+                    </label>
+                  </div>
+                </div>
               </div>
             </div>
 
