@@ -460,16 +460,18 @@ export default function CheckoutPage() {
               </button>
               <p className="text-sm text-gray-600">
                 I have read and agree to the{" "}
-                <Link to="/terms" className="text-[#1FA3DC] hover:underline">
+                {/* <Link to="/terms" className="text-[#1FA3DC] hover:underline">
                   Terms and Conditions
-                </Link>
-                ,{" "}
-                <Link to="/privacy" className="text-[#1FA3DC] hover:underline">
-                  Privacy Policy
+                </Link> */}{" "}
+                <Link to="/repand" className="text-[#1FA3DC] hover:underline">
+                  Refund
                 </Link>{" "}
                 &{" "}
-                <Link to="/refund" className="text-[#1FA3DC] hover:underline">
-                  Refund and Return Policy
+                <Link
+                  to="/returns-policy"
+                  className="text-[#1FA3DC] hover:underline"
+                >
+                  Return Policy
                 </Link>
                 .
               </p>

@@ -9,17 +9,18 @@ import {
 } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { useContext, useEffect, useState } from "react";
+import { useNavigate, useParams } from "react-router-dom";
 import CashOnDeliveryModal from "../Components/Modal/CashOnDeliveryModal.jsx";
 import OnlinePaymentModal from "../Components/Modal/OnlinePaymentModal.jsx";
 
 import { Helmet } from "react-helmet";
-import { useParams } from "react-router-dom";
 import api from "../api/axios";
 import Loader from "../Components/Common/Loader.jsx";
 
 import { CartContext } from "../Components/context/CartContext";
 
 function ProductDetails() {
+  const navigate = useNavigate();
   const { slug } = useParams();
   const [product, setProduct] = useState(null);
   const { addToCart, setIsDrawerOpen } = useContext(CartContext);
@@ -123,12 +124,12 @@ function ProductDetails() {
   };
 
   const handleAddToCart = async (openDrawer = true) => {
-    if (isOutOfStock) return;
+    if (isOutOfStock) return false;
 
     try {
       const res = await api.post("/carts/add", {
         id: product.id,
-        quantity: quantity,
+        quantity,
       });
 
       if (res.data?.temp_user_id) {
@@ -144,8 +145,11 @@ function ProductDetails() {
       });
 
       if (openDrawer) setIsDrawerOpen(true);
+
+      return true;
     } catch (err) {
-      console.error("Add to cart error:", err);
+      console.error(err);
+      return false;
     }
   };
 
@@ -167,8 +171,15 @@ function ProductDetails() {
 
   const handleOP = async () => {
     if (isOutOfStock) return;
-    await handleAddToCart(false);
-    setOpenOnline(true);
+
+    try {
+      await handleAddToCart(false);
+
+      // checkout page e niye jabe
+      navigate("/checkout");
+    } catch (err) {
+      console.error(err);
+    }
   };
 
   const handleWhatsApp = () => {
@@ -464,7 +475,7 @@ function ProductDetails() {
                   >
                     {/* Image */}
                     <a
-                      href={`/product/${rp.slug}`}
+                      href={`/products/details/${rp.slug}`}
                       className="block bg-gray-50"
                     >
                       {rpThumb ? (
@@ -485,7 +496,7 @@ function ProductDetails() {
                     {/* Info */}
                     <div className="p-3 flex flex-col gap-2 flex-1">
                       <a
-                        href={`/product/${rp.slug}`}
+                        href={`/products/details/${rp.slug}`}
                         className="text-sm font-medium text-gray-800 leading-snug line-clamp-2 hover:text-[#1FA3DC]"
                       >
                         {rp.name}

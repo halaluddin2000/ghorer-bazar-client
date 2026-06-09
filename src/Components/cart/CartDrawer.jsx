@@ -207,18 +207,22 @@ const CartDrawer = () => {
                       <p className="text-xs font-semibold text-gray-800 line-clamp-2 leading-snug">
                         {p.name}
                       </p>
-                      <p className="text-xs text-gray-400 line-through mt-0.5">
+                      <p className="text-xs text-gray-400  mt-0.5">
                         ৳{price.toLocaleString()}.00
                       </p>
                       <button
                         onClick={async () => {
                           try {
+                            const tempUserId =
+                              localStorage.getItem("temp_user_id");
+
                             const res = await api.post("/carts/add", {
                               id: p.id,
                               quantity: 1,
+                              temp_user_id: tempUserId,
                             });
 
-                            if (res.data?.temp_user_id) {
+                            if (!tempUserId && res.data?.temp_user_id) {
                               localStorage.setItem(
                                 "temp_user_id",
                                 res.data.temp_user_id,

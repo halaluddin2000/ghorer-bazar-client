@@ -8,7 +8,7 @@ function Repand() {
         রিফান্ড পলিসি
       </h2>
       <div className="container">
-        <ul className="list-disc space-y-2">
+        <ul className="list-disc space-y-2 px-4">
           <li>
             আপনার রিফান্ড প্রসেসিংয়ের সময় নির্ভর করে রিফান্ডের ধরন এবং আপনি যে
             পেমেন্ট পদ্ধতি ব্যবহার করেছেন তার উপর।
@@ -23,7 +23,7 @@ function Repand() {
           </li>
         </ul>
 
-        <ul>
+        <ul className="px-4">
           <li>
             <strong>রিফান্ডের ধরণ</strong>
             <ul className="list-disc space-y-2">
@@ -67,7 +67,7 @@ function Repand() {
           </li>
         </ul>
 
-        <ul className="list-disc space-y-2">
+        <ul className="list-disc space-y-2 px-4">
           <li>
             পণ্যটি অবশ্যই অব্যবহৃত, অপরিষ্কার নয় এবং কোনও ত্রুটিবিহীন হতে হবে।
           </li>
@@ -89,7 +89,7 @@ function Repand() {
         </ul>
 
         <h4 className="font-semibold py-2">দ্রষ্টব্যঃ</h4>
-        <ul>
+        <ul className="px-4">
           <li>
             <ul className="list-disc space-y-2">
               <li>

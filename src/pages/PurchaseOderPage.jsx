@@ -95,6 +95,10 @@ function PurchaseOderPage() {
               <strong>Order status:</strong>
               <p className="capitalize">{order.delivery_status}</p>
             </div>
+            <div>
+              <strong>Delivery Charge:</strong>
+              <p>Tk {order.shipping_cost}</p>
+            </div>
 
             <div>
               <strong>Name:</strong>
@@ -133,43 +137,143 @@ function PurchaseOderPage() {
 
           {/* Desktop */}
           <table className="hidden md:table w-full mt-4 text-sm">
-            <thead>
-              <tr className="border-b">
-                <th>#</th>
-                <th>Product</th>
-                <th>Qty</th>
-                <th>Delivery</th>
-                <th>Price</th>
-              </tr>
-            </thead>
             <tbody>
-              {items.map((item, i) => (
-                <tr key={item.id} className="border-b">
-                  <td>{i + 1}</td>
-                  <td>{item.product?.name}</td>
-                  <td>{item.quantity}</td>
-                  <td>Home Delivery</td>
-                  <td>Tk {item.price}</td>
-                </tr>
-              ))}
+              <div className="mt-6 space-y-4">
+                {items.map((item, i) => (
+                  <div
+                    key={item.id}
+                    className="group bg-white border border-slate-200 rounded-2xl p-4 md:p-5 shadow-sm hover:shadow-lg transition-all duration-300"
+                  >
+                    <div className="flex flex-col md:flex-row md:items-center gap-4">
+                      {/* Product Image */}
+                      <div className="w-20 h-20 rounded-xl overflow-hidden bg-slate-50 border">
+                        <img
+                          src={
+                            item.product?.thumbnail
+                              ? `https://backend.zhenaura.net/public/${item.product.thumbnail.file_name}`
+                              : "/placeholder.png"
+                          }
+                          alt={item.product?.name}
+                          className="w-full h-full object-cover"
+                        />
+                      </div>
+
+                      {/* Product Info */}
+                      <div className="flex-1">
+                        <div className="flex flex-wrap items-center gap-2">
+                          <h4 className="font-semibold text-slate-800 text-base">
+                            {item.product?.name}
+                          </h4>
+
+                          {item.product?.has_combo === 1 && (
+                            <span className="px-2 py-1 text-[11px] font-semibold bg-gradient-to-r from-orange-500 to-red-500 text-white rounded-full">
+                              COMBO
+                            </span>
+                          )}
+                        </div>
+
+                        <p className="text-xs text-slate-400 mt-1">
+                          Product #{item.product_id}
+                        </p>
+                      </div>
+
+                      {/* Qty */}
+                      <div className="text-center">
+                        <p className="text-xs text-slate-400">Quantity</p>
+                        <p className="font-bold text-lg">{item.quantity}</p>
+                      </div>
+
+                      {/* Price */}
+                      <div className="text-right">
+                        <p className="text-xs text-slate-400">Price</p>
+                        <p className="font-bold text-lg text-[#2CC4F4]">
+                          ৳{Number(item.price).toLocaleString()}
+                        </p>
+                      </div>
+                    </div>
+                  </div>
+                ))}
+              </div>
             </tbody>
           </table>
 
           {/* Mobile */}
-          <div className="md:hidden space-y-3 mt-4">
+          <div className="md:hidden space-y-4 mt-4">
             {items.map((item) => (
-              <div key={item.id} className="border rounded p-3 text-sm">
-                <p className="font-semibold">{item.product?.name}</p>
-                <p>Qty: {item.quantity}</p>
-                <p>Delivery: Home Delivery</p>
-                <p>Price: Tk {item.price}</p>
+              <div
+                key={item.id}
+                className="bg-white border border-slate-200 rounded-xl p-4 shadow-sm"
+              >
+                <div className="flex items-start justify-between gap-2">
+                  <h4 className="font-semibold text-slate-800">
+                    {item.product?.name}
+                  </h4>
+
+                  {item.product?.has_combo === 1 && (
+                    <span className="bg-orange-500 text-white text-xs px-2 py-1 rounded-full">
+                      Combo
+                    </span>
+                  )}
+                </div>
+
+                <div className="mt-3 space-y-1 text-sm text-slate-600">
+                  <p>Qty: {item.quantity}</p>
+                  <p>Shipping: ৳{order.shipping_cost}</p>
+                  <p className="font-semibold text-slate-900">
+                    Price: ৳{Number(item.price).toLocaleString()}
+                  </p>
+                </div>
               </div>
             ))}
           </div>
 
           {/* TOTAL */}
-          <div className="flex justify-end font-semibold my-6">
-            Grand Total: Tk {order.grand_total}
+          <div className="mt-6 flex justify-end">
+            <div className="w-full md:w-[380px] bg-gradient-to-br from-white to-slate-50 border border-slate-200 rounded-2xl p-5 shadow-sm">
+              <h3 className="text-lg font-bold text-slate-800 mb-4">
+                Order Summary
+              </h3>
+
+              <div className="space-y-3 text-sm">
+                <div className="flex justify-between">
+                  <span className="text-slate-500">Sub Total</span>
+                  <span className="font-medium">
+                    ৳
+                    {(
+                      Number(order.grand_total) -
+                      Number(order.shipping_cost || 0)
+                    ).toLocaleString()}
+                  </span>
+                </div>
+
+                <div className="flex justify-between">
+                  <span className="text-slate-500">Tax</span>
+                  <span>৳0.00</span>
+                </div>
+
+                <div className="flex justify-between">
+                  <span className="text-slate-500">Shipping</span>
+                  <span>৳{Number(order.shipping_cost).toLocaleString()}</span>
+                </div>
+
+                <div className="flex justify-between">
+                  <span className="text-slate-500">Coupon</span>
+                  <span>৳0.00</span>
+                </div>
+
+                <div className="border-t pt-3 mt-3">
+                  <div className="flex justify-between items-center">
+                    <span className="text-lg font-bold text-slate-900">
+                      Total
+                    </span>
+
+                    <span className="text-xl font-bold text-[#2CC4F4]">
+                      ৳{Number(order.grand_total).toLocaleString()}
+                    </span>
+                  </div>
+                </div>
+              </div>
+            </div>
           </div>
           <OrderTimeline status={order.delivery_status} />
         </div>
