@@ -13,7 +13,11 @@ const AllProducts = () => {
     api
       .get("/all-products")
       .then((res) => {
-        setProducts(res.data.data || []);
+        const normalProducts = (res.data.data || []).filter(
+          (product) => product.has_combo !== 1,
+        );
+
+        setProducts(normalProducts);
         setLoading(false);
       })
       .catch(() => setLoading(false));

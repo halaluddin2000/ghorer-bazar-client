@@ -320,6 +320,12 @@ const Navbar = () => {
               <Link className="hover:text-black transition" to="/products">
                 Products
               </Link>
+              <Link
+                className="hover:text-black transition"
+                to="/combo-products"
+              >
+                Combo Products
+              </Link>
 
               <Link className="hover:text-black transition" to="/about">
                 About

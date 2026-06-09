@@ -6,11 +6,13 @@ import SingUp from "../Components/singUp/SingUp";
 import UserDashboard from "../Components/User/UserDashboard";
 import MainLayout from "../layouts/MainLayout";
 import About from "../pages/About";
+import AllCombos from "../pages/AllCombos";
 import AllProducts from "../pages/AllProducts";
 import BlogDetails from "../pages/BlogDetails";
 import BlogList from "../pages/BlogList";
 import CategoryProducts from "../pages/CategoryProducts";
 import CheckoutPage from "../pages/Checkoutpage";
+import ComboDetails from "../pages/ComboDetails";
 import ContactUs from "../pages/ContactUs";
 import Home from "../pages/Home";
 import NotFound from "../pages/NotFound";
@@ -44,6 +46,15 @@ export const router = createBrowserRouter([
         path: "/products/details/:slug",
         element: <ProductDetails />,
       },
+      {
+        path: "/combo-products",
+        element: <AllCombos />,
+      },
+      {
+        path: "/combo-products/details/:slug",
+        element: <ComboDetails />,
+      },
+
       {
         path: "/checkout",
         element: <CheckoutPage />,

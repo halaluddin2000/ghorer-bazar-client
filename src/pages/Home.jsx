@@ -1,4 +1,4 @@
-import React from "react";
+import ComboProducts from "../Components/ComboProducts";
 import Hero from "../Components/home/Hero";
 import AllProducts from "./AllProducts";
 
@@ -8,6 +8,7 @@ function Home() {
       <Hero />
       <div className="pb-20 bg-white">
         <AllProducts />
+        <ComboProducts />
       </div>
     </>
   );
