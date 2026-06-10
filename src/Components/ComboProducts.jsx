@@ -27,15 +27,15 @@ const ComboProducts = () => {
   if (loading) return <Loader />;
 
   return (
-    <div className="container mx-auto px-3 sm:px-4 bg-white mb-10">
-      <div className="flex items-center justify-between mb-8">
-        <h2 className="text-2xl md:text-4xl font-bold text-[#132238]">
+    <div className="container  mx-auto px-3 sm:px-4 bg-white mb-10">
+      <div className="flex mt-10 md:mt-2 items-center justify-between mb-8">
+        <h2 className="text-xl md:text-4xl font-bold text-[#132238]">
           Exclusive Combo Deals
         </h2>
 
         <Link
           to="/combo-products"
-          className="bg-[#2CC4F4] text-white px-5 py-3 rounded-md font-semibold"
+          className="bg-[#2CC4F4] text-white px-5 py-3 rounded-md text-xs md:text-xl font-semibold"
         >
           View All Combos →
         </Link>
